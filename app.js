@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'tasks': 'Panel',
             'appointments': 'Randevular',
             'proposals': 'Teklif Yönetimi',
+            'reservations': 'Rezervasyon Yönetimi',
             'customers': 'Müşteri Yönetimi',
             'website': 'Website Yönetimi',
             'employees': 'Çalışan Yönetimi',
@@ -54,8 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             'tasks': 'Bugünün işlerini organize et.',
             'appointments': 'Randevu takvimini yönet.',
             'proposals': 'Müşteri tekliflerini oluştur ve takip et.',
+            'reservations': 'Fuar standı, toplantı odası ve diğer alanları yönet.',
             'customers': 'Müşteri bilgilerini ekle ve yönet.',
-            'website': 'Firmanızın web sitesini oluşturun ve yönetin.',
+            'website': 'Firmanızın web sitesini oluşturun ve yönet in.',
             'employees': 'Ekibini ekle ve yönet.',
             'reports': 'İşletme performansını incele.',
             'settings': 'Profil ve uygulama tercihleri.'
@@ -83,12 +85,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 WebsiteManager.init();
             }
         }
+
+        if (viewName === 'reservations') {
+            if (typeof loadReservations === 'function') {
+                loadReservations();
+            }
+        }
     };
 
     function getViewLabel(view) {
         if (view === 'tasks') return 'İş Listesi';
         if (view === 'appointments') return 'Randevular';
         if (view === 'proposals') return 'Teklifler';
+        if (view === 'reservations') return 'Rezervasyonlar';
         if (view === 'customers') return 'Müşteriler';
         if (view === 'website') return 'Website Yönetimi';
         if (view === 'employees') return 'Çalışanlar';
@@ -1927,11 +1936,253 @@ window.showEditEmployeeModal = function (id) {
     }
 };
 
+
+
 // Initialize departments when employees are loaded
 // This will be called after currentUser is available
 window.initializeDepartments = async function () {
     await loadDepartments();
     renderManagerList();
 };
+
+
+// ============================================
+// RESERVATION MANAGEMENT MODULE
+// ============================================
+
+let reservations = [];
+let reservationsSubscription = null;
+
+// Load reservations from Supabase
+async function loadReservations() {
+    try {
+        const { data, error } = await supabase
+            .from('reservations')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .order('alan_no', { ascending: true });
+
+        if (error) throw error;
+
+        reservations = data || [];
+        console.log('Loaded reservations:', reservations);
+        renderReservations();
+    } catch (error) {
+        console.error('Error loading reservations:', error);
+    }
+}
+
+// Render reservations table
+function renderReservations() {
+    const tbody = document.getElementById('reservationListBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (reservations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--secondary);">Henüz alan eklenmemiş.</td></tr>';
+        return;
+    }
+
+    reservations.forEach(reservation => {
+        const row = tbody.insertRow();
+
+        row.insertCell().textContent = reservation.alan_no;
+        row.insertCell().textContent = formatReservationType(reservation.alan_tipi);
+        row.insertCell().textContent = reservation.alan_buyukluk || '-';
+        row.insertCell().textContent = formatReservationType(reservation.fiyat_tipi);
+        row.insertCell().textContent = formatPrice(reservation.fiyat_miktar, reservation.para_birimi);
+
+        const durumCell = row.insertCell();
+        const durumColors = {
+            'bos': '#10b981',
+            'opsiyonda': '#f59e0b',
+            'rezerve': '#ef4444'
+        };
+        durumCell.innerHTML = `<span style="background: ${durumColors[reservation.durum] || '#6b7280'}; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">${reservation.durum.toUpperCase()}</span>`;
+
+        const actionCell = row.insertCell();
+        actionCell.innerHTML = `
+            <button class="btn-aksiyon" onclick="editReservation('${reservation.id}')" style="background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Düzenle</button>
+            <button class="btn-sil" onclick="deleteReservation('${reservation.id}')" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Sil</button>
+        `;
+    });
+}
+
+// Format reservation types
+function formatReservationType(type) {
+    const typeMap = {
+        'stand': 'Fuar Standı',
+        'toplanti': 'Toplantı Odası',
+        'masa': 'Coworking Masası',
+        'kort': 'Spor Kortu',
+        'loca': 'Loca',
+        'saatlik': 'Saatlik',
+        'gunluk': 'Günlük/Seans',
+        'tek_fiyat': 'Tek Fiyat'
+    };
+    return typeMap[type] || type;
+}
+
+// Format price with currency
+function formatPrice(amount, currency) {
+    const locale = currency === 'TRY' ? 'tr-TR' : 'en-US';
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: 0
+    }).format(amount);
+}
+
+// Handle reservation form submission
+const reservationForm = document.getElementById('reservationForm');
+if (reservationForm) {
+    reservationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const editId = document.getElementById('editReservationId').value;
+
+        const formData = {
+            alan_no: document.getElementById('alanNo').value,
+            alan_tipi: document.getElementById('alanTipi').value,
+            alan_buyukluk: document.getElementById('alanBuyukluk').value,
+            fiyat_tipi: document.getElementById('fiyatTipi').value,
+            fiyat_miktar: parseFloat(document.getElementById('fiyatMiktar').value),
+            para_birimi: document.getElementById('paraBirimi').value,
+            durum: document.getElementById('alanDurum').value,
+            user_id: currentUser.id
+        };
+
+        try {
+            if (editId) {
+                // Update existing reservation
+                const { error } = await supabase
+                    .from('reservations')
+                    .update(formData)
+                    .eq('id', editId);
+
+                if (error) throw error;
+                alert('Alan başarıyla güncellendi!');
+            } else {
+                // Insert new reservation
+                const { error } = await supabase
+                    .from('reservations')
+                    .insert([formData]);
+
+                if (error) throw error;
+                alert('Yeni alan başarıyla eklendi!');
+            }
+
+            // Reset form
+            reservationForm.reset();
+            document.getElementById('editReservationId').value = '';
+            document.getElementById('reservationSubmitBtn').innerHTML = '<i class="fa-solid fa-plus"></i> Alan Ekle';
+
+            await loadReservations();
+        } catch (error) {
+            console.error('Error saving reservation:', error);
+            alert('Alan kaydedilirken bir hata oluştu: ' + error.message);
+        }
+    });
+}
+
+// Edit reservation
+window.editReservation = function (id) {
+    const reservation = reservations.find(r => r.id === id);
+    if (!reservation) return;
+
+    document.getElementById('editReservationId').value = reservation.id;
+    document.getElementById('alanNo').value = reservation.alan_no;
+    document.getElementById('alanTipi').value = reservation.alan_tipi;
+    document.getElementById('alanBuyukluk').value = reservation.alan_buyukluk;
+    document.getElementById('fiyatTipi').value = reservation.fiyat_tipi;
+    document.getElementById('fiyatMiktar').value = reservation.fiyat_miktar;
+    document.getElementById('paraBirimi').value = reservation.para_birimi;
+    document.getElementById('alanDurum').value = reservation.durum;
+
+    document.getElementById('reservationSubmitBtn').innerHTML = '<i class="fa-solid fa-edit"></i> Alanı Güncelle';
+};
+
+// Delete reservation
+window.deleteReservation = async function (id) {
+    if (!confirm('Bu alanı silmek istediğinizden emin misiniz?')) {
+        return;
+    }
+
+    try {
+        const { error } = await supabase
+            .from('reservations')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        await loadReservations();
+        alert('Alan silindi.');
+    } catch (error) {
+        console.error('Error deleting reservation:', error);
+        alert('Alan silinirken bir hata oluştu: ' + error.message);
+    }
+};
+
+// WhatsApp share function
+window.shareReservations = function () {
+    //const baseUrl = window.location.origin;
+    const baseUrl = 'https://kolayistakip.vercel.app';
+    const reservationUrl = `${baseUrl}/alan-rezervasyon.html`;
+
+    const message = encodeURIComponent(`Merhaba,
+Güncel olarak müsait tüm alanlarımızı görmek ve hemen rezervasyon yapmak için lütfen aşağıdaki sayfamızı inceleyiniz:
+
+${reservationUrl}`);
+
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+};
+
+// Copy reservation link
+window.copyReservationLink = async function () {
+    //const baseUrl = window.location.origin;
+    const baseUrl = 'https://kolayistakip.vercel.app';
+    const reservationUrl = `${baseUrl}/alan-rezervasyon.html`;
+
+    try {
+        await navigator.clipboard.writeText(reservationUrl);
+        alert('Rezervasyon linki panoya kopyalandı:\n' + reservationUrl);
+    } catch (err) {
+        console.error('Kopyalama başarısız:', err);
+        alert('Kopyalama başarısız. Lütfen linki manuel kopyalayın:\n' + reservationUrl);
+    }
+};
+
+// Setup realtime subscription for reservations
+function setupReservationsRealtime() {
+    if (reservationsSubscription) {
+        reservationsSubscription.unsubscribe();
+    }
+
+    reservationsSubscription = supabase
+        .channel('reservations-changes')
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'reservations',
+            filter: `user_id=eq.${currentUser.id}`
+        }, (payload) => {
+            console.log('Reservation change received:', payload);
+            loadReservations();
+        })
+        .subscribe();
+}
+
+// Add to init function check
+if (document.getElementById('view-reservations')) {
+    window.addEventListener('DOMContentLoaded', () => {
+        if (currentUser) {
+            loadReservations();
+            setupReservationsRealtime();
+        }
+    });
+}
 
 

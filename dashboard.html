@@ -52,6 +52,9 @@
                 <a href="#" class="menu-item" onclick="switchView('proposals')">
                     <i class="fa-solid fa-file-invoice-dollar"></i> Teklifler
                 </a>
+                <a href="#" class="menu-item" onclick="switchView('reservations')">
+                    <i class="fa-solid fa-calendar-days"></i> Rezervasyonlar
+                </a>
                 <a href="#" class="menu-item" onclick="switchView('customers')">
                     <i class="fa-solid fa-user-group"></i> Müşteriler
                 </a>
@@ -333,6 +336,113 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: RESERVATIONS -->
+            <section id="view-reservations" class="view-section" style="display:none;">
+                <div class="content-grid" style="grid-template-columns: 1fr 2fr;">
+                    <!-- Form Card -->
+                    <div class="card">
+                        <h2><i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> Yeni Alan Tanımlama
+                        </h2>
+                        <form id="reservationForm">
+                            <input type="hidden" id="editReservationId">
+
+                            <div class="form-group">
+                                <label for="alanNo">Alan Kodu/Numarası</label>
+                                <input type="text" id="alanNo" required placeholder="Örn: H301, Kort-2">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alanTipi">Alan Tipi</label>
+                                <select id="alanTipi" required>
+                                    <option value="stand">Fuar Standı</option>
+                                    <option value="toplanti">Toplantı Odası</option>
+                                    <option value="masa">Coworking Masası</option>
+                                    <option value="kort">Spor Kortu/Saha</option>
+                                    <option value="loca">Stadyum Locası</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alanBuyukluk">Büyüklük (m² / Kişi Kapasitesi)</label>
+                                <input type="text" id="alanBuyukluk" required placeholder="Örn: 18 m² veya 10 Kişilik">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fiyatTipi">Fiyatlandırma Şekli</label>
+                                <select id="fiyatTipi" required>
+                                    <option value="saatlik">Saatlik</option>
+                                    <option value="gunluk">Günlük/Seanslık</option>
+                                    <option value="tek_fiyat">Tek Fiyat</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fiyatMiktar">Fiyat</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <select id="paraBirimi" style="flex: 0 0 90px;" required>
+                                        <option value="TRY">₺ (TRY)</option>
+                                        <option value="USD">$ (USD)</option>
+                                        <option value="EUR">€ (EUR)</option>
+                                    </select>
+                                    <input type="number" id="fiyatMiktar" min="0" step="0.01" required
+                                        placeholder="0.00" style="flex: 1;">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alanDurum">Mevcut Durum</label>
+                                <select id="alanDurum" required>
+                                    <option value="bos">Boş</option>
+                                    <option value="opsiyonda">Opsiyonda</option>
+                                    <option value="rezerve">Rezerve</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap;">
+                                <button type="submit" class="btn btn-primary" id="reservationSubmitBtn"
+                                    style="flex: 1;">
+                                    <i class="fa-solid fa-plus"></i> Alan Ekle
+                                </button>
+                                <button type="button" class="btn" style="background: #25d366; color: white;"
+                                    onclick="shareReservations()">
+                                    <i class="fa-brands fa-whatsapp"></i> Paylaş
+                                </button>
+                                <button type="button" class="btn" style="background: #6c757d; color: white;"
+                                    onclick="copyReservationLink()">
+                                    <i class="fa-solid fa-link"></i> Link
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Table Card -->
+                    <div class="card">
+                        <h2><i class="fa-solid fa-list" style="color: var(--primary);"></i> Tanımlı Alanlar</h2>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kod</th>
+                                        <th>Tip</th>
+                                        <th>Büyüklük</th>
+                                        <th>Fiyat Tipi</th>
+                                        <th>Fiyat</th>
+                                        <th>Durum</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reservationListBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center; color:var(--secondary);">Henüz alan
+                                            eklenmemiş.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>

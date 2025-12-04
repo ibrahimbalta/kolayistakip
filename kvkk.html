@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KVKK - Kişisel Verilerin Korunması - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .legal-content-wrapper {
+            padding: 120px 0 60px;
+        }
+
+        .legal-header-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+            border-radius: 24px;
+        }
+
+        .legal-header-section h1 {
+            font-size: 3rem;
+            margin: 0 0 15px 0;
+            font-weight: 800;
+        }
+
+        .legal-header-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .legal-article {
+            background: #1e293b;
+            padding: 60px;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .legal-article h2 {
+            color: #f1f5f9;
+            font-size: 2rem;
+            margin: 40px 0 20px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #334155;
+            font-weight: 700;
+        }
+
+        .legal-article h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .legal-article h3 {
+            color: #cbd5e1;
+            font-size: 1.5rem;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .legal-article p,
+        .legal-article li {
+            color: #cbd5e1;
+            line-height: 1.8;
+            margin: 15px 0;
+            font-size: 1.05rem;
+        }
+
+        .legal-article ul,
+        .legal-article ol {
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+
+        .legal-article li {
+            margin: 10px 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+            padding: 30px;
+            border-left: 5px solid #ef4444;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .highlight-box strong {
+            color: #f87171;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box p {
+            color: #e5e7eb;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+            padding: 30px;
+            border-left: 5px solid #3b82f6;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .info-box strong {
+            color: #60a5fa;
+            font-size: 1.1rem;
+        }
+
+        .info-box p {
+            color: #e5e7eb;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            padding: 30px;
+            border-left: 5px solid #10b981;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .success-box strong {
+            color: #34d399;
+            font-size: 1.1rem;
+        }
+
+        .success-box p {
+            color: #e5e7eb;
+        }
+
+        .rights-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .rights-table th,
+        .rights-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        .rights-table th {
+            background: #334155;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .rights-table tr {
+            background: #1e293b;
+        }
+
+        .rights-table tr:hover {
+            background: #2d3748;
+        }
+
+        .form-section {
+            background: #2d3748;
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 2px solid #374151;
+        }
+
+        .form-group {
+            margin: 24px 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #f1f5f9;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #f1f5f9;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: #dc2626;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .legal-content-wrapper {
+                padding: 100px 0 40px;
+            }
+
+            .legal-header-section h1 {
+                font-size: 2rem;
+            }
+
+            .legal-article {
+                padding: 30px 20px;
+            }
+
+            .legal-article h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body class="landing-page">
+    <nav class="navbar" aria-label="Ana gezinme">
+        <div class="container">
+            <div class="logo"><i class="fa-solid fa-check-double"></i> Kolay İş Takip</div>
+            <button class="hamburger-menu" aria-label="Menüyü Aç/Kapat">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#pricing">Fiyatlar</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="contact.html">İletişim</a>
+                <a href="login.html" class="btn-nav">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="legal-content-wrapper">
+        <div class="container">
+            <div class="legal-header-section">
+                <h1>⚖️ KVKK Aydınlatma Metni</h1>
+                <p>Kişisel Verilerin Korunması Kanunu (6698 sayılı)</p>
+            </div>
+
+            <div class="legal-article">
+                <div class="highlight-box">
+                    <strong>⚡ Önemli Bilgilendirme:</strong> 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK")
+                    uyarınca kişisel verilerinizin işlenmesine ilişkin detaylı bilgilendirme metnidir. Lütfen
+                    dikkatlice okuyunuz.
+                </div>
+
+                <h2>1. Veri Sorumlusu</h2>
+                <p>Kişisel verileriniz, KVKK uyarınca veri sorumlusu sıfatıyla aşağıdaki şirket tarafından
+                    işlenmektedir:</p>
+                <ul>
+                    <li><strong>Ünvan:</strong> [Şirket Adı / Ticaret Ünvanı]</li>
+                    <li><strong>Adres:</strong> [Şirket Adresi]</li>
+                    <li><strong>E-posta:</strong> kvkk@kolayistakip.com</li>
+                </ul>
+
+                <h2>2. İşlenen Kişisel Veriler</h2>
+
+                <h3>2.1 Kimlik ve İletişim Bilgileri</h3>
+                <ul>
+                    <li>Ad, soyad</li>
+                    <li>E-posta adresi</li>
+                    <li>Telefon numarası</li>
+                </ul>
+
+                <h3>2.2 Müşteri İşlem Bilgileri</h3>
+                <ul>
+                    <li>Görev kayıtları</li>
+                    <li>Randevu bilgileri</li>
+                    <li>Teklif bilgileri</li>
+                    <li>Çalışan ve müşteri bilgileri</li>
+                </ul>
+
+                <h3>2.3 İşlem Güvenliği Bilgileri</h3>
+                <ul>
+                    <li>IP adresi</li>
+                    <li>Çerez kayıtları</li>
+                    <li>Şifre bilgileri (şifreli)</li>
+                </ul>
+
+                <h2>3. Kişisel Verilerin İşlenme Amaçları</h2>
+
+                <table class="rights-table">
+                    <thead>
+                        <tr>
+                            <th>Veri Kategorisi</th>
+                            <th>İşlenme Amacı</th>
+                            <th>Hukuki Sebep</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kimlik ve İletişim</td>
+                            <td>Hesap oluşturma, kimlik doğrulama</td>
+                            <td>Sözleşmenin ifası</td>
+                        </tr>
+                        <tr>
+                            <td>İşlem Bilgileri</td>
+                            <td>Hizmet sunumu, görev yönetimi</td>
+                            <td>Sözleşmenin ifası</td>
+                        </tr>
+                        <tr>
+                            <td>Güvenlik Bilgileri</td>
+                            <td>Platform güvenliği</td>
+                            <td>Meşru menfaat</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>4. Veri İşleme Hukuki Sebepleri</h2>
+                <ul>
+                    <li><strong>Açık rızanız:</strong> Özel nitelikli veriler için</li>
+                    <li><strong>Sözleşmenin ifası:</strong> Hizmet sözleşmesinin kurulması ve ifası</li>
+                    <li><strong>Yasal yükümlülük:</strong> Vergi, muhasebe yükümlülükleri</li>
+                    <li><strong>Meşru menfaat:</strong> Platform güvenliği ve geliştirilmesi</li>
+                </ul>
+
+                <h2>5. Kişisel Verilerin Aktarımı</h2>
+
+                <h3>5.1 Yurt İçi Aktarım</h3>
+                <ul>
+                    <li>Teknik altyapı sağlayıcıları (Supabase vb.)</li>
+                    <li>Ödeme kuruluşları</li>
+                    <li>WhatsApp Business API sağlayıcıları</li>
+                    <li>Yasal merciler (talep halinde)</li>
+                </ul>
+
+                <h3>5.2 Yurt Dışı Aktarım</h3>
+                <p>Bazı hizmet sağlayıcılar AB ülkelerinde bulunmaktadır. Bu aktarımlar KVKK'nın 9. maddesi uyarınca
+                    yeterli koruma sağlanarak yapılmaktadır.</p>
+
+                <h2>6. KVKK Kapsamında Haklarınız</h2>
+
+                <div class="success-box">
+                    <strong>✅ Sizin Haklarınız:</strong> KVKK'nın 11. maddesi uyarınca aşağıdaki haklara sahipsiniz ve
+                    bu hakları kullanmak tamamen ücretsizdir.
+                </div>
+
+                <ol>
+                    <li><strong>Bilgi Talep Etme Hakkı:</strong> Kişisel verilerinizin işlenip işlenmediğini öğrenme
+                    </li>
+                    <li><strong>Düzeltme Hakkı:</strong> Eksik veya yanlış verilerin düzeltilmesini isteme</li>
+                    <li><strong>Silme/Yok Etme Hakkı:</strong> Verilerin silinmesini veya yok edilmesini isteme</li>
+                    <li><strong>İtiraz Hakkı:</strong> Otomatik işleme suretiyle aleyhinize sonuç doğması halinde itiraz
+                    </li>
+                    <li><strong>Tazminat Hakkı:</strong> Kanuna aykırı işleme sebebiyle zarara uğramanız halinde
+                        tazminat talep etme</li>
+                </ol>
+
+                <h2>7. Başvuru Yöntemleri</h2>
+
+                <div class="info-box">
+                    <strong>📝 Başvuru Süreciniz:</strong> Haklarınızı kullanmak için aşağıdaki formu
+                    doldurabilirsiniz. Başvurularınız kimlik teyidi sonrasında en geç 30 gün içinde ücretsiz olarak
+                    yanıtlanır.
+                </div>
+
+                <h3>7.1 Başvuru Kanalları</h3>
+                <ul>
+                    <li><strong>E-posta:</strong> kvkk@kolayistakip.com</li>
+                    <li><strong>Yazılı Başvuru:</strong> [Şirket Adresiniz]</li>
+                </ul>
+
+                <h2>8. KVKK Başvuru Formu</h2>
+
+                <div class="form-section">
+                    <h3 style="margin-top: 0;">📋 Online Başvuru Formu</h3>
+                    <p>Haklarınızı kullanmak için aşağıdaki formu doldurabilirsiniz:</p>
+
+                    <form id="kvkkForm"
+                        onsubmit="event.preventDefault(); alert('Form gönderimi yakında aktif edilecektir. Şimdilik kvkk@kolayistakip.com adresine e-posta gönderebilirsiniz.');">
+                        <div class="form-group">
+                            <label>Ad Soyad *</label>
+                            <input type="text" required placeholder="Adınız ve soyadınız">
+                        </div>
+
+                        <div class="form-group">
+                            <label>E-posta Adresi *</label>
+                            <input type="email" required placeholder="ornek@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Telefon</label>
+                            <input type="tel" placeholder="5XX XXX XX XX">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Talep Türü *</label>
+                            <select required>
+                                <option value="">Seçiniz</option>
+                                <option value="bilgi">Bilgi Talep Etme</option>
+                                <option value="duzeltme">Düzeltme Talebi</option>
+                                <option value="silme">Silme/Yok Etme Talebi</option>
+                                <option value="itiraz">İtiraz</option>
+                                <option value="diger">Diğer</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Talebinizin Detayı *</label>
+                            <textarea required placeholder="Lütfen talebinizi detaylı olarak açıklayınız..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" required style="width: auto; margin: 0;">
+                                <span>KVKK Aydınlatma Metni'ni okudum ve anladım. *</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            Başvuruyu Gönder
+                        </button>
+                    </form>
+                </div>
+
+                <h2>9. Veri Güvenliği Önlemlerimiz</h2>
+
+                <h3>9.1 Teknik Önlemler</h3>
+                <ul>
+                    <li>SSL/TLS şifreleme</li>
+                    <li>Güvenlik duvarı sistemleri</li>
+                    <li>Düzenli güvenlik testleri</li>
+                    <li>Düzenli veri yedekleme</li>
+                </ul>
+
+                <h3>9.2 İdari Önlemler</h3>
+                <ul>
+                    <li>Erişim yetkilendirme sistemi</li>
+                    <li>Gizlilik taahhütnameleri</li>
+                    <li>Çalışan eğitimleri</li>
+                </ul>
+
+                <h2>10. Veri Saklama ve İmha</h2>
+                <ul>
+                    <li><strong>Aktif kullanıcı verileri:</strong> Hesap aktif olduğu sürece</li>
+                    <li><strong>Pasif hesap verileri:</strong> Son aktiviteden 1 yıl sonra silinir</li>
+                    <li><strong>Finansal kayıtlar:</strong> Vergi mevzuatı gereği 10 yıl</li>
+                </ul>
+
+                <h2>11. Kişisel Verileri Koruma Kurumu'na Şikayet</h2>
+
+                <p>Başvurunuzun reddedilmesi veya yetersiz bulunması halinde, Kişisel Verileri Koruma Kurumu'na
+                    şikâyette bulunabilirsiniz.</p>
+
+                <div class="info-box">
+                    <strong>Kişisel Verileri Koruma Kurumu İletişim:</strong><br>
+                    📧 E-posta: kvkk@kvkk.gov.tr<br>
+                    📞 Telefon: 0312 216 50 50<br>
+                    🌐 Web: www.kvkk.gov.tr
+                </div>
+
+                <div class="highlight-box" style="margin-top: 50px;">
+                    <p><strong>🛡️ Taahhüdümüz:</strong> Kolay İş Takip olarak, kişisel verilerinizin korunmasını en üst
+                        düzeyde önceliğimiz olarak görüyor ve KVKK'nın tüm gerekliliklerine uyum sağlıyoruz.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Kolay İş Takip</h3>
+                    <p>Küçük işletmelerin dijital dönüşüm ortağı. İşlerinizi kolaylaştırın, verimliliğinizi artırın.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hızlı Erişim</h4>
+                    <a href="index.html#features">Özellikler</a>
+                    <a href="index.html#pricing">Fiyatlar</a>
+                    <a href="login.html">Giriş Yap</a>
+                    <a href="login.html">Kayıt Ol</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Kurumsal</h4>
+                    <a href="about.html">Hakkımızda</a>
+                    <a href="contact.html">İletişim</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="career.html">Kariyer</a>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Bültenimize Abone Olun</h4>
+                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
+                    <form class="newsletter-form"
+                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+                        <input type="email" placeholder="E-posta adresiniz" required>
+                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="kullanim-sartlari.html">Kullanım Şartları</a>
+                    <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+                    <a href="kvkk.html">KVKK</a>
+                </div>
+                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const icon = hamburgerBtn.querySelector('i');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+
+</html>

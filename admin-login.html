@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Girişi - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body.admin-auth-page {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .admin-auth-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-admin {
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-admin:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+
+<body class="admin-auth-page">
+    <div class="admin-auth-box">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <i class="fa-solid fa-user-shield"></i> Yönetici Paneli
+            </div>
+            <p style="color: #64748b; font-size: 0.9rem;">Sadece yetkili personel girişi içindir.</p>
+        </div>
+
+        <form id="adminLoginForm" class="auth-form">
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" id="adminUser" required placeholder="Admin kullanıcı adı">
+            </div>
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" id="adminPass" required placeholder="******">
+            </div>
+            <button type="submit" class="btn-admin">Yönetici Girişi</button>
+        </form>
+
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="login.html" style="color: #64748b; font-size: 0.9rem; text-decoration: none;">
+                <i class="fa-solid fa-arrow-left"></i> Kullanıcı Girişine Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            const button = e.target.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = 'Giriş Yapılıyor...';
+            button.disabled = true;
+
+            try {
+                const result = await Auth.login(user, pass);
+
+                if (result.success) {
+                    if (result.isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        // Log out immediately if not admin
+                        await Auth.logout(false); // false = don't redirect
+                        alert('⛔ Yetkisiz Giriş!\n\nBu hesap yönetici yetkilerine sahip değil.');
+                    }
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Bir hata oluştu.');
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

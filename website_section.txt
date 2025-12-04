@@ -1,0 +1,251 @@
+﻿            </section>
+
+            <!-- VIEW: WEBSITE MANAGEMENT -->
+            <section id="view-website" class="view-section" style="display:none;">
+                <div class="task-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteStatus">-</div>
+                        <div class="stat-label">Website Durumu</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteProductCount" style="color:var(--primary);">0</div>
+                        <div class="stat-label">Ürünler</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteServiceCount" style="color:var(--success);">0</div>
+                        <div class="stat-label">Hizmetler</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteTeamCount" style="color:var(--warning);">0</div>
+                        <div class="stat-label">Ekip Üyeleri</div>
+                    </div>
+                </div>
+
+                <!-- Website Management Tabs -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="website-tabs">
+                        <button class="website-tab active" data-tab="settings">
+                            <i class="fa-solid fa-gear"></i> Ayarlar
+                        </button>
+                        <button class="website-tab" data-tab="products">
+                            <i class="fa-solid fa-box"></i> Ürünler
+                        </button>
+                        <button class="website-tab" data-tab="services">
+                            <i class="fa-solid fa-briefcase"></i> Hizmetler
+                        </button>
+                        <button class="website-tab" data-tab="team">
+                            <i class="fa-solid fa-users"></i> Ekip
+                        </button>
+                        <button class="website-tab" data-tab="gallery">
+                            <i class="fa-solid fa-images"></i> Galeri
+                        </button>
+                        <button class="website-tab" data-tab="pages">
+                            <i class="fa-solid fa-file-lines"></i> Sayfalar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Tab Content -->
+                <div id="website-tab-settings" class="website-tab-content">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-gear" style="color: var(--primary);"></i> Website Ayarları</h2>
+                        <form id="websiteSettingsForm">
+                            <div class="form-group">
+                                <label>Subdomain (Alt Alan Adı)</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="text" id="websiteSubdomain" placeholder="firmaadi" 
+                                        pattern="[a-z0-9-]+" style="flex: 1;" />
+                                    <span style="color: var(--secondary);">.kolaycrm.com</span>
+                                    <button type="button" onclick="WebsiteManager.checkSubdomain()" class="btn">
+                                        <i class="fa-solid fa-check"></i> Kontrol Et
+                                    </button>
+                                </div>
+                                <small style="color: var(--secondary);">Sadece küçük harf, rakam ve tire kullanın</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Firma Adı</label>
+                                <input type="text" id="websiteCompanyName" placeholder="Firma Adınız" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Firma Açıklaması</label>
+                                <textarea id="websiteDescription" rows="3" 
+                                    placeholder="Firmanız hakkında kısa açıklama..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Logo URL</label>
+                                <input type="url" id="websiteLogo" placeholder="https://example.com/logo.png" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>letişim E-posta</label>
+                                <input type="email" id="websiteEmail" placeholder="info@firma.com" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <input type="tel" id="websitePhone" placeholder="0XXX XXX XX XX" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Adres</label>
+                                <textarea id="websiteAddress" rows="2" placeholder="Firma adresiniz..."></textarea>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Ana Renk</label>
+                                    <input type="color" id="websitePrimaryColor" value="#0ea5e9" />
+                                </div>
+                                <div class="form-group">
+                                    <label>kincil Renk</label>
+                                    <input type="color" id="websiteSecondaryColor" value="#64748b" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Vurgu Rengi</label>
+                                    <input type="color" id="websiteAccentColor" value="#22c55e" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="websitePublished" style="width: auto; margin-right: 8px;" />
+                                    Website'i Yayınla
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fa-solid fa-save"></i> Ayarları Kaydet
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Products Tab Content -->
+                <div id="website-tab-products" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-box" style="color: var(--primary);"></i> Ürünler</h2>
+                            <button onclick="WebsiteManager.openProductModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Ürün Ekle
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Görsel</th>
+                                        <th>Ürün Adı</th>
+                                        <th>Kategori</th>
+                                        <th>Fiyat</th>
+                                        <th>Durum</th>
+                                        <th>şlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websiteProductsList">
+                                    <tr>
+                                        <td colspan="6" style="text-align:center; color:var(--secondary);">Henüz ürün eklenmemiş.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Tab Content -->
+                <div id="website-tab-services" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-briefcase" style="color: var(--primary);"></i> Hizmetler</h2>
+                            <button onclick="WebsiteManager.openServiceModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Hizmet Ekle
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>kon</th>
+                                        <th>Hizmet Adı</th>
+                                        <th>Açıklama</th>
+                                        <th>Durum</th>
+                                        <th>şlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websiteServicesList">
+                                    <tr>
+                                        <td colspan="5" style="text-align:center; color:var(--secondary);">Henüz hizmet eklenmemiş.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Tab Content -->
+                <div id="website-tab-team" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-users" style="color: var(--primary);"></i> Ekip Üyeleri</h2>
+                            <button onclick="WebsiteManager.openTeamModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Üye Ekle
+                            </button>
+                        </div>
+                        <div id="websiteTeamGrid" class="team-grid">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                Henüz ekip üyesi eklenmemiş.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Tab Content -->
+                <div id="website-tab-gallery" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-images" style="color: var(--primary);"></i> Galeri</h2>
+                            <button onclick="WebsiteManager.openGalleryModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Görsel Ekle
+                            </button>
+                        </div>
+                        <div id="websiteGalleryGrid" class="gallery-grid">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                Henüz görsel eklenmemiş.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pages Tab Content -->
+                <div id="website-tab-pages" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-file-lines" style="color: var(--primary);"></i> Sayfalar</h2>
+                            <button onclick="WebsiteManager.openPageModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Sayfa Ekle
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sayfa Başlığı</th>
+                                        <th>Slug</th>
+                                        <th>Durum</th>
+                                        <th>şlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websitePagesList">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center; color:var(--secondary);">Henüz sayfa eklenmemiş.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: EMPLOYEES -->

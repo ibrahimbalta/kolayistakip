@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Detay - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .blog-content {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .blog-content h1 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 20px;
+            color: #64748b;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .blog-body {
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo"><i class="fa-solid fa-check-double"></i> Kolay İş Takip</div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#pricing">Fiyatlar</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="contact.html">İletişim</a>
+                <a href="blog.html">Blog</a>
+                <a href="career.html">Kariyer</a>
+                <a href="login.html" class="btn-nav">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="padding: 120px 0 60px;">
+        <div class="container">
+            <!-- Header content will be dynamic -->
+        </div>
+    </header>
+
+    <section class="features" style="padding: 0 0 80px; background: transparent;">
+        <div class="container" style="position: relative; z-index: 1;">
+            <a href="blog.html" class="back-btn"><i class="fas fa-arrow-left"></i> Blog'a Dön</a>
+
+            <div id="blogDetail" class="blog-content">
+                <p style="text-align: center;">Yükleniyor...</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Kolay İş Takip</h3>
+                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hızlı Erişim</h4>
+                    <a href="index.html">Ana Sayfa</a>
+                    <a href="index.html#features">Özellikler</a>
+                    <a href="index.html#pricing">Fiyatlar</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Kurumsal</h4>
+                    <a href="about.html">Hakkımızda</a>
+                    <a href="contact.html">İletişim</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="career.html">Kariyer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="security.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const container = document.getElementById('blogDetail');
+
+            if (!id) {
+                window.location.href = 'blog.html';
+                return;
+            }
+
+            try {
+                const { data: post, error } = await supabase
+                    .from('blog_posts')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (error) throw error;
+
+                document.title = `${post.title} - Kolay İş Takip`;
+
+                container.innerHTML = `
+                    <h1>${Security.sanitize(post.title)}</h1>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> ${new Date(post.created_at).toLocaleDateString('tr-TR')}</span>
+                        <span><i class="far fa-folder"></i> ${Security.sanitize(post.category)}</span>
+                    </div>
+                    <div class="blog-body">
+                        ${Security.sanitize(post.content).replace(/\n/g, '<br>')}
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error loading post:', error);
+                if (container) {
+                    container.innerHTML = '<p style="text-align: center; color: #ef4444;">Yazı yüklenirken bir hata oluştu.</p>';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

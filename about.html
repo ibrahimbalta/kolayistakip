@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo"><i class="fa-solid fa-check-double"></i> Kolay İş Takip</div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#pricing">Fiyatlar</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="contact.html">İletişim</a>
+                <a href="blog.html">Blog</a>
+                <a href="career.html">Kariyer</a>
+                <a href="login.html" class="btn-nav">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="padding: 80px 0;">
+        <div class="container">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h1>Hakkımızda</h1>
+                <p>Küçük işletmelerin dijital dönüşüm yolculuğunda yanınızdayız.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="features" style="padding: 60px 0;">
+        <div class="container">
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div class="feature-card">
+                    <div class="icon-bg"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>Misyonumuz</h3>
+                    <p>Küçük ve orta ölçekli işletmelerin iş süreçlerini dijitalleştirerek verimliliğini artırmak.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-bg"><i class="fa-solid fa-rocket"></i></div>
+                    <h3>Vizyonumuz</h3>
+                    <p>Türkiye'nin en çok tercih edilen iş takip ve yönetim platformu olmak.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-bg"><i class="fa-solid fa-heart"></i></div>
+                    <h3>Değerlerimiz</h3>
+                    <p>Müşteri odaklılık, sürekli gelişim, şeffaflık ve güvenilirlik.</p>
+                </div>
+            </div>
+
+            <div
+                style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white;">
+                <h2 style="margin-bottom: 20px;">Rakamlarla Kolay İş Takip</h2>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 30px;">
+                    <div>
+                        <div style="font-size: 48px; font-weight: 700;">100+</div>
+                        <div style="opacity: 0.9; margin-top: 8px;">Aktif Kullanıcı</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 48px; font-weight: 700;">1,000+</div>
+                        <div style="opacity: 0.9; margin-top: 8px;">Tamamlanan Görev</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 48px; font-weight: 700;">%99.9</div>
+                        <div style="opacity: 0.9; margin-top: 8px;">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <h2 style="margin-bottom: 20px;">Hemen Başlayın</h2>
+                <p style="margin-bottom: 30px; color: #64748b;">7 gün ücretsiz deneme ile tüm özellikleri keşfedin.</p>
+                <a href="login.html" class="btn-primary btn-lg">Ücretsiz Deneyin</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Kolay İş Takip</h3>
+                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hızlı Erişim</h4>
+                    <a href="index.html">Ana Sayfa</a>
+                    <a href="index.html#features">Özellikler</a>
+                    <a href="index.html#pricing">Fiyatlar</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Kurumsal</h4>
+                    <a href="about.html">Hakkımızda</a>
+                    <a href="contact.html">İletişim</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="career.html">Kariyer</a>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Bültenimize Abone Olun</h4>
+                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
+                    <form class="newsletter-form"
+                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+                        <input type="email" placeholder="E-posta adresiniz" required>
+                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

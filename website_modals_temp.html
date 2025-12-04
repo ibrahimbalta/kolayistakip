@@ -1,0 +1,166 @@
+<!-- Product Modal -->
+<div id="productModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content card" style="max-width: 500px;">
+        <h2 id="productModalTitle">Ürün Ekle/Düzenle</h2>
+        <form id="productForm">
+            <input type="hidden" id="productId">
+            <div class="form-group">
+                <label>Ürün Adı</label>
+                <input type="text" id="productName" required>
+            </div>
+            <div class="form-group">
+                <label>Kategori</label>
+                <input type="text" id="productCategory">
+            </div>
+            <div class="form-group">
+                <label>Fiyat (TL)</label>
+                <input type="number" id="productPrice" step="0.01">
+            </div>
+            <div class="form-group">
+                <label>Görsel URL</label>
+                <input type="url" id="productImage" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <textarea id="productDescription" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="productActive" style="width:auto;"> Aktif
+                </label>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1rem;">
+                <button type="button" onclick="document.getElementById('productModal').style.display='none'" class="btn"
+                    style="background:#f1f5f9; color:#333;">İptal</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Service Modal -->
+<div id="serviceModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content card" style="max-width: 500px;">
+        <h2 id="serviceModalTitle">Hizmet Ekle/Düzenle</h2>
+        <form id="serviceForm">
+            <input type="hidden" id="serviceId">
+            <div class="form-group">
+                <label>Hizmet Adı</label>
+                <input type="text" id="serviceName" required>
+            </div>
+            <div class="form-group">
+                <label>İkon (FontAwesome sınıfı)</label>
+                <input type="text" id="serviceIcon" placeholder="fa-solid fa-briefcase">
+                <small style="color:var(--secondary);">Örn: fa-solid fa-code, fa-solid fa-paint-brush</small>
+            </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <textarea id="serviceDescription" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="serviceActive" style="width:auto;"> Aktif
+                </label>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1rem;">
+                <button type="button" onclick="document.getElementById('serviceModal').style.display='none'" class="btn"
+                    style="background:#f1f5f9; color:#333;">İptal</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Team Modal -->
+<div id="teamModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content card" style="max-width: 500px;">
+        <h2 id="teamModalTitle">Ekip Üyesi Ekle/Düzenle</h2>
+        <form id="teamForm">
+            <input type="hidden" id="teamId">
+            <div class="form-group">
+                <label>Ad Soyad</label>
+                <input type="text" id="teamName" required>
+            </div>
+            <div class="form-group">
+                <label>Pozisyon / Ünvan</label>
+                <input type="text" id="teamPosition" required>
+            </div>
+            <div class="form-group">
+                <label>Fotoğraf URL</label>
+                <input type="url" id="teamPhoto" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>Biyografi</label>
+                <textarea id="teamBio" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Sıralama</label>
+                <input type="number" id="teamOrder" value="0">
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1rem;">
+                <button type="button" onclick="document.getElementById('teamModal').style.display='none'" class="btn"
+                    style="background:#f1f5f9; color:#333;">İptal</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Gallery Modal -->
+<div id="galleryModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content card" style="max-width: 500px;">
+        <h2>Galeriye Görsel Ekle</h2>
+        <form id="galleryForm">
+            <div class="form-group">
+                <label>Görsel URL</label>
+                <input type="url" id="galleryImage" required placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>Başlık (Opsiyonel)</label>
+                <input type="text" id="galleryTitle">
+            </div>
+            <div class="form-group">
+                <label>Sıralama</label>
+                <input type="number" id="galleryOrder" value="0">
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1rem;">
+                <button type="button" onclick="document.getElementById('galleryModal').style.display='none'" class="btn"
+                    style="background:#f1f5f9; color:#333;">İptal</button>
+                <button type="submit" class="btn btn-primary">Ekle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Page Modal -->
+<div id="pageModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content card" style="max-width: 800px; width: 95%;">
+        <h2 id="pageModalTitle">Sayfa Ekle/Düzenle</h2>
+        <form id="pageForm">
+            <input type="hidden" id="pageId">
+            <div class="form-group">
+                <label>Sayfa Başlığı</label>
+                <input type="text" id="pageTitle" required oninput="WebsiteManager.generateSlug(this.value)">
+            </div>
+            <div class="form-group">
+                <label>Slug (URL Kısmı)</label>
+                <input type="text" id="pageSlug" required pattern="[a-z0-9-]+">
+                <small style="color:var(--secondary);">Sadece küçük harf, rakam ve tire.</small>
+            </div>
+            <div class="form-group">
+                <label>İçerik (HTML)</label>
+                <textarea id="pageContent" rows="15" style="font-family:monospace;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="pagePublished" style="width:auto;"> Yayında
+                </label>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1rem;">
+                <button type="button" onclick="document.getElementById('pageModal').style.display='none'" class="btn"
+                    style="background:#f1f5f9; color:#333;">İptal</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>

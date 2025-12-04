@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo"><i class="fa-solid fa-check-double"></i> Kolay İş Takip</div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#pricing">Fiyatlar</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="contact.html">İletişim</a>
+                <a href="blog.html">Blog</a>
+                <a href="career.html">Kariyer</a>
+                <a href="login.html" class="btn-nav">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="padding: 80px 0;">
+        <div class="container">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h1>İletişim</h1>
+                <p>Sorularınız için bize ulaşın, size yardımcı olmaktan mutluluk duyarız.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="features" style="padding: 60px 0;">
+        <div class="container">
+            <div class="feature-grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px;">
+                <div class="feature-card">
+                    <div class="icon-bg"><i class="fa-solid fa-envelope"></i></div>
+                    <h3>E-posta</h3>
+                    <p>info@kolayistakip.com</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-bg"><i class="fa-solid fa-phone"></i></div>
+                    <h3>Telefon</h3>
+                    <p>+90 (545)346 79 86</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-bg whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3>WhatsApp</h3>
+                    <p>+90 (545)346 79 86</p>
+                </div>
+            </div>
+
+            <div
+                style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h2 style="text-align: center; margin-bottom: 30px;">Bize Yazın</h2>
+                <form id="contactForm">
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="contactName" placeholder="Adınız Soyadınız" required
+                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <input type="email" id="contactEmail" placeholder="E-posta Adresiniz" required
+                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <textarea id="contactMessage" placeholder="Mesajınız" rows="5" required
+                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; gap: 10px;">
+                        <i class="fa-solid fa-paper-plane"></i> Gönder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Kolay İş Takip</h3>
+                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hızlı Erişim</h4>
+                    <a href="index.html">Ana Sayfa</a>
+                    <a href="index.html#features">Özellikler</a>
+                    <a href="index.html#pricing">Fiyatlar</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Kurumsal</h4>
+                    <a href="about.html">Hakkımızda</a>
+                    <a href="contact.html">İletişim</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="career.html">Kariyer</a>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Bültenimize Abone Olun</h4>
+                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
+                    <form class="newsletter-form"
+                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+                        <input type="email" placeholder="E-posta adresiniz" required>
+                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+            btn.disabled = true;
+
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            try {
+                const { error } = await supabase
+                    .from('contact_messages')
+                    .insert([{ name, email, message }]);
+
+                if (error) throw error;
+
+                alert('Mesajınız başarıyla gönderildi! En kısa sürede dönüş yapacağız.');
+                e.target.reset();
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Mesaj gönderilirken bir hata oluştu.');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

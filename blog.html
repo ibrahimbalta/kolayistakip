@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="landing-page">
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo"><i class="fa-solid fa-check-double"></i> Kolay İş Takip</div>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="index.html#features">Özellikler</a>
+                <a href="index.html#pricing">Fiyatlar</a>
+                <a href="about.html">Hakkımızda</a>
+                <a href="contact.html">İletişim</a>
+                <a href="blog.html">Blog</a>
+                <a href="career.html">Kariyer</a>
+                <a href="login.html" class="btn-nav">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="padding: 80px 0;">
+        <div class="container">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h1>Blog</h1>
+                <p>İş yönetimi, verimlilik ve dijital dönüşüm hakkında yazılarımız.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="features" style="padding: 60px 0;">
+        <div class="container">
+            <div id="blogGrid"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+                <!-- Blog posts will be loaded here -->
+                <p style="grid-column: 1/-1; text-align: center; color: #64748b;">Yazılar yükleniyor...</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Kolay İş Takip</h3>
+                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Hızlı Erişim</h4>
+                    <a href="index.html">Ana Sayfa</a>
+                    <a href="index.html#features">Özellikler</a>
+                    <a href="index.html#pricing">Fiyatlar</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Kurumsal</h4>
+                    <a href="about.html">Hakkımızda</a>
+                    <a href="contact.html">İletişim</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="career.html">Kariyer</a>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Bültenimize Abone Olun</h4>
+                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
+                    <form class="newsletter-form"
+                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+                        <input type="email" placeholder="E-posta adresiniz" required>
+                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="security.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('blogGrid');
+
+            try {
+                const { data: posts, error } = await supabase
+                    .from('blog_posts')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (posts.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748b;">Henüz blog yazısı bulunmuyor.</p>';
+                    return;
+                }
+
+                grid.innerHTML = posts.map(post => `
+                    <div class="feature-card" onclick="window.location.href='blog-detail.html?id=${post.id}'" style="cursor: pointer; transition: transform 0.3s;">
+                        <span class="feature-badge">${Security.sanitize(post.category)}</span>
+                        <h3>${Security.sanitize(post.title)}</h3>
+                        <p style="color: #64748b; margin: 15px 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${Security.sanitize(post.content)}
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 10px; color: #94a3b8; font-size: 14px;">
+                            <i class="fa-solid fa-calendar"></i>
+                            <span>${new Date(post.created_at).toLocaleDateString('tr-TR')}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ef4444;">Yazılar yüklenirken bir hata oluştu.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>

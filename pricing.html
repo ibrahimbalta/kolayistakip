@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Paketler - Kolay İş Takip</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .pricing-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-header p {
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.popular {
+            border: 3px solid #6366f1;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .package-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #6366f1;
+            margin: 1rem 0;
+        }
+
+        .package-price span {
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        .package-savings {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .package-features li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--dark);
+        }
+
+        .package-features li i {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        .btn-select {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-select:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-link a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-header h1 {
+                font-size: 2rem;
+            }
+
+            .package-price {
+                font-size: 2.5rem;
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pricing-container">
+        <div class="pricing-header">
+            <h1>🚀 Premium Paketler</h1>
+            <p>İşletmeniz için en uygun paketi seçin ve tüm özelliklerin keyfini çıkarın!</p>
+        </div>
+
+        <div class="pricing-cards">
+            <!-- Monthly Package -->
+            <div class="pricing-card">
+                <div class="package-name">📅 Aylık Paket</div>
+                <div class="package-price">
+                    299 TL
+                    <span>/ay</span>
+                </div>
+                <ul class="package-features">
+                    <li><i class="fas fa-check-circle"></i> Sınırsız Görev</li>
+                    <li><i class="fas fa-check-circle"></i> Sınırsız Çalışan</li>
+                    <li><i class="fas fa-check-circle"></i> WhatsApp Entegrasyonu</li>
+                    <li><i class="fas fa-check-circle"></i> Detaylı Raporlar</li>
+                    <li><i class="fas fa-check-circle"></i> Mobil Uyumlu</li>
+                    <li><i class="fas fa-check-circle"></i> 7/24 Destek</li>
+                </ul>
+                <button class="btn-select" onclick="selectPackage('monthly', 299)">
+                    Aylık Paketi Seç
+                </button>
+            </div>
+
+            <!-- Yearly Package -->
+            <div class="pricing-card popular">
+                <div class="popular-badge">EN POPÜLER</div>
+                <div class="package-name">🎯 Yıllık Paket</div>
+                <div class="package-price">
+                    2999 TL
+                    <span>/yıl</span>
+                </div>
+                <div class="package-savings">
+                    🎉 2 Ay Bedava! (598 TL Tasarruf)
+                </div>
+                <ul class="package-features">
+                    <li><i class="fas fa-check-circle"></i> Sınırsız Görev</li>
+                    <li><i class="fas fa-check-circle"></i> Sınırsız Çalışan</li>
+                    <li><i class="fas fa-check-circle"></i> WhatsApp Entegrasyonu</li>
+                    <li><i class="fas fa-check-circle"></i> Detaylı Raporlar</li>
+                    <li><i class="fas fa-check-circle"></i> Mobil Uyumlu</li>
+                    <li><i class="fas fa-check-circle"></i> 7/24 Öncelikli Destek</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>2 Ay Ekstra Süre</strong></li>
+                </ul>
+                <button class="btn-select" onclick="selectPackage('yearly', 2999)">
+                    Yıllık Paketi Seç (En Avantajlı!)
+                </button>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="dashboard.html">
+                <i class="fas fa-arrow-left"></i>
+                Dashboard'a Dön
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function selectPackage(type, amount) {
+            // Redirect to payment page with package info
+            window.location.href = `payment.html?package=${type}&amount=${amount}`;
+        }
+    </script>
+</body>
+
+</html>

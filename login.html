@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - İş Takip Asistanı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="logo" style="justify-content: center; color: var(--primary); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-check-double"></i> Kolay İş Takip
+                </div>
+                <p style="color: var(--text-light);">Hesabınıza giriş yapın veya yeni hesap oluşturun.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Giriş Yap</button>
+                <button class="tab-btn" onclick="switchTab('register')">Kayıt Ol</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label>Kullanıcı Adı veya E-posta</label>
+                    <input type="text" id="loginUser" required placeholder="Kullanıcı adınız veya e-posta">
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" id="loginPass" required placeholder="******">
+                </div>
+                <div style="text-align: right; margin-bottom: 1rem;">
+                    <a href="#" onclick="showForgotPassword(); return false;"
+                        style="color: var(--primary); font-size: 0.9rem; text-decoration: none;">
+                        Şifremi Unuttum
+                    </a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Giriş Yap</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label>Firma Adı</label>
+                    <input type="text" id="regCompany" required placeholder="Örn: Yılmaz İnşaat">
+                </div>
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="regUser" required placeholder="Kullanıcı adınız">
+                </div>
+                <div class="form-group">
+                    <label>E-posta Adresi</label>
+                    <input type="email" id="regEmail" required placeholder="ornek@firma.com">
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" id="regPass" required placeholder="Güçlü bir şifre seçin">
+                </div>
+                <div class="info-box"
+                    style="background: #eff6ff; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; color: var(--primary-dark); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-gift"></i> 7 Gün Ücretsiz Deneme Başlayacak
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Kayıt Ol ve Başla</button>
+            </form>
+
+            <!-- Forgot Password Modal (hidden by default) -->
+            <div id="forgotPasswordModal" style="display: none;">
+                <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Şifre Sıfırlama</h3>
+                <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.
+                </p>
+                <form id="forgotPasswordForm" class="auth-form">
+                    <div class="form-group">
+                        <label>E-posta Adresi</label>
+                        <input type="email" id="resetEmail" required placeholder="kayitli@eposta.com">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" onclick="hideForgotPassword()" class="btn btn-outline"
+                            style="flex: 1;">İptal</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Bağlantı Gönder</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="auth-footer" style="margin-top: 2rem; text-align: center;">
+                <a href="index.html" style="color: var(--text-light); font-size: 0.9rem;"><i
+                        class="fa-solid fa-arrow-left"></i> Ana Sayfaya Dön</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.style.display = 'none');
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+
+            if (tab === 'login') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('loginForm').style.display = 'block';
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
+
+        function showForgotPassword() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('forgotPasswordModal').style.display = 'block';
+        }
+
+        function hideForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        // Helper to get redirect URL
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect');
+            return redirect ? decodeURIComponent(redirect) : null;
+        }
+
+        // Check if coming from password reset or has recovery token
+        window.addEventListener('DOMContentLoaded', async () => {
+            // 1. Check for recovery token in Hash (Supabase default)
+            const hash = window.location.hash;
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (hash && hash.includes('type=recovery')) {
+                console.log('Recovery token detected');
+                // Wait for Supabase to handle the session exchange
+                supabase.auth.onAuthStateChange(async (event, session) => {
+                    if (event === 'PASSWORD_RECOVERY') {
+                        // Session established, ask for new password
+                        handlePasswordReset();
+                    }
+                });
+            }
+            // 2. Check for manual reset param (legacy/manual flow)
+            else if (urlParams.get('reset') === 'true') {
+                handlePasswordReset();
+            }
+        });
+
+        async function handlePasswordReset() {
+            // Small delay to ensure UI is ready
+            setTimeout(async () => {
+                const newPass = prompt('🔒 Şifre Sıfırlama\n\nLütfen yeni şifrenizi girin:');
+                if (newPass) {
+                    const confirmPass = prompt('🔒 Onay\n\nLütfen yeni şifrenizi tekrar girin:');
+                    if (newPass === confirmPass) {
+                        const result = await Auth.updatePassword(newPass);
+                        if (result.success) {
+                            alert('✅ ' + result.message);
+                            // Clear hash and params
+                            window.history.replaceState(null, null, window.location.pathname);
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert('❌ ' + result.message);
+                        }
+                    } else {
+                        alert('⚠️ Şifreler eşleşmiyor! Lütfen tekrar deneyin.');
+                        handlePasswordReset(); // Retry
+                    }
+                }
+            }, 500);
+        }
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            const result = await Auth.login(user, pass);
+            if (result.success) {
+                const redirect = getRedirectUrl();
+                if (redirect) {
+                    window.location.href = redirect;
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            } else {
+                alert('❌ ' + result.message);
+            }
+        });
+
+        // Register Form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const company = document.getElementById('regCompany').value;
+            const user = document.getElementById('regUser').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+
+            // Password Strength Validation
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(pass);
+            const hasNumber = /[0-9]/.test(pass);
+
+            if (pass.length < minLength || !hasUpperCase || !hasNumber) {
+                alert('⚠️ Şifreniz çok basit!\n\nLütfen daha güvenli bir şifre oluşturun:\n- En az 8 karakter\n- En az 1 büyük harf\n- En az 1 rakam içermelidir.');
+                return;
+            }
+
+            const result = await Auth.register(user, pass, company, email);
+            if (result.success) {
+                alert('✅ 7 günlük deneme süreniz başladı!');
+
+                // Auto login after register
+                const loginResult = await Auth.login(user, pass);
+
+                if (loginResult.success) {
+                    const redirect = getRedirectUrl();
+                    if (redirect) {
+                        window.location.href = redirect;
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    window.location.href = 'login.html';
+                }
+            } else {
+                alert('❌ ' + result.message);
+            }
+        });
+
+        // Forgot Password Form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+
+            const result = await Auth.resetPassword(email);
+            if (result.success) {
+                alert('✅ ' + result.message);
+                hideForgotPassword();
+            } else {
+                alert('❌ Hata: ' + result.message);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teklif Detayı - Kolay İş Takip</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            padding: 30px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .proposal-card {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .proposal-header {
+            background: #4f46e5;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .proposal-body {
+            padding: 30px;
+        }
+
+        .proposal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .proposal-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4f46e5;
+            margin: 20px 0;
+        }
+
+        .proposal-details {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-approve {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #059669;
+        }
+
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+        }
+
+        .btn-negotiate {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-negotiate:hover {
+            background: #d97706;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-negotiating {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        #content {
+            display: none;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-desc {
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="proposal-card">
+        <div id="loading">
+            <i class="fa-solid fa-circle-notch fa-spin fa-3x" style="color: #4f46e5;"></i>
+            <p style="margin-top: 15px; color: #6b7280;">Teklif yükleniyor...</p>
+        </div>
+
+        <div id="content">
+            <div class="proposal-header">
+                <div style="font-size: 3rem; margin-bottom: 10px;">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <h1 style="margin: 0; font-size: 1.2rem; opacity: 0.9;">Size Özel Teklif</h1>
+            </div>
+            <div class="proposal-body">
+                <div style="text-align: center;">
+                    <span id="statusBadge" class="status-badge status-pending">Bekliyor</span>
+                    <h2 id="pTitle" class="proposal-title"></h2>
+                    <div id="pAmount" class="proposal-amount"></div>
+                </div>
+
+                <div class="proposal-details">
+                    <h3
+                        style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 15px; text-transform: uppercase; font-weight: 700;">
+                        Hizmet / Ürün Detayları
+                    </h3>
+
+                    <div id="itemsContainer">
+                        <!-- Items will be rendered here -->
+                    </div>
+
+                    <div id="pDetails" style="margin-top: 15px; font-size: 0.95rem; white-space: pre-wrap;"></div>
+                </div>
+
+                <div id="actionButtons" class="action-buttons"
+                    style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                    <button onclick="updateStatus('approved')" class="btn-action btn-approve">
+                        <i class="fa-solid fa-check"></i> Kabul Ediyorum
+                    </button>
+                    <button onclick="updateStatus('negotiating')" class="btn-action btn-negotiate">
+                        <i class="fa-solid fa-handshake"></i> Teklif Yüksek Geldi
+                    </button>
+                    <button onclick="updateStatus('rejected')" class="btn-action btn-reject">
+                        <i class="fa-solid fa-xmark"></i> Reddediyorum
+                    </button>
+                </div>
+
+                <div id="statusMessage"
+                    style="display: none; margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProposalId = null;
+
+        async function loadProposal() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (!id) {
+                document.getElementById('loading').innerHTML = '<p style="color: red;">Teklif ID bulunamadı.</p>';
+                return;
+            }
+
+            currentProposalId = id;
+
+            try {
+                const { data, error } = await supabase
+                    .from('proposals')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (error) throw error;
+
+                // Render Data
+                document.getElementById('pTitle').textContent = data.title;
+                document.getElementById('pAmount').textContent = `₺${parseFloat(data.amount).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}`;
+                document.getElementById('pDetails').textContent = data.details || '';
+
+                // Render Items
+                const itemsContainer = document.getElementById('itemsContainer');
+                itemsContainer.innerHTML = '';
+                if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+                    data.items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'item-row';
+                        div.innerHTML = `
+                            <span class="item-desc">${item.description}</span>
+                            <span class="item-price">₺${parseFloat(item.price).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}</span>
+                        `;
+                        itemsContainer.appendChild(div);
+                    });
+                } else {
+                    itemsContainer.innerHTML = '<p style="text-align:center; color:#9ca3af;">Detay girilmemiş.</p>';
+                }
+
+                // Update UI based on status
+                renderStatus(data.status);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').innerHTML = '<p style="color: red;">Teklif yüklenirken hata oluştu veya teklif bulunamadı.</p>';
+            }
+        }
+
+        function renderStatus(status) {
+            const badge = document.getElementById('statusBadge');
+            const actions = document.getElementById('actionButtons');
+            const msg = document.getElementById('statusMessage');
+
+            // Reset classes
+            badge.className = 'status-badge';
+            msg.className = '';
+            msg.style.display = 'none';
+            actions.style.display = 'grid'; // Default show
+
+            switch (status) {
+                case 'approved':
+                    badge.classList.add('status-approved');
+                    badge.textContent = 'Onaylandı';
+                    actions.style.display = 'none';
+                    msg.style.display = 'block';
+                    msg.style.background = '#d1fae5';
+                    msg.style.color = '#065f46';
+                    msg.innerHTML = '<i class="fa-solid fa-check-circle"></i> Bu teklifi onayladınız. Teşekkürler!';
+                    break;
+                case 'rejected':
+                    badge.classList.add('status-rejected');
+                    badge.textContent = 'Reddedildi';
+                    actions.style.display = 'none';
+                    msg.style.display = 'block';
+                    msg.style.background = '#fee2e2';
+                    msg.style.color = '#991b1b';
+                    msg.innerHTML = '<i class="fa-solid fa-times-circle"></i> Bu teklifi reddettiniz.';
+                    break;
+                case 'negotiating':
+                    badge.classList.add('status-negotiating');
+                    badge.textContent = 'Pazarlık / Yüksek';
+                    actions.style.display = 'none';
+                    msg.style.display = 'block';
+                    msg.style.background = '#fff7ed';
+                    msg.style.color = '#9a3412';
+                    msg.innerHTML = '<i class="fa-solid fa-handshake"></i> Geri bildiriminiz iletildi. Sizinle iletişime geçeceğiz.';
+                    break;
+                default:
+                    badge.classList.add('status-pending');
+                    badge.textContent = 'Onay Bekliyor';
+            }
+        }
+
+        async function updateStatus(newStatus) {
+            if (!currentProposalId) return;
+
+            const btnDiv = document.getElementById('actionButtons');
+            btnDiv.style.opacity = '0.5';
+            btnDiv.style.pointerEvents = 'none';
+
+            try {
+                const { error } = await supabase
+                    .from('proposals')
+                    .update({ status: newStatus })
+                    .eq('id', currentProposalId);
+
+                if (error) throw error;
+
+                renderStatus(newStatus);
+
+            } catch (error) {
+                console.error('Error updating:', error);
+                alert('Bir hata oluştu: ' + error.message);
+                btnDiv.style.opacity = '1';
+                btnDiv.style.pointerEvents = 'auto';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProposal);
+    </script>
+</body>
+
+</html>

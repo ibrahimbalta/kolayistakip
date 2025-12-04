@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Seçimi - Kolay İş Takip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .slot-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slot-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .slot-card.selected {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .slot-card.reserved {
+            background: #fee2e2;
+            border-color: #fecaca;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .slot-card.reserved:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slot-date {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .slot-card.selected .slot-date {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .slot-time {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .slot-card.selected .slot-time {
+            color: white;
+        }
+
+        .slot-card.reserved .slot-time {
+            color: #991b1b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group small {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-message i {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .error-message i {
+            font-size: 4rem;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .day-group {
+            margin-bottom: 30px;
+        }
+
+        .day-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        #customerForm {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <i class="fa-solid fa-calendar-check"></i>
+            <h1>Randevu Seçimi</h1>
+            <p>Müsait bir zaman dilimi seçin</p>
+        </div>
+
+        <div class="card">
+            <div id="content">
+                <div class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p style="margin-top: 20px; color: #6b7280;">Müsait saatler yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        let selectedSlot = null;
+        let allSlots = [];
+
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            showError('Geçersiz rezervasyon linki!');
+        } else {
+            loadAvailableSlots();
+        }
+
+        async function loadAvailableSlots() {
+            try {
+                // Use RPC function to bypass RLS for public access
+                const { data: slots, error } = await supabase
+                    .rpc('get_calendar_slots_public', { p_token: token });
+
+                if (error) throw error;
+
+                allSlots = slots || [];
+
+                if (allSlots.length === 0) {
+                    showError('Şu anda müsait randevu bulunmamaktadır.');
+                    return;
+                }
+
+                displaySlots();
+            } catch (error) {
+                console.error('Error loading slots:', error);
+                showError('Randevular yüklenirken hata oluştu!');
+            }
+        }
+
+        function displaySlots() {
+            // Group slots by date
+            const groupedSlots = {};
+            allSlots.forEach(slot => {
+                if (!groupedSlots[slot.slot_date]) {
+                    groupedSlots[slot.slot_date] = [];
+                }
+                groupedSlots[slot.slot_date].push(slot);
+            });
+
+            let html = '<h2 style="margin-bottom: 20px;"><i class="fa-solid fa-clock"></i> Müsait Saatler</h2>';
+
+            Object.keys(groupedSlots).sort().forEach(date => {
+                const dateObj = new Date(date + 'T00:00:00');
+                const dateStr = dateObj.toLocaleDateString('tr-TR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                html += `
+                    <div class="day-group">
+                        <div class="day-header">${dateStr}</div>
+                        <div class="slots-grid">
+                `;
+
+                groupedSlots[date].forEach(slot => {
+                    const isReserved = slot.status === 'reserved';
+                    const slotClass = isReserved ? 'slot-card reserved' : 'slot-card';
+                    const onclick = isReserved ? '' : `onclick="selectSlot('${slot.slot_id}')"`;
+
+                    html += `
+                        <div class="${slotClass}" id="slot-${slot.slot_id}" ${onclick}>
+                            <div class="slot-time">${slot.slot_time.substring(0, 5)}</div>
+                            ${isReserved ? '<div class="slot-date">Dolu</div>' : ''}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Customer form
+            html += `
+                <div id="customerForm">
+                    <h3 style="margin: 30px 0 20px 0;"><i class="fa-solid fa-user"></i> Bilgileriniz</h3>
+                    <form id="reservationForm">
+                        <div class="form-group">
+                            <label>Adınız Soyadınız *</label>
+                            <input type="text" id="customerName" required placeholder="Örn: Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon Numaranız (WhatsApp) *</label>
+                            <input type="tel" id="customerPhone" required placeholder="5XX XXX XX XX">
+                            <small>Uluslararası format: +90 5XX XXX XX XX</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Notlar (Opsiyonel)</label>
+                            <textarea id="customerNotes" rows="3" placeholder="Varsa eklemek istediğiniz notlar..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-check"></i> Randevuyu Onayla
+                        </button>
+                    </form>
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+
+            // Setup form handler
+            document.getElementById('reservationForm').addEventListener('submit', handleReservation);
+        }
+
+        function selectSlot(slotId) {
+            // Remove previous selection
+            document.querySelectorAll('.slot-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Select new slot
+            const slotCard = document.getElementById(`slot-${slotId}`);
+            if (slotCard) {
+                slotCard.classList.add('selected');
+                selectedSlot = allSlots.find(s => s.slot_id === slotId);
+            }
+
+            // Show customer form
+            const form = document.getElementById('customerForm');
+            if (form) {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        async function handleReservation(e) {
+            e.preventDefault();
+
+            if (!selectedSlot) {
+                alert('Lütfen bir zaman dilimi seçin!');
+                return;
+            }
+
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const notes = document.getElementById('customerNotes').value;
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+
+            try {
+                // Use RPC function for secure booking
+                const { error } = await supabase
+                    .rpc('book_appointment_public', {
+                        p_slot_id: selectedSlot.slot_id,
+                        p_name: name,
+                        p_phone: phone,
+                        p_notes: notes
+                    });
+
+                if (error) throw error;
+
+                showSuccess(selectedSlot, name);
+            } catch (error) {
+                console.error('Error making reservation:', error);
+                alert('Rezervasyon yapılırken hata oluştu! Bu saat başka biri tarafından rezerve edilmiş olabilir.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Randevuyu Onayla';
+            }
+        }
+
+        function showSuccess(slot, customerName) {
+            const dateObj = new Date(slot.slot_date + 'T00:00:00');
+            const dateStr = dateObj.toLocaleDateString('tr-TR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById('content').innerHTML = `
+                <div class="success-message">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <h2>Randevunuz Onaylandı!</h2>
+                    <p style="margin-top: 20px; color: #6b7280;">
+                        <strong>${customerName}</strong>, randevunuz başarıyla oluşturuldu.
+                    </p>
+                    <div style="background: #f9fafb; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: left;">
+                        <p style="margin-bottom: 10px;"><strong>Tarih:</strong> ${dateStr}</p>
+                        <p><strong>Saat:</strong> ${slot.slot_time.substring(0, 5)}</p>
+                    </div>
+                    <p style="margin-top: 20px; color: #6b7280;">
+                        Randevu detayları tarafınıza iletilecektir.
+                    </p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error-message">
+                    <i class="fa-solid fa-exclamation-circle"></i>
+                    <h2>Hata</h2>
+                    <p style="margin-top: 20px; color: #6b7280;">${message}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

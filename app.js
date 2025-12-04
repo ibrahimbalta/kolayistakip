@@ -2392,3 +2392,4 @@ window.saveFirmaToReservation = async function (event) {
         alert('❌ Firma bilgileri kaydedilirken hata oluştu: ' + error.message);
     }
 };
+console.log('✅ Firma modal fonksiyonları yüklendi!', typeof openFirmaModal);

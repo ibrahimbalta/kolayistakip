@@ -402,11 +402,18 @@
                                 </select>
                             </div>
 
+
                             <div style="display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap;">
                                 <button type="submit" class="btn btn-primary" id="reservationSubmitBtn"
                                     style="flex: 1;">
                                     <i class="fa-solid fa-plus"></i> Alan Ekle
                                 </button>
+                                <button type="button" class="btn" style="background: #6366f1; color: white;"
+                                    onclick="document.getElementById('krokiFileInput').click()">
+                                    <i class="fa-solid fa-image"></i> Görsel Yükle
+                                </button>
+                                <input type="file" id="krokiFileInput" accept="image/*" style="display: none;"
+                                    onchange="uploadKrokiImage(this)">
                                 <button type="button" class="btn" style="background: #25d366; color: white;"
                                     onclick="shareReservations()">
                                     <i class="fa-brands fa-whatsapp"></i> Paylaş

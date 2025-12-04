@@ -274,6 +274,14 @@
                     <div id="selectedInfo" class="selected-info" style="display: none;">
                         <p><strong>Seçili Alan:</strong> <span id="selectedAreaInfo"></span></p>
                     </div>
+                    <!-- Kroki Görseli -->
+                    <div id="krokiImageContainer"
+                        style="display: none; margin-bottom: 20px; background: white; padding: 15px; border-radius: 12px;">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px; font-size: 1.1rem;"><i class="fas fa-image"></i>
+                            Alan Görseli</h3>
+                        <img id="krokiImage" src="" alt="Alan Kroki Görseli"
+                            style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    </div>
                     <form id="reservationForm">
                         <div class="form-group">
                             <label>Firma Ünvanı <span class="required">*</span></label>
@@ -350,6 +358,17 @@
             document.querySelector(`[data-id="${area.id}"]`).classList.add('selected');
             document.getElementById('selectedInfo').style.display = 'block';
             document.getElementById('selectedAreaInfo').innerHTML = `<span style="color: #4f46e5; font-weight: 700;">${area.alan_no}</span> | ${formatType(area.alan_tipi)} | ${area.alan_buyukluk || '-'} | ${formatPrice(area.fiyat_miktar, area.para_birimi)} (${formatType(area.fiyat_tipi)})`;
+
+            // Show kroki image if available
+            const imageContainer = document.getElementById('krokiImageContainer');
+            const imageElement = document.getElementById('krokiImage');
+            if (area.kroki_url) {
+                imageElement.src = area.kroki_url;
+                imageContainer.style.display = 'block';
+            } else {
+                imageContainer.style.display = 'none';
+            }
+
             document.getElementById('submitBtn').disabled = false;
         }
         document.getElementById('reservationForm').addEventListener('submit', async (e) => {
@@ -368,14 +387,15 @@
                     special_requests: document.getElementById('specialRequests').value
                 }).eq('id', selectedArea.id);
                 if (error) throw error;
-                alert(`✅ Rezervasyonunuz başarıyla alındı!\n\nAlan: ${selectedArea.alan_no}\nFirma: ${document.getElementById('companyName').value}\n\nDetaylar için e-posta adresinizi kontrol ediniz.`);
+                alert(`✅ Rezervasyonunuz başarıyla alındı!\\n\\nAlan: ${selectedArea.alan_no}\\nFirma: ${document.getElementById('companyName').value}\\n\\nDetaylar için e-posta adresinizi kontrol ediniz.`);
                 document.getElementById('reservationForm').reset();
                 document.getElementById('selectedInfo').style.display = 'none';
+                document.getElementById('krokiImageContainer').style.display = 'none';
                 selectedArea = null;
                 await loadAreas();
             } catch (error) {
                 console.error('Error submitting reservation:', error);
-                alert('❌ Rezervasyon kaydedilirken bir hata oluştu. Lütfen tekrar deneyiniz.\n\n' + error.message);
+                alert('❌ Rezervasyon kaydedilirken bir hata oluştu. Lütfen tekrar deneyiniz.\\n\\n' + error.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Rezervasyonu Tamamla';

@@ -2041,25 +2041,29 @@ if (reservationForm) {
         e.preventDefault();
 
         const editId = document.getElementById('editReservationId').value;
+        const submitBtn = document.getElementById('reservationSubmitBtn');
 
-        const formData = {
-            alan_no: document.getElementById('alanNo').value,
-            alan_tipi: document.getElementById('alanTipi').value,
-            alan_buyukluk: document.getElementById('alanBuyukluk').value,
-            fiyat_tipi: document.getElementById('fiyatTipi').value,
-            fiyat_miktar: parseFloat(document.getElementById('fiyatMiktar').value),
-            para_birimi: document.getElementById('paraBirimi').value,
-            durum: document.getElementById('alanDurum').value,
-            user_id: currentUser.id
-        };
+        // Disable button during processing
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
 
         try {
+            const formData = {
+                alan_no: document.getElementById('alanNo').value,
+                alan_tipi: document.getElementById('alanTipi').value,
+                alan_buyukluk: document.getElementById('alanBuyukluk').value,
+                fiyat_tipi: document.getElementById('fiyatTipi').value,
+                fiyat_miktar: parseFloat(document.getElementById('fiyatMiktar').value),
+                para_birimi: document.getElementById('paraBirimi').value,
+                durum: document.getElementById('alanDurum').value,
+                user_id: currentUser.id
+            };
+
             if (editId) {
                 // Update existing reservation
                 const { error } = await supabase
                     .from('reservations')
                     .update(formData)
-                    .eq('id', editId);
 
                 if (error) throw error;
                 alert('Alan başarıyla güncellendi!');
@@ -2185,4 +2189,51 @@ if (document.getElementById('view-reservations')) {
     });
 }
 
+// Upload general kroki/blueprint image for all reservations
+window.uploadKrokiImage = async function (input) {
+    const file = input.files[0];
+    if (!file) return;
 
+    try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${currentUser.id}/kroki_${Date.now()}.${fileExt}`;
+
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('reservation-images')
+            .upload(fileName, file, {
+                cacheControl: '3600',
+                upsert: true
+            });
+
+        if (uploadError) {
+            console.error('Upload error:', uploadError);
+            throw new Error('Görsel yüklenirken hata oluştu: ' + uploadError.message);
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from('reservation-images')
+            .getPublicUrl(fileName);
+
+        // Update ALL reservations with this kroki URL
+        const { error: updateError } = await supabase
+            .from('reservations')
+            .update({ kroki_url: publicUrl })
+            .eq('user_id', currentUser.id);
+
+        if (updateError) throw updateError;
+
+        alert('✅ Kroki görseli başarıyla yüklendi!\n\nTüm alanlarınız için bu görsel kullanılacak.');
+
+        // Reload reservations
+        await loadReservations();
+
+        // Reset file input
+        input.value = '';
+    } catch (error) {
+        console.error('Error uploading kroki:', error);
+        alert('❌ Görsel yüklenirken bir hata oluştu:\n\n' + error.message);
+        input.value = '';
+    }
+};

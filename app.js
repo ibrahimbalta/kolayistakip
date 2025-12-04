@@ -2051,10 +2051,11 @@ function renderReservations() {
             ${firmaBilgi}
 
             <div style="display: flex; gap: 4px; margin-top: 8px;">
-                <button onclick="editReservation('${reservation.id}')" style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem; transition: all 0.2s;">
+                ${reservation.durum !== 'rezerve' ? `<button onclick="openFirmaModal('${reservation.id}')" style="flex: 1; background: #8b5cf6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;"><i class="fa-solid fa-building-user"></i> Firma Ekle</button>` : ''}
+                <button onclick="editReservation('${reservation.id}')" style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
                     <i class="fa-solid fa-edit"></i> Düzenle
                 </button>
-                <button onclick="deleteReservation('${reservation.id}')" style="flex: 1; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem; transition: all 0.2s;">
+                <button onclick="deleteReservation('${reservation.id}')" style="flex: 1; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
                     <i class="fa-solid fa-trash"></i> Sil
                 </button>
             </div>
@@ -2342,5 +2343,52 @@ window.uploadKrokiImage = async function (input) {
         console.error('Error uploading kroki:', error);
         alert('❌ Görsel yüklenirken bir hata oluştu:\n\n' + error.message);
         input.value = '';
+    }
+};
+
+// Firma modal functions
+window.openFirmaModal = function (reservationId) {
+    document.getElementById('firmaModalReservationId').value = reservationId;
+    // Clear form
+    document.getElementById('modalFirmaName').value = '';
+    document.getElementById('modalYetkili').value = '';
+    document.getElementById('modalTelefon').value = '';
+    document.getElementById('modalEmail').value = '';
+    document.getElementById('modalNotes').value = '';
+    // Show modal
+    document.getElementById('firmaModal').style.display = 'flex';
+};
+
+window.closeFirmaModal = function () {
+    document.getElementById('firmaModal').style.display = 'none';
+};
+
+window.saveFirmaToReservation = async function (event) {
+    event.preventDefault();
+
+    const reservationId = document.getElementById('firmaModalReservationId').value;
+    const firmaData = {
+        durum: 'rezerve',
+        reserved_by_company: document.getElementById('modalFirmaName').value,
+        reserved_by_name: document.getElementById('modalYetkili').value,
+        reserved_by_phone: document.getElementById('modalTelefon').value,
+        reserved_by_email: document.getElementById('modalEmail').value,
+        special_requests: document.getElementById('modalNotes').value
+    };
+
+    try {
+        const { error } = await supabase
+            .from('reservations')
+            .update(firmaData)
+            .eq('id', reservationId);
+
+        if (error) throw error;
+
+        alert('✅ Firma bilgileri kaydedildi ve alan rezerve edildi!');
+        closeFirmaModal();
+        await loadReservations();
+    } catch (error) {
+        console.error('Error saving firma:', error);
+        alert('❌ Firma bilgileri kaydedilirken hata oluştu: ' + error.message);
     }
 };

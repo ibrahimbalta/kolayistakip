@@ -2356,7 +2356,14 @@ window.openFirmaModal = function (reservationId) {
     document.getElementById('modalEmail').value = '';
     document.getElementById('modalNotes').value = '';
     // Show modal
-    document.getElementById('firmaModal').style.display = 'flex';
+    const modal = document.getElementById('firmaModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+    } else {
+        console.error('firmaModal element bulunamadı!');
+    }
 };
 
 window.closeFirmaModal = function () {

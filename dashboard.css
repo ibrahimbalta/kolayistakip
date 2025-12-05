@@ -1379,16 +1379,6 @@ body {
     color: #166534;
 }
 
-.status-pending {
-    background: #fef3c7;
-    color: #d97706;
-}
-
-.btn-sm {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.875rem;
-}
-
 input[type="color"] {
     width: 100%;
     height: 50px;
@@ -1396,4 +1386,102 @@ input[type="color"] {
     border-radius: 8px;
     cursor: pointer;
     padding: 0.25rem;
+}
+
+/* ============================================ */
+/* MOBILE RESPONSIVE - CUSTOMER & RESERVATION */
+/* ============================================ */
+
+/* Tablet and below */
+@media (max-width: 968px) {
+    /* Rezervasyon Modülü - Grid'i tek sütun yap */
+    #view-reservations .content-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Rezervasyon kartları - 2 sütun */
+    #reservationCardsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    }
+    
+    /* Rezervasyon form butonları - alt alta */
+    #reservationForm > div:last-child {
+        flex-direction: column !important;
+    }
+    
+    #reservationForm > div:last-child button {
+        width: 100% !important;
+        flex: none !important;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 768px) {
+    /* Müşteri Kartları - Tek sütun */
+    #customerCardsGrid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* Müşteri modülü header - Butonları alt alta */
+    .view-customers .card > div:first-child {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1rem !important;
+    }
+    
+    .view-customers .card > div:first-child > div {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .view-customers .card > div:first-child button {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Rezervasyon kartları - mobilde tek sütun */
+    #reservationCardsGrid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Action buttonlar için minimum dokunma alanı */
+    .action-btn {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Müşteri kart butonları */
+    .btn-share-customer,
+    .btn-edit-customer,
+    .btn-delete-customer {
+        min-height: 44px;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    /* Stat kartları - tek sütun */
+    .task-stats {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Header - daha compact */
+    .page-title h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .page-title p {
+        font-size: 0.875rem !important;
+    }
+    
+    /* Card padding - daha az */
+    .card {
+        padding: 1rem !important;
+    }
+    
+    .card h2 {
+        font-size: 1.125rem !important;
+    }
 }

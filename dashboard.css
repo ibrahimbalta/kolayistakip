@@ -1314,6 +1314,7 @@ body {
 .fc-timegrid-slot-label {
     font-size: 0.85rem;
 }
+
 /* Website Management Styles */
 .website-tabs {
     display: flex;
@@ -1394,22 +1395,23 @@ input[type="color"] {
 
 /* Tablet and below */
 @media (max-width: 968px) {
+
     /* Rezervasyon Modülü - Grid'i tek sütun yap */
     #view-reservations .content-grid {
         grid-template-columns: 1fr !important;
     }
-    
+
     /* Rezervasyon kartları - 2 sütun */
     #reservationCardsGrid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
     }
-    
+
     /* Rezervasyon form butonları - alt alta */
-    #reservationForm > div:last-child {
+    #reservationForm>div:last-child {
         flex-direction: column !important;
     }
-    
-    #reservationForm > div:last-child button {
+
+    #reservationForm>div:last-child button {
         width: 100% !important;
         flex: none !important;
     }
@@ -1417,40 +1419,82 @@ input[type="color"] {
 
 /* Mobile phones */
 @media (max-width: 768px) {
+
     /* Müşteri Kartları - Tek sütun */
     #customerCardsGrid {
         grid-template-columns: 1fr !important;
         gap: 1rem !important;
     }
-    
-    /* Müşteri modülü header - Butonları alt alta */
-    .view-customers .card > div:first-child {
+
+    /* ============================================ */
+    /* MÜŞTERİ MODÜLÜ - MOBİL ÖZEL DÜZENLEMELERİ */
+    /* ============================================ */
+
+    /* Müşteri sayfası header container */
+    #view-customers .card>div:first-child {
         flex-direction: column !important;
         align-items: stretch !important;
         gap: 1rem !important;
+        margin-bottom: 1.5rem !important;
     }
-    
-    .view-customers .card > div:first-child > div {
+
+    /* Başlık - mobilde tam genişlik */
+    #view-customers .card>div:first-child h2 {
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 1.25rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Buton container - alt alta */
+    #view-customers .card>div:first-child>div {
+        display: flex !important;
         flex-direction: column !important;
-        gap: 0.5rem !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
     }
-    
-    .view-customers .card > div:first-child button {
+
+    /* Tüm butonlar - mobilde tam genişlik ve büyük */
+    #view-customers .card>div:first-child button {
         width: 100% !important;
         justify-content: center !important;
+        padding: 1rem !important;
+        font-size: 1rem !important;
+        min-height: 50px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
     }
-    
+
+    /* Buton ikonları - mobilde daha büyük */
+    #view-customers .card>div:first-child button i {
+        font-size: 1.25rem !important;
+    }
+
+    /* Arama çubuğu - mobilde daha büyük */
+    #view-customers #customerSearchInput {
+        font-size: 16px !important;
+        padding: 1rem 1rem 1rem 3rem !important;
+        min-height: 50px !important;
+    }
+
+    /* Arama ikonu - mobilde daha görünür */
+    #view-customers .fa-search {
+        font-size: 1.1rem !important;
+        left: 1rem !important;
+    }
+
     /* Rezervasyon kartları - mobilde tek sütun */
     #reservationCardsGrid {
         grid-template-columns: 1fr !important;
     }
-    
+
     /* Action buttonlar için minimum dokunma alanı */
     .action-btn {
         min-height: 44px;
         padding: 0.75rem 1rem;
     }
-    
+
     /* Müşteri kart butonları */
     .btn-share-customer,
     .btn-edit-customer,
@@ -1462,25 +1506,26 @@ input[type="color"] {
 
 /* Extra small phones */
 @media (max-width: 480px) {
+
     /* Stat kartları - tek sütun */
     .task-stats {
         grid-template-columns: 1fr !important;
     }
-    
+
     /* Header - daha compact */
     .page-title h1 {
         font-size: 1.5rem !important;
     }
-    
+
     .page-title p {
         font-size: 0.875rem !important;
     }
-    
+
     /* Card padding - daha az */
     .card {
         padding: 1rem !important;
     }
-    
+
     .card h2 {
         font-size: 1.125rem !important;
     }

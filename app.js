@@ -2051,11 +2051,11 @@ function renderReservations() {
             ${firmaBilgi}
 
             <div style="display: flex; gap: 4px; margin-top: 8px;">
-                ${reservation.durum !== 'rezerve' ? `<button onclick="openFirmaModal('${reservation.id}')" style="flex: 1; background: #8b5cf6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;"><i class="fa-solid fa-building-user"></i> Firma Ekle</button>` : ''}
-                <button onclick="editReservation('${reservation.id}')" style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
+                ${reservation.durum !== 'rezerve' ? `<button onclick='openFirmaModal("${reservation.id}")' style="flex: 1; background: #8b5cf6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;"><i class="fa-solid fa-building-user"></i> Firma Ekle</button>` : ''}
+                <button onclick='editReservation("${reservation.id}")' style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
                     <i class="fa-solid fa-edit"></i> Düzenle
                 </button>
-                <button onclick="deleteReservation('${reservation.id}')" style="flex: 1; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
+                <button onclick='deleteReservation("${reservation.id}")' style="flex: 1; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
                     <i class="fa-solid fa-trash"></i> Sil
                 </button>
             </div>

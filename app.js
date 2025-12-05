@@ -2359,8 +2359,7 @@ window.openFirmaModal = function (reservationId) {
     const modal = document.getElementById('firmaModal');
     if (modal) {
         modal.style.display = 'flex';
-        modal.style.opacity = '1';
-        modal.style.visibility = 'visible';
+        console.log('✅ Modal açıldı!');
     } else {
         console.error('firmaModal element bulunamadı!');
     }

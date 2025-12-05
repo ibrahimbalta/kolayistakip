@@ -896,41 +896,39 @@ Seviyeler:
     </div>
 
     <!-- Firma Ekleme Modal -->
-    <div id="firmaModal" class="modal" style="display:none;">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-building"></i> Firma Bilgileri Ekle</h2>
-                <span class="close" onclick="closeFirmaModal()">&times;</span>
-            </div>
+    <div id="firmaModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card">
+            <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-building" style="color: var(--primary);"></i> Firma
+                Bilgileri Ekle</h2>
             <form id="firmaModalForm" onsubmit="saveFirmaToReservation(event)">
                 <input type="hidden" id="firmaModalReservationId">
 
                 <div class="form-group">
-                    <label for="modalFirmaName">Firma Ünvanı *</label>
+                    <label>Firma Ünvanı *</label>
                     <input type="text" id="modalFirmaName" required placeholder="Örn: ABC Tekstil Ltd. Şti.">
                 </div>
 
                 <div class="form-group">
-                    <label for="modalYetkili">Yetkili Ad Soyad</label>
+                    <label>Yetkili Ad Soyad</label>
                     <input type="text" id="modalYetkili" placeholder="Örn: Ahmet Yılmaz">
                 </div>
 
                 <div class="form-group">
-                    <label for="modalTelefon">Telefon</label>
-                    <input type="tel" id="modalTelefon" placeholder="(5XX) XXX XX XX">
+                    <label>Telefon</label>
+                    <input type="tel" id="modalTelefon" placeholder="5XX XXX XX XX">
                 </div>
 
                 <div class="form-group">
-                    <label for="modalEmail">E-posta</label>
+                    <label>E-posta</label>
                     <input type="email" id="modalEmail" placeholder="ornek@firma.com">
                 </div>
 
                 <div class="form-group">
-                    <label for="modalNotes">Özel İstekler / Notlar</label>
+                    <label>Özel İstekler / Notlar</label>
                     <textarea id="modalNotes" rows="3" placeholder="Varsa özel istekler veya notlar..."></textarea>
                 </div>
 
-                <div class="modal-actions">
+                <div style="display:flex; gap:1rem; margin-top:1.5rem;">
                     <button type="button" onclick="closeFirmaModal()" class="btn"
                         style="background:#f1f5f9; color:var(--dark);">İptal</button>
                     <button type="submit" class="btn btn-primary" style="flex:1;">Kaydet ve Rezerve Et</button>

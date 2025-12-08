@@ -3,11 +3,14 @@ const Auth = {
     TRIAL_DAYS: 7,
 
     // Methods
-    register: async (username, password, companyName) => {
+    register: async (username, password, companyName, email) => {
         try {
+            // Use provided email or fallback to username@kolayistakip.com
+            const emailToUse = email || (username + '@kolayistakip.com');
+
             // Sign up with Supabase Auth
             const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: username + '@kolayistakip.com',
+                email: emailToUse,
                 password: password,
                 options: {
                     data: {
@@ -32,6 +35,7 @@ const Auth = {
                     id: authData.user.id,
                     username: username,
                     company_name: companyName,
+                    email: emailToUse,
                     is_premium: false,
                     start_date: now.toISOString(),
                     created_at: now.toISOString(),
@@ -58,9 +62,13 @@ const Auth = {
 
     login: async (username, password) => {
         try {
+            // Check if input is email or username
+            const isEmail = username.includes('@');
+            const emailToUse = isEmail ? username : username + '@kolayistakip.com';
+
             // Sign in with Supabase Auth
             const { data, error } = await supabase.auth.signInWithPassword({
-                email: username + '@kolayistakip.com',
+                email: emailToUse,
                 password: password,
             });
 

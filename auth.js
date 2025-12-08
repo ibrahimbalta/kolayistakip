@@ -62,9 +62,30 @@ const Auth = {
 
     login: async (username, password) => {
         try {
+            let emailToUse;
+
             // Check if input is email or username
             const isEmail = username.includes('@');
-            const emailToUse = isEmail ? username : username + '@kolayistakip.com';
+
+            if (isEmail) {
+                // Direct email login
+                emailToUse = username;
+            } else {
+                // Username login - first try to find user by username in database
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .select('email')
+                    .eq('username', username)
+                    .single();
+
+                if (userData && userData.email) {
+                    // Use the email from database
+                    emailToUse = userData.email;
+                } else {
+                    // Fallback to username@kolayistakip.com format
+                    emailToUse = username + '@kolayistakip.com';
+                }
+            }
 
             // Sign in with Supabase Auth
             const { data, error } = await supabase.auth.signInWithPassword({
@@ -80,13 +101,13 @@ const Auth = {
             }
 
             // Check if user is admin
-            const { data: userData } = await supabase
+            const { data: adminData } = await supabase
                 .from('users')
                 .select('is_admin')
                 .eq('id', data.user.id)
                 .single();
 
-            if (userData && userData.is_admin) {
+            if (adminData && adminData.is_admin) {
                 localStorage.setItem('isAdmin', 'true');
                 return { success: true, isAdmin: true };
             }

@@ -72,6 +72,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (typeof loadDashboardData === 'function') {
                 loadDashboardData();
             }
+            // Also load proposals to update dashboard cards
+            if (typeof Proposals !== 'undefined' && Proposals.loadProposals) {
+                Proposals.loadProposals();
+            }
+            // Load customers to update dashboard cards
+            if (typeof loadCustomers === 'function') {
+                loadCustomers();
+            }
+            // Load appointments to update dashboard cards
+            if (typeof initializeAppointmentCalendar === 'function') {
+                initializeAppointmentCalendar();
+            }
+            // Load reservations to update dashboard cards
+            if (typeof loadReservations === 'function') {
+                loadReservations();
+            }
         }
         if (viewName === 'reports') renderReports();
         if (viewName === 'appointments') {
@@ -653,6 +669,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         renderCustomers();
         populateCustomerSelect();
+
+        // Update dashboard cards if they exist
+        const dashNewCustomers = document.getElementById('dashNewCustomers');
+        const dashTotalCustomers = document.getElementById('dashTotalCustomers');
+
+        if (dashNewCustomers && dashTotalCustomers) {
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+            const newCustomers = data.filter(c => new Date(c.created_at) >= thirtyDaysAgo).length;
+            const totalCustomers = data.length;
+
+            dashNewCustomers.textContent = newCustomers;
+            dashTotalCustomers.textContent = `Toplam: ${totalCustomers} Müşteri`;
+        }
     }
 
     function renderCustomers(customersToRender = null) {
@@ -2080,6 +2111,20 @@ async function loadReservations() {
         reservations = data || [];
         console.log('Loaded reservations:', reservations);
         renderReservations();
+
+        // Update dashboard card if it exists
+        const dashTodayReservationCount = document.getElementById('dashTodayReservationCount');
+
+        if (dashTodayReservationCount) {
+            const today = new Date().toISOString().split('T')[0];
+            // Filter reservations that have status 'rezerve' and were created today
+            const todayReservations = data.filter(r => {
+                const createdDate = new Date(r.created_at).toISOString().split('T')[0];
+                return r.durum === 'rezerve' && createdDate === today;
+            }).length;
+
+            dashTodayReservationCount.textContent = todayReservations;
+        }
     } catch (error) {
         console.error('Error loading reservations:', error);
     }

@@ -342,6 +342,15 @@ function updateStats() {
     document.getElementById('totalSlots').textContent = total;
     document.getElementById('availableSlots').textContent = available;
     document.getElementById('reservedSlots').textContent = reserved;
+
+    // Update dashboard card if it exists
+    const dashTodayAppointments = document.getElementById('dashTodayAppointments');
+
+    if (dashTodayAppointments) {
+        const today = new Date().toISOString().split('T')[0];
+        const todayAppointments = allSlots.filter(s => s.slot_date === today).length;
+        dashTodayAppointments.textContent = todayAppointments;
+    }
 }
 
 // Setup realtime updates

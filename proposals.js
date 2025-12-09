@@ -142,9 +142,24 @@ const Proposals = {
     },
 
     updateStats: (proposals) => {
+        // Update proposal module stats
         document.getElementById('totalProposals').textContent = proposals.length;
         document.getElementById('approvedProposals').textContent = proposals.filter(p => p.status === 'approved').length;
         document.getElementById('pendingProposals').textContent = proposals.filter(p => p.status === 'pending').length;
+
+        // Update dashboard cards if they exist
+        const dashPendingValue = document.getElementById('dashPendingValue');
+        const dashPendingCount = document.getElementById('dashPendingCount');
+
+        if (dashPendingValue && dashPendingCount) {
+            const pendingProposals = proposals.filter(p => p.status === 'pending');
+            const pendingValue = pendingProposals.reduce((sum, p) => sum + (p.amount || 0), 0);
+            const currency = pendingProposals.length > 0 ? (pendingProposals[0].currency || 'TRY') : 'TRY';
+            const currencySymbol = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : '₺';
+
+            dashPendingValue.textContent = `${currencySymbol}${pendingValue.toLocaleString('tr-TR', { minimumFractionDigits: 0 })}`;
+            dashPendingCount.textContent = `${pendingProposals.length} Adet Bekleyen Teklif`;
+        }
     },
 
     // --- Item Management ---

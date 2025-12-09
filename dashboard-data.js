@@ -81,16 +81,28 @@ async function loadDashboardStats() {
         // Get today's appointments
         const today = new Date().toISOString().split('T')[0];
 
-        const { data: appointmentsData, error: appointmentsError } = await supabase
-            .from('appointment_slots')
-            .select('id, slot_date')
-            .eq('slot_date', today);
+        // First get user's calendar
+        const { data: calendars } = await supabase
+            .from('appointment_calendars')
+            .select('id')
+            .eq('user_id', window.currentUser.id)
+            .eq('is_active', true)
+            .limit(1);
 
-        if (appointmentsError) {
-            console.warn('Error loading appointments:', appointmentsError);
+        let todayAppointments = 0;
+        if (calendars && calendars.length > 0) {
+            const { data: appointmentsData, error: appointmentsError } = await supabase
+                .from('appointment_slots')
+                .select('id, slot_date')
+                .eq('calendar_id', calendars[0].id)
+                .eq('slot_date', today);
+
+            if (appointmentsError) {
+                console.warn('Error loading appointments:', appointmentsError);
+            }
+
+            todayAppointments = appointmentsData ? appointmentsData.length : 0;
         }
-
-        const todayAppointments = appointmentsData ? appointmentsData.length : 0;
 
         // Get today's reservations
         const { data: reservationsData, error: reservationsError } = await supabase
@@ -163,15 +175,29 @@ async function loadTodaySchedule() {
 
         const today = new Date().toISOString().split('T')[0];
 
-        // Get today's appointments
-        const { data: appointmentsData, error: appointmentsError } = await supabase
-            .from('appointment_slots')
-            .select('id, slot_time, customer_name, status, duration_minutes')
-            .eq('slot_date', today)
-            .order('slot_time', { ascending: true });
+        // First get user's calendar
+        const { data: calendars } = await supabase
+            .from('appointment_calendars')
+            .select('id')
+            .eq('user_id', window.currentUser.id)
+            .eq('is_active', true)
+            .limit(1);
 
-        if (appointmentsError) {
-            console.warn('Error loading appointments:', appointmentsError);
+        let appointmentsData = null;
+        if (calendars && calendars.length > 0) {
+            // Get today's appointments for this user's calendar
+            const { data, error: appointmentsError } = await supabase
+                .from('appointment_slots')
+                .select('id, slot_time, customer_name, status, duration_minutes')
+                .eq('calendar_id', calendars[0].id)
+                .eq('slot_date', today)
+                .order('slot_time', { ascending: true });
+
+            if (appointmentsError) {
+                console.warn('Error loading appointments:', appointmentsError);
+            } else {
+                appointmentsData = data;
+            }
         }
 
         // Get reservations

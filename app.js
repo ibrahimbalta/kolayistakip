@@ -2153,6 +2153,8 @@ function renderReservations() {
                 </div>
             </div>
 
+            ${reservation.aciklama ? `<div style="background: rgba(255,255,255,0.7); padding: 6px 8px; border-radius: 4px; margin-bottom: 6px; border-left: 2px solid ${colors.border};"><div style="font-size: 0.6rem; font-weight: 600; color: ${colors.text}; text-transform: uppercase; margin-bottom: 2px;"><i class="fa-solid fa-info-circle"></i> Açıklama</div><div style="font-size: 0.7rem; color: #333; line-height: 1.3;">${reservation.aciklama}</div></div>` : ''}
+
             ${firmaBilgi}
 
             <div style="display: flex; gap: 4px; margin-top: 8px;">
@@ -2217,6 +2219,7 @@ if (reservationForm) {
                 fiyat_miktar: parseFloat(document.getElementById('fiyatMiktar').value),
                 para_birimi: document.getElementById('paraBirimi').value,
                 durum: document.getElementById('alanDurum').value,
+                aciklama: document.getElementById('alanAciklama').value || null,
                 user_id: currentUser.id
             };
 
@@ -2303,6 +2306,7 @@ window.editReservation = function (id) {
     document.getElementById('fiyatMiktar').value = reservation.fiyat_miktar;
     document.getElementById('paraBirimi').value = reservation.para_birimi;
     document.getElementById('alanDurum').value = reservation.durum;
+    document.getElementById('alanAciklama').value = reservation.aciklama || '';
 
     // Handle reservation info section
     const reservationInfoSection = document.getElementById('reservationInfoSection');

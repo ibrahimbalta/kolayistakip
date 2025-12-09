@@ -183,6 +183,27 @@ function setupSlotFormListener() {
     const newForm = form.cloneNode(true);
     form.parentNode.replaceChild(newForm, form);
 
+    // Populate customer dropdown AFTER cloning
+    populateSlotCustomerDropdown();
+
+    // Setup customer select change listener AFTER cloning
+    const customerSelect = document.getElementById('slotCustomerSelect');
+    if (customerSelect) {
+        customerSelect.addEventListener('change', (e) => {
+            const customerId = e.target.value;
+            const customerNameInput = document.getElementById('slotCustomerName');
+            const customerPhoneInput = document.getElementById('slotCustomerPhone');
+
+            if (customerId && window.customers) {
+                const customer = window.customers.find(c => c.id === customerId);
+                if (customer) {
+                    customerNameInput.value = customer.name;
+                    customerPhoneInput.value = customer.phone;
+                }
+            }
+        });
+    }
+
     newForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         console.log('🔵 Slot form submitted');
@@ -198,8 +219,9 @@ function setupSlotFormListener() {
         const duration = parseInt(document.getElementById('slotDuration').value);
         const customerName = document.getElementById('slotCustomerName').value.trim();
         const customerPhone = document.getElementById('slotCustomerPhone').value.trim();
+        const selectedCustomerId = document.getElementById('slotCustomerSelect').value;
 
-        console.log('📅 Slot data:', { date, time, duration, customerName });
+        console.log('📅 Slot data:', { date, time, duration, customerName, selectedCustomerId });
 
         const newSlot = {
             calendar_id: currentCalendar.id,
@@ -212,6 +234,11 @@ function setupSlotFormListener() {
         if (customerName) {
             newSlot.customer_name = customerName;
             newSlot.customer_phone = customerPhone;
+
+            // Save customer_id if a customer was selected from dropdown
+            if (selectedCustomerId) {
+                newSlot.customer_id = selectedCustomerId;
+            }
         }
 
         try {
@@ -236,6 +263,23 @@ function setupSlotFormListener() {
             }
         }
     });
+}
+
+// Populate customer dropdown in slot modal
+function populateSlotCustomerDropdown() {
+    const customerSelect = document.getElementById('slotCustomerSelect');
+    if (!customerSelect) return;
+
+    customerSelect.innerHTML = '<option value="">Müşteri Seçin...</option>';
+
+    if (window.customers && window.customers.length > 0) {
+        window.customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.id;
+            option.textContent = `${customer.name} (${customer.email})`;
+            customerSelect.appendChild(option);
+        });
+    }
 }
 
 // Delete slot

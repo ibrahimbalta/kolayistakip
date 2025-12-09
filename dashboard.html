@@ -844,6 +844,18 @@ Seviyeler:
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label>Müşteri Seç (Opsiyonel)</label>
+                    <select id="slotCustomerSelect">
+                        <option value="">Müşteri Seçin...</option>
+                        <!-- Will be populated from customers list -->
+                    </select>
+                    <div style="margin-top:8px; font-size:0.85rem; color:var(--secondary);">
+                        Listede yok mu? <a href="#" onclick="switchView('customers')"
+                            style="color:var(--primary); font-weight:600;">Yeni Müşteri Ekle</a>
+                    </div>
+                </div>
+
                 <div style="border-top: 1px solid #e5e7eb; margin: 1rem 0; padding-top: 1rem;">
                     <h3 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--primary);">
                         <i class="fa-solid fa-user-pen"></i> Doğrudan Randevu (Opsiyonel)

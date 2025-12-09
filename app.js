@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Update Header
         const titles = {
+            'dashboard': 'Genel Durum',
             'tasks': 'Panel',
             'appointments': 'Randevular',
             'proposals': 'Teklif Yönetimi',
@@ -52,12 +53,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             'settings': 'Hesap Ayarları'
         };
         const subtitles = {
+            'dashboard': 'Tüm işletme faaliyetlerinizin özeti.',
             'tasks': 'Bugünün işlerini organize et.',
             'appointments': 'Randevu takvimini yönet.',
             'proposals': 'Müşteri tekliflerini oluştur ve takip et.',
             'reservations': 'Fuar standı, toplantı odası ve diğer alanları yönet.',
             'customers': 'Müşteri bilgilerini ekle ve yönet.',
-            'website': 'Firmanızın web sitesini oluşturun ve yönet in.',
+            'website': 'Firmanızın web sitesini oluşturun ve yönetin.',
             'employees': 'Ekibini ekle ve yönet.',
             'reports': 'İşletme performansını incele.',
             'settings': 'Profil ve uygulama tercihleri.'
@@ -66,6 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('pageSubtitle').textContent = subtitles[viewName];
 
         // Refresh data if needed
+        if (viewName === 'dashboard') {
+            if (typeof loadDashboardData === 'function') {
+                loadDashboardData();
+            }
+        }
         if (viewName === 'reports') renderReports();
         if (viewName === 'appointments') {
             // Initialize appointment calendar
@@ -94,6 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     function getViewLabel(view) {
+        if (view === 'dashboard') return 'Genel Durum';
         if (view === 'tasks') return 'İş Listesi';
         if (view === 'appointments') return 'Randevular';
         if (view === 'proposals') return 'Teklifler';

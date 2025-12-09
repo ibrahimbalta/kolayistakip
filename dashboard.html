@@ -43,7 +43,10 @@
                 </div>
             </div>
             <nav class="menu">
-                <a href="#" class="menu-item active" onclick="switchView('tasks')">
+                <a href="#" class="menu-item active" onclick="switchView('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i> Genel Durum
+                </a>
+                <a href="#" class="menu-item" onclick="switchView('tasks')">
                     <i class="fa-solid fa-list-check"></i> İş Listesi
                 </a>
                 <a href="#" class="menu-item" onclick="switchView('appointments')">
@@ -85,8 +88,149 @@
                 </div>
             </header>
 
+            <!-- VIEW: DASHBOARD (GENEL DURUM) -->
+            <section id="view-dashboard" class="view-section">
+                <!-- Statistics Cards -->
+                <div class="dashboard-stats-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Active Tasks Card -->
+                    <div class="stat-card-dash"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Aktif İş Sayısı
+                                </div>
+                                <div id="dashActiveTasks" style="font-size: 2.5rem; font-weight: 700;">0</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
+                                <i class="fa-solid fa-briefcase" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <div id="dashActiveTasksChange" style="font-size: 0.8rem; opacity: 0.8;">
+                            <i class="fa-solid fa-arrow-up"></i> %15 Artış (Geçen Hafta)
+                        </div>
+                    </div>
+
+                    <!-- Pending Proposals Value Card -->
+                    <div class="stat-card-dash"
+                        style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Bekleyen Teklif
+                                    Değeri</div>
+                                <div id="dashPendingValue" style="font-size: 2.5rem; font-weight: 700;">₺0</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
+                                <i class="fa-solid fa-file-invoice-dollar" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <div id="dashPendingCount" style="font-size: 0.8rem; opacity: 0.8;">
+                            0 Adet Bekleyen Teklif
+                        </div>
+                    </div>
+
+                    <!-- New Customers (Last 30 Days) Card -->
+                    <div class="stat-card-dash"
+                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Yeni Müşteri (Son
+                                    30 Gün)</div>
+                                <div id="dashNewCustomers" style="font-size: 2.5rem; font-weight: 700;">0</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
+                                <i class="fa-solid fa-user-plus" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <div id="dashTotalCustomers" style="font-size: 0.8rem; opacity: 0.8;">
+                            Toplam: 0 Müşteri
+                        </div>
+                    </div>
+
+                    <!-- Today's Appointments Card -->
+                    <div class="stat-card-dash"
+                        style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Bugünkü Randevu
+                                    Sayısı</div>
+                                <div id="dashTodayAppointments" style="font-size: 2.5rem; font-weight: 700;">0</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
+                                <i class="fa-solid fa-calendar-check" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <div id="dashTodayReservations" style="font-size: 0.8rem; opacity: 0.8;">
+                            Rezervasyonlar: 0
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Tables Grid -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <!-- Recent Activity / Priority Tasks -->
+                    <div class="card">
+                        <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-exclamation-circle"
+                                style="color: var(--warning);"></i> Öncelikli İşler</h2>
+                        <div id="dashPriorityTasks" style="max-height: 400px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 2rem; color: var(--secondary);">
+                                <i class="fa-solid fa-tasks"
+                                    style="font-size: 2rem; opacity: 0.3; margin-bottom: 0.5rem;"></i>
+                                <p>Henüz öncelikli iş yok.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Schedule -->
+                    <div class="card">
+                        <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-calendar-day"
+                                style="color: var(--primary);"></i> Bugünkü Ajanda</h2>
+                        <div id="dashTodaySchedule" style="max-height: 400px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 2rem; color: var(--secondary);">
+                                <i class="fa-solid fa-calendar-xmark"
+                                    style="font-size: 2rem; opacity: 0.3; margin-bottom: 0.5rem;"></i>
+                                <p>Bugün için randevu/rezervasyon yok.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-bolt" style="color: var(--warning);"></i>
+                        Hızlı İşlemler</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                        <button onclick="switchView('tasks')" class="btn"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; justify-content: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-plus"></i> Yeni İş Ekle
+                        </button>
+                        <button onclick="switchView('appointments')" class="btn"
+                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 1rem; justify-content: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-calendar-plus"></i> Randevu Oluştur
+                        </button>
+                        <button onclick="switchView('proposals')" class="btn"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1rem; justify-content: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-file-invoice"></i> Teklif Hazırla
+                        </button>
+                        <button onclick="switchView('customers')" class="btn"
+                            style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 1rem; justify-content: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-user-plus"></i> Müşteri Ekle
+                        </button>
+                        <button onclick="switchView('reservations')" class="btn"
+                            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 1rem; justify-content: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-calendar-days"></i> Rezervasyon Ekle
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <!-- VIEW: TASKS -->
-            <section id="view-tasks" class="view-section">
+            <section id="view-tasks" class="view-section" style="display:none;">
                 <div class="task-stats">
                     <div class="stat-card">
                         <div class="stat-number" id="totalTasks">0</div>
@@ -799,6 +943,7 @@ Seviyeler:
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/tr.global.min.js'></script>
     <script src="appointments.js"></script>
     <script src="proposals.js"></script>
+    <script src="dashboard-data.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {

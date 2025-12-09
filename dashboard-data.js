@@ -118,7 +118,8 @@ async function loadDashboardStats() {
         const todayReservations = reservationsData ? reservationsData.length : 0;
 
         document.getElementById('dashTodayAppointments').textContent = todayAppointments;
-        document.getElementById('dashTodayReservations').textContent = `Rezervasyonlar: ${todayReservations}`;
+        document.getElementById('dashTodayReservationCount').textContent = todayReservations;
+
 
     } catch (error) {
         console.error('Error loading dashboard stats:', error);

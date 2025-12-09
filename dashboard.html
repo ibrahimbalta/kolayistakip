@@ -153,6 +153,17 @@
                                 <button class="filter-btn" data-filter="completed">Tamamlanan</button>
                             </div>
                         </div>
+                        <!-- Task Search Bar -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="position: relative;">
+                                <i class="fa-solid fa-search"
+                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--secondary); font-size: 0.9rem;"></i>
+                                <input type="text" id="taskSearchInput"
+                                    placeholder="Görev ara (açıklama, çalışan adı, müşteri...)..."
+                                    oninput="filterTasks()"
+                                    style="width: 100%; padding: 10px 10px 10px 38px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95rem;" />
+                            </div>
+                        </div>
                         <div id="taskList" class="task-list">
                             <div class="empty-state" style="text-align:center; padding:3rem 0; color:var(--secondary);">
                                 <i class="fa-solid fa-clipboard-list"

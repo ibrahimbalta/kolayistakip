@@ -316,10 +316,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderTasks() {
         taskList.innerHTML = '';
+
+        // Get search term
+        const searchInput = document.getElementById('taskSearchInput');
+        const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+        // Apply both status filter and search filter
         const filteredTasks = tasks.filter(task => {
-            if (currentFilter === 'pending') return !task.completed;
-            if (currentFilter === 'completed') return task.completed;
-            return true;
+            // Status filter
+            let matchesStatus = true;
+            if (currentFilter === 'pending') matchesStatus = !task.completed;
+            if (currentFilter === 'completed') matchesStatus = task.completed;
+
+            // Search filter
+            let matchesSearch = true;
+            if (searchTerm) {
+                const taskDesc = task.desc.toLowerCase();
+                const employeeName = task.name.toLowerCase();
+
+                // Check if customer exists and has name
+                const customer = customers.find(c => c.id === task.customer_id);
+                const customerName = customer ? customer.name.toLowerCase() : '';
+
+                matchesSearch = taskDesc.includes(searchTerm) ||
+                    employeeName.includes(searchTerm) ||
+                    customerName.includes(searchTerm);
+            }
+
+            return matchesStatus && matchesSearch;
         });
 
         if (filteredTasks.length === 0) {
@@ -357,6 +381,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             taskList.appendChild(taskDiv);
         });
     }
+
+    // Filter tasks based on search input
+    window.filterTasks = function () {
+        renderTasks();
+    };
 
     window.toggleTaskStatus = async function (id) {
         const task = tasks.find(t => t.id === id);

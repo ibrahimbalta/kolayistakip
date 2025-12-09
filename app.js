@@ -750,6 +750,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 deleteCustomer(customer.id);
             });
 
+            // Add click event to card to show tasks modal
+            card.addEventListener('click', () => {
+                showCustomerTasksModal(customer.id);
+            });
+
             customerCardsGrid.appendChild(card);
         });
     }
@@ -776,6 +781,77 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.closeEditCustomerModal = function () {
         document.getElementById('editCustomerModal').style.display = 'none';
         document.getElementById('editCustomerForm').reset();
+    };
+
+    // Show customer tasks modal
+    window.showCustomerTasksModal = function (customerId) {
+        const customer = customers.find(c => c.id === customerId);
+        if (!customer) {
+            console.error('Customer not found:', customerId);
+            return;
+        }
+
+        // Update modal title
+        document.getElementById('customerTasksModalTitle').textContent = `${customer.name} - Görevler`;
+
+        // Get all tasks for this customer
+        const customerTasks = tasks.filter(t => t.customer_id === customerId);
+
+        // Render tasks
+        const container = document.getElementById('customerTasksListContainer');
+
+        if (customerTasks.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 3rem 1rem; color: var(--secondary);">
+                    <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                    <p style="margin: 0;">Bu müşteriye atanmış görev bulunmuyor.</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = customerTasks.map(task => {
+                const statusIcon = task.completed
+                    ? '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i>'
+                    : '<i class="fa-solid fa-clock" style="color: #f59e0b;"></i>';
+
+                const statusText = task.completed ? 'Tamamlandı' : 'Beklemede';
+                const statusColor = task.completed ? '#10b981' : '#f59e0b';
+
+                // Find employee name
+                const employee = employees.find(e => e.id === task.employeeId);
+                const employeeName = employee ? employee.name : task.name || 'Bilinmiyor';
+
+                return `
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+                                    ${Security.sanitize(task.desc)}
+                                </div>
+                                <div style="font-size: 0.85rem; color: #6b7280; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <span><i class="fa-solid fa-user" style="font-size: 0.75rem;"></i> ${Security.sanitize(employeeName)}</span>
+                                    <span>•</span>
+                                    <span><i class="fa-solid fa-calendar" style="font-size: 0.75rem;"></i> ${task.createdAt}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                ${statusIcon}
+                                <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
+                                    ${statusText}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Show modal
+        document.getElementById('customerTasksModal').style.display = 'flex';
+    };
+
+    // Close customer tasks modal
+    window.closeCustomerTasksModal = function () {
+        document.getElementById('customerTasksModal').style.display = 'none';
     };
 
     window.deleteCustomer = async function (id) {

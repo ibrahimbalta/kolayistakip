@@ -749,6 +749,27 @@ Seviyeler:
         </div>
     </div>
 
+    <!-- Customer Tasks Modal -->
+    <div id="customerTasksModal" class="modal-overlay" style="display:none;"
+        onclick="if(event.target === this) closeCustomerTasksModal()">
+        <div class="modal-content card" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;">
+                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
+                    <span id="customerTasksModalTitle">Müşteri Görevleri</span>
+                </h2>
+                <button onclick="closeCustomerTasksModal()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="customerTasksListContainer">
+                <!-- Tasks will be rendered here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>

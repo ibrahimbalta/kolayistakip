@@ -2,161 +2,328 @@
 <html lang="tr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İletişim - Kolay İş Takip</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Kolay İş Takip - İletişim (Premium Tasarım)" />
+  <title>İletişim - Kolay İş Takip</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5',
+            purpleDeep: '#2d064e',
+            purpleMid: '#6a1a8c',
+            cyanAccent: '#06b6d4',
+            success: '#10b981'
+          },
+          borderRadius: { 'xl2': '1rem' }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    .glass { background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); }
+    .btn-cta { background: linear-gradient(90deg,#06b6d4,#4f46e5); color: #000; }
+    .floating-blob { filter: blur(18px); opacity: .25; }
+    html { scroll-behavior: smooth; }
+  </style>
 </head>
 
-<body class="landing-page">
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo" style="text-decoration: none;"><i class="fa-solid fa-check-double"></i>
-                Kolay İş Takip</a>
-            <div class="nav-links">
-                <a href="index.html">Ana Sayfa</a>
-                <a href="index.html#features">Özellikler</a>
-                <a href="index.html#pricing">Fiyatlar</a>
-                <a href="about.html">Hakkımızda</a>
-                <a href="contact.html">İletişim</a>
-                <a href="blog.html">Blog</a>
-                <a href="career.html">Kariyer</a>
-                <a href="login.html" class="btn-nav">Giriş Yap</a>
-            </div>
-        </div>
-    </nav>
+<body class="font-inter antialiased bg-gradient-to-b from-purpleDeep to-purpleMid text-gray-50">
 
-    <header class="hero" style="padding: 80px 0;">
-        <div class="container">
-            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
-                <h1>İletişim</h1>
-                <p>Sorularınız için bize ulaşın, size yardımcı olmaktan mutluluk duyarız.</p>
-            </div>
-        </div>
-    </header>
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-sm border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="flex items-center justify-between py-4">
+        <a href="index.html" class="flex items-center gap-3 text-white no-underline">
+          <span class="p-2 rounded-lg glass">
+            <i class="fa-solid fa-check-double text-primary"></i>
+          </span>
+          <span class="font-semibold text-lg">Kolay İş Takip</span>
+        </a>
 
-    <section class="features" style="padding: 60px 0;">
-        <div class="container">
-            <div class="feature-grid"
-                style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px;">
-                <div class="feature-card">
-                    <div class="icon-bg"><i class="fa-solid fa-envelope"></i></div>
-                    <h3>E-posta</h3>
-                    <p>info@kolayistakip.com</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-bg"><i class="fa-solid fa-phone"></i></div>
-                    <h3>Telefon</h3>
-                    <p>+90 (545)346 79 86</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon-bg whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
-                    <h3>WhatsApp</h3>
-                    <p>+90 (545)346 79 86</p>
-                </div>
-            </div>
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="index.html#features" class="hover:text-cyanAccent transition">Özellikler</a>
+          <a href="index.html#pricing" class="hover:text-cyanAccent transition">Fiyatlar</a>
+          <a href="sektorler.html" class="hover:text-cyanAccent transition">Sektörler</a>
+          <a href="about.html" class="hover:text-cyanAccent transition">Hakkımızda</a>
+          <a href="career.html" class="hover:text-cyanAccent transition">Kariyer</a>
+          <a href="blog.html" class="hover:text-cyanAccent transition">Blog</a>
+          <a href="contact.html" class="hover:text-cyanAccent transition font-semibold">İletişim</a>
+        </nav>
 
-            <div
-                style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <h2 style="text-align: center; margin-bottom: 30px;">Bize Yazın</h2>
-                <form id="contactForm">
-                    <div style="margin-bottom: 20px;">
-                        <input type="text" id="contactName" placeholder="Adınız Soyadınız" required
-                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px;">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <input type="email" id="contactEmail" placeholder="E-posta Adresiniz" required
-                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px;">
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <textarea id="contactMessage" placeholder="Mesajınız" rows="5" required
-                            style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; resize: vertical;"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; gap: 10px;">
-                        <i class="fa-solid fa-paper-plane"></i> Gönder
-                    </button>
-                </form>
-            </div>
+        <div class="flex items-center gap-3">
+          <a href="login.html" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş Yap</a>
+          <a href="login.html" class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz Deneme</a>
+          <button id="mobileBtn" class="md:hidden ml-2 p-2 rounded-lg glass">
+            <i class="fa-solid fa-bars"></i>
+          </button>
         </div>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden px-6 pb-6 hidden">
+      <div class="flex flex-col gap-3">
+        <a href="index.html#features" class="block py-2">Özellikler</a>
+        <a href="index.html#pricing" class="block py-2">Fiyatlar</a>
+        <a href="sektorler.html" class="block py-2">Sektörler</a>
+        <a href="about.html" class="block py-2">Hakkımızda</a>
+        <a href="contact.html" class="block py-2">İletişim</a>
+        <a href="blog.html" class="block py-2">Blog</a>
+        <a href="login.html" class="block py-2 font-medium">Giriş Yap</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="relative overflow-hidden pt-10 pb-16">
+      <div class="absolute -left-24 -top-24 w-96 h-96 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-full floating-blob"></div>
+      <div class="absolute -right-24 -bottom-24 w-80 h-80 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-full floating-blob"></div>
+
+      <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-20 text-center">
+        <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4" data-aos="fade-up">Bize Ulaşın</h1>
+        <p class="text-gray-300 text-lg max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="120">
+          Sorularınız, iş ortaklığı teklifi veya destek talepleriniz için bize yazın. Size en kısa sürede dönüş yapacağız.
+        </p>
+      </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>Kolay İş Takip</h3>
-                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Hızlı Erişim</h4>
-                    <a href="index.html">Ana Sayfa</a>
-                    <a href="index.html#features">Özellikler</a>
-                    <a href="index.html#pricing">Fiyatlar</a>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Kurumsal</h4>
-                    <a href="about.html">Hakkımızda</a>
-                    <a href="contact.html">İletişim</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="career.html">Kariyer</a>
-                </div>
-                <div class="footer-newsletter">
-                    <h4>Bültenimize Abone Olun</h4>
-                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
-                    <form class="newsletter-form"
-                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
-                        <input type="email" placeholder="E-posta adresiniz" required>
-                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
-                    </form>
-                </div>
+    <!-- CONTACT CARDS + FORM -->
+    <section class="container mx-auto px-6 lg:px-12 py-12">
+      <div class="grid lg:grid-cols-3 gap-8 items-start">
+        
+        <!-- Contact Cards (Left) -->
+        <div class="lg:col-span-1 space-y-6">
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-right">
+            <div class="flex items-start gap-4">
+              <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <h4 class="font-semibold text-white">E-posta</h4>
+                <p class="text-sm text-gray-300 mt-2">info@kolayistakip.com</p>
+                <a href="mailto:info@kolayistakip.com" class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mail Gönder</a>
+              </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-up" data-aos-delay="80">
+            <div class="flex items-start gap-4">
+              <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <h4 class="font-semibold text-white">Telefon</h4>
+                <p class="text-sm text-gray-300 mt-2">+90 (545) 346 79 86</p>
+                <a href="tel:+905453467986" class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Ara</a>
+              </div>
             </div>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-left" data-aos-delay="160">
+            <div class="flex items-start gap-4">
+              <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-brands fa-whatsapp"></i></div>
+              <div>
+                <h4 class="font-semibold text-white">WhatsApp</h4>
+                <p class="text-sm text-gray-300 mt-2">+90 (545) 346 79 86</p>
+                <a href="https://wa.me/905453467986" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mesaj Gönder</a>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- FORM -->
+        <div class="lg:col-span-2" data-aos="fade-up" data-aos-delay="80">
+          <div class="p-8 rounded-3xl glass border border-white/10 shadow-xl">
+            <div class="mb-6">
+              <h3 class="text-2xl font-bold">Bize Yazın</h3>
+              <p class="text-sm text-gray-300">Sorunuzu, önerinizi veya iş birliği teklifinizi buradan iletebilirsiniz.</p>
+            </div>
+
+            <form id="contactForm" class="space-y-4" onsubmit="return false;">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm text-gray-300">Adınız Soyadınız</label>
+                  <input id="contactName" type="text" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Adınız Soyadınız">
+                </div>
+                <div>
+                  <label class="text-sm text-gray-300">E-posta</label>
+                  <input id="contactEmail" type="email" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="example@ornek.com">
+                </div>
+              </div>
+
+              <div>
+                <label class="text-sm text-gray-300">Konu</label>
+                <input id="contactSubject" type="text" class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Konu (opsiyonel)">
+              </div>
+
+              <div>
+                <label class="text-sm text-gray-300">Mesajınız</label>
+                <textarea id="contactMessage" rows="6" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Mesajınızı yazın..."></textarea>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <button id="sendBtn" type="submit" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
+                  <i class="fa-solid fa-paper-plane"></i>
+                  Gönder
+                </button>
+
+                <div class="text-sm text-gray-400">
+                  Veya bizi arayın: <a href="tel:+905453467986" class="text-cyanAccent hover:underline">+90 (545) 346 79 86</a>
+                </div>
+              </div>
+            </form>
+
+            <div id="formFeedback" class="mt-4 text-sm"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIZLI DESTEK (Görseller Kaldırıldı) -->
+    <section class="container mx-auto px-6 lg:px-12 py-12">
+      <div class="max-w-xl" data-aos="fade-up">
+        <h3 class="text-2xl font-bold mb-4">Hızlı Destek</h3>
+        <p class="text-gray-300 mb-6">
+          Teknik destek, satış veya entegrasyon hakkında hızlıca görüşmek isterseniz, sizi arayalım — formda 'Arayın' yazın.
+        </p>
+        <a href="career.html" class="btn-cta inline-flex items-center gap-3 px-6 py-3 rounded-2xl font-semibold shadow-lg">
+          Kariyerimize Göz At
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black/60 py-12 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 text-gray-300">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h5 class="text-white font-semibold">Kolay İş Takip</h5>
+            <p class="text-sm mt-2">Küçük işletmelerin dijital dönüşüm ortağı.</p>
+            <div class="flex gap-3 mt-4">
+              <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://x.com/Kolayistakip_" class="p-2 rounded bg-white/5"><i class="fa-brands fa-twitter"></i></a>
+              <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-linkedin"></i></a>
+              <a href="https://www.youtube.com/@kolayistakip" class="p-2 rounded bg-white/5"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div>
+            <h6 class="font-semibold">Hızlı Erişim</h6>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="index.html">Ana Sayfa</a></li>
+              <li><a href="index.html#features">Özellikler</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="login.html">Kayıt Ol</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h6 class="font-semibold">Kurumsal</h6>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="about.html">Hakkımızda</a></li>
+              <li><a href="contact.html">İletişim</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="career.html">Kariyer</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h6 class="font-semibold">Bültenimize Abone Olun</h6>
+            <form class="mt-3 flex gap-2" onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+              <input type="email" placeholder="E-posta adresiniz" required class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm" />
+              <button class="px-3 py-2 rounded-lg btn-cta">Gönder</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
+          <div class="flex gap-4">
+            <a href="kullanim-sartlari.html">Kullanım Şartları</a>
+            <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+            <a href="kvkk.html">KVKK</a>
+          </div>
+          <div class="mt-3 md:mt-0">&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</div>
+        </div>
+      </div>
     </footer>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script>
-        document.getElementById('contactForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
-            btn.disabled = true;
+  </main>
 
-            const name = document.getElementById('contactName').value;
-            const email = document.getElementById('contactEmail').value;
-            const message = document.getElementById('contactMessage').value;
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
 
-            try {
-                const { error } = await supabase
-                    .from('contact_messages')
-                    .insert([{ name, email, message }]);
+  <script>
+    AOS.init({ once: true, duration: 700 });
 
-                if (error) throw error;
+    const mobileBtn = document.getElementById('mobileBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileBtn && mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
 
-                alert('Mesajınız başarıyla gönderildi! En kısa sürede dönüş yapacağız.');
-                e.target.reset();
-            } catch (error) {
-                console.error('Error sending message:', error);
-                alert('Mesaj gönderilirken bir hata oluştu.');
-            } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-            }
-        });
-    </script>
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to('.floating-blob', {
+      y: -60,
+      rotation: 20,
+      ease: 'sine.inOut',
+      scrollTrigger: { scrub: true }
+    });
+  </script>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('sendBtn');
+      const feedback = document.getElementById('formFeedback');
+      const originalText = btn.innerHTML;
+
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+
+      if (!name || !email || !message) {
+        feedback.innerHTML = '<span class="text-red-400">Lütfen tüm zorunlu alanları doldurun.</span>';
+        return;
+      }
+
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+        btn.disabled = true;
+        feedback.innerHTML = '';
+
+        const { error } = await supabase
+          .from('contact_messages')
+          .insert([{ name, email, subject, message }]);
+
+        if (error) throw error;
+
+        feedback.innerHTML = '<span class="text-success">Mesajınız başarıyla gönderildi! En kısa sürede dönüş yapacağız.</span>';
+        document.getElementById('contactForm').reset();
+      } catch (err) {
+        console.error('Contact submit error:', err);
+        feedback.innerHTML = '<span class="text-red-400">Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.</span>';
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    });
+  </script>
+
 </body>
-
 </html>

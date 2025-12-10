@@ -2403,7 +2403,7 @@ window.deleteReservation = async function (id) {
 window.shareReservations = function () {
     //const baseUrl = window.location.origin;
     const baseUrl = 'https://kolayistakip.vercel.app';
-    const reservationUrl = `${baseUrl}/alan-rezervasyon.html`;
+    const reservationUrl = `${baseUrl}/alan-rezervasyon.html?user_id=${currentUser.id}`;
 
     const message = encodeURIComponent(`Merhaba,
 Güncel olarak müsait tüm alanlarımızı görmek ve hemen rezervasyon yapmak için lütfen aşağıdaki sayfamızı inceleyiniz:
@@ -2418,7 +2418,7 @@ ${reservationUrl}`);
 window.copyReservationLink = async function () {
     //const baseUrl = window.location.origin;
     const baseUrl = 'https://kolayistakip.vercel.app';
-    const reservationUrl = `${baseUrl}/alan-rezervasyon.html`;
+    const reservationUrl = `${baseUrl}/alan-rezervasyon.html?user_id=${currentUser.id}`;
 
     try {
         await navigator.clipboard.writeText(reservationUrl);

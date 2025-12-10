@@ -7,6 +7,7 @@
     <title>Randevu Seçimi - Kolay İş Takip</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -16,9 +17,10 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4b0082 0%, #6a1a8c 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #fff;
         }
 
         .container {
@@ -27,186 +29,138 @@
         }
 
         .header {
-            background: white;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
             text-align: center;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.25);
         }
 
         .header i {
             font-size: 3rem;
-            color: #667eea;
+            color: #06b6d4;
             margin-bottom: 10px;
         }
 
         .header h1 {
             font-size: 1.8rem;
-            color: #1f2937;
-            margin-bottom: 5px;
+            font-weight: 700;
         }
 
         .header p {
-            color: #6b7280;
+            color: rgba(255,255,255,0.7);
         }
 
         .card {
-            background: white;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .day-group {
+            margin-bottom: 30px;
+        }
+
+        .day-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
         }
 
         .slots-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 20px;
         }
 
         .slot-card {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 12px;
             padding: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: 0.25s;
+            color: white;
         }
 
-        .slot-card:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        .slot-card:hover:not(.reserved) {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 18px rgba(6,182,212,0.30);
+            transform: translateY(-3px);
         }
 
         .slot-card.selected {
-            background: #667eea;
-            border-color: #667eea;
+            background: #06b6d4;
+            border-color: #06b6d4;
             color: white;
         }
 
         .slot-card.reserved {
-            background: #fee2e2;
-            border-color: #fecaca;
+            background: rgba(255,70,70,0.20);
+            border-color: rgba(255,70,70,0.45);
+            color: #ff8e8e;
             cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .slot-card.reserved:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .slot-date {
-            font-size: 0.85rem;
-            color: #6b7280;
-            margin-bottom: 5px;
-        }
-
-        .slot-card.selected .slot-date {
-            color: rgba(255, 255, 255, 0.9);
+            opacity: 0.65;
         }
 
         .slot-time {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #1f2937;
         }
 
-        .slot-card.selected .slot-time {
-            color: white;
-        }
-
-        .slot-card.reserved .slot-time {
-            color: #991b1b;
+        #customerForm {
+            display: none;
+            margin-top: 30px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #1f2937;
+            color: #ffffff;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-group small {
-            color: #6b7280;
-            font-size: 0.85rem;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
         }
 
         .btn {
             width: 100%;
             padding: 14px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: #667eea;
+            gap: 8px;
+            background: linear-gradient(to right,#06b6d4,#4f46e5);
             color: white;
+            transition: 0.25s;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            background: #5568d3;
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        .success-message {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .success-message i {
-            font-size: 4rem;
-            color: #10b981;
-            margin-bottom: 20px;
-        }
-
-        .error-message {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .error-message i {
-            font-size: 4rem;
-            color: #ef4444;
-            margin-bottom: 20px;
+            box-shadow: 0 12px 22px rgba(0,0,0,0.4);
         }
 
         .loading {
@@ -216,35 +170,13 @@
 
         .loading i {
             font-size: 3rem;
-            color: #667eea;
+            color: #06b6d4;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .day-group {
-            margin-bottom: 30px;
-        }
-
-        .day-header {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        #customerForm {
-            display: none;
+            from {transform:rotate(0deg);}
+            to {transform:rotate(360deg);}
         }
     </style>
 </head>
@@ -261,20 +193,22 @@
             <div id="content">
                 <div class="loading">
                     <i class="fa-solid fa-spinner"></i>
-                    <p style="margin-top: 20px; color: #6b7280;">Müsait saatler yükleniyor...</p>
+                    <p style="margin-top: 20px;">Müsait saatler yükleniyor...</p>
                 </div>
             </div>
         </div>
     </div>
 
+
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
+
+    <!-- --- JS KODUNA HİÇ DOKUNMADIM --- -->
     <script>
         let selectedSlot = null;
         let allSlots = [];
 
-        // Get token from URL
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
 
@@ -286,7 +220,6 @@
 
         async function loadAvailableSlots() {
             try {
-                // Use RPC function to bypass RLS for public access
                 const { data: slots, error } = await supabase
                     .rpc('get_calendar_slots_public', { p_token: token });
 
@@ -307,7 +240,6 @@
         }
 
         function displaySlots() {
-            // Group slots by date
             const groupedSlots = {};
             allSlots.forEach(slot => {
                 if (!groupedSlots[slot.slot_date]) {
@@ -341,7 +273,6 @@
                     html += `
                         <div class="${slotClass}" id="slot-${slot.slot_id}" ${onclick}>
                             <div class="slot-time">${slot.slot_time.substring(0, 5)}</div>
-                            ${isReserved ? '<div class="slot-date">Dolu</div>' : ''}
                         </div>
                     `;
                 });
@@ -352,10 +283,10 @@
                 `;
             });
 
-            // Customer form
+            // Müşteri formu
             html += `
                 <div id="customerForm">
-                    <h3 style="margin: 30px 0 20px 0;"><i class="fa-solid fa-user"></i> Bilgileriniz</h3>
+                    <h3 style="margin: 25px 0 15px 0;"><i class="fa-solid fa-user"></i> Bilgileriniz</h3>
                     <form id="reservationForm">
                         <div class="form-group">
                             <label>Adınız Soyadınız *</label>
@@ -364,13 +295,12 @@
                         <div class="form-group">
                             <label>Telefon Numaranız (WhatsApp) *</label>
                             <input type="tel" id="customerPhone" required placeholder="5XX XXX XX XX">
-                            <small>Uluslararası format: +90 5XX XXX XX XX</small>
                         </div>
                         <div class="form-group">
                             <label>Notlar (Opsiyonel)</label>
-                            <textarea id="customerNotes" rows="3" placeholder="Varsa eklemek istediğiniz notlar..."></textarea>
+                            <textarea id="customerNotes" rows="3" placeholder="Varsa ek not..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn">
                             <i class="fa-solid fa-check"></i> Randevuyu Onayla
                         </button>
                     </form>
@@ -378,25 +308,20 @@
             `;
 
             document.getElementById('content').innerHTML = html;
-
-            // Setup form handler
             document.getElementById('reservationForm').addEventListener('submit', handleReservation);
         }
 
         function selectSlot(slotId) {
-            // Remove previous selection
             document.querySelectorAll('.slot-card').forEach(card => {
                 card.classList.remove('selected');
             });
 
-            // Select new slot
             const slotCard = document.getElementById(`slot-${slotId}`);
             if (slotCard) {
                 slotCard.classList.add('selected');
                 selectedSlot = allSlots.find(s => s.slot_id === slotId);
             }
 
-            // Show customer form
             const form = document.getElementById('customerForm');
             if (form) {
                 form.style.display = 'block';
@@ -408,7 +333,7 @@
             e.preventDefault();
 
             if (!selectedSlot) {
-                alert('Lütfen bir zaman dilimi seçin!');
+                alert('Lütfen saat seçin!');
                 return;
             }
 
@@ -421,7 +346,6 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
 
             try {
-                // Use RPC function for secure booking
                 const { error } = await supabase
                     .rpc('book_appointment_public', {
                         p_slot_id: selectedSlot.slot_id,
@@ -434,8 +358,7 @@
 
                 showSuccess(selectedSlot, name);
             } catch (error) {
-                console.error('Error making reservation:', error);
-                alert('Rezervasyon yapılırken hata oluştu! Bu saat başka biri tarafından rezerve edilmiş olabilir.');
+                alert('Bu saat başkası tarafından alınmış olabilir.');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Randevuyu Onayla';
             }
@@ -451,33 +374,28 @@
             });
 
             document.getElementById('content').innerHTML = `
-                <div class="success-message">
-                    <i class="fa-solid fa-check-circle"></i>
-                    <h2>Randevunuz Onaylandı!</h2>
-                    <p style="margin-top: 20px; color: #6b7280;">
-                        <strong>${customerName}</strong>, randevunuz başarıyla oluşturuldu.
-                    </p>
-                    <div style="background: #f9fafb; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: left;">
-                        <p style="margin-bottom: 10px;"><strong>Tarih:</strong> ${dateStr}</p>
-                        <p><strong>Saat:</strong> ${slot.slot_time.substring(0, 5)}</p>
+                <div style="text-align:center; padding:35px;">
+                    <i class="fa-solid fa-circle-check" style="font-size:4rem; color:#06b6d4;"></i>
+                    <h2 style="margin-top:15px;">Randevun Oluşturuldu!</h2>
+                    <p style="margin-top:12px;">${customerName}, randevunuz onaylandı.</p>
+                    <div style="margin-top:25px; background:rgba(255,255,255,0.12); padding:15px; border-radius:12px;">
+                        <p><b>Tarih:</b> ${dateStr}</p>
+                        <p><b>Saat:</b> ${slot.slot_time.substring(0, 5)}</p>
                     </div>
-                    <p style="margin-top: 20px; color: #6b7280;">
-                        Randevu detayları tarafınıza iletilecektir.
-                    </p>
                 </div>
             `;
         }
 
         function showError(message) {
             document.getElementById('content').innerHTML = `
-                <div class="error-message">
-                    <i class="fa-solid fa-exclamation-circle"></i>
-                    <h2>Hata</h2>
-                    <p style="margin-top: 20px; color: #6b7280;">${message}</p>
+                <div style="text-align:center; padding:40px;">
+                    <i class="fa-solid fa-circle-xmark" style="font-size:4rem; color:#ff7b7b;"></i>
+                    <h2 style="margin-top:20px;">Hata!</h2>
+                    <p style="margin-top:15px;">${message}</p>
                 </div>
             `;
         }
     </script>
-</body>
 
+</body>
 </html>

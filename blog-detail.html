@@ -1,169 +1,258 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Detay - Kolay İş Takip</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .blog-content {
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            color: #334155;
-            line-height: 1.8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .blog-content h1 {
-            color: #1e293b;
-            margin-bottom: 20px;
-            font-size: 2.5rem;
-        }
+  <title>Blog Detay - Kolay İş Takip</title>
+  <meta name="description" content="Kolay İş Takip Blog Yazısı">
 
-        .blog-meta {
-            display: flex;
-            gap: 20px;
-            color: #64748b;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4f46e5",
+            purpleDeep: "#2d064e",
+            purpleMid: "#6a1a8c",
+            cyanAccent: "#06b6d4",
+          },
+        },
+      },
+    };
+  </script>
 
-        .blog-body {
-            font-size: 1.1rem;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #64748b;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-        .back-btn:hover {
-            color: #4f46e5;
-        }
-    </style>
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/ScrollTrigger.min.js"></script>
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(to bottom, #2d064e, #6a1a8c);
+    }
+    .glass {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+    }
+    .floating-blob {
+      filter: blur(30px);
+      opacity: 0.25;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 
-<body class="landing-page">
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo" style="text-decoration: none;"><i class="fa-solid fa-check-double"></i>
-                Kolay İş Takip</a>
-            <div class="nav-links">
-                <a href="index.html">Ana Sayfa</a>
-                <a href="index.html#features">Özellikler</a>
-                <a href="index.html#pricing">Fiyatlar</a>
-                <a href="about.html">Hakkımızda</a>
-                <a href="contact.html">İletişim</a>
-                <a href="blog.html">Blog</a>
-                <a href="career.html">Kariyer</a>
-                <a href="login.html" class="btn-nav">Giriş Yap</a>
-            </div>
-        </div>
+<body class="text-gray-100">
+
+<!-- NAV -->
+<header class="sticky top-0 bg-black/30 backdrop-blur-md border-b border-white/10 z-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 text-white no-underline">
+      <span class="p-2 rounded-lg glass">
+        <i class="fa-solid fa-check-double text-primary"></i>
+      </span>
+      <span class="font-semibold text-lg">Kolay İş Takip</span>
+    </a>
+
+    <nav class="hidden md:flex gap-6 text-sm">
+      <a href="index.html#features">Özellikler</a>
+      <a href="index.html#pricing">Fiyatlar</a>
+      <a href="about.html">Hakkımızda</a>
+      <a href="career.html">Kariyer</a>
+      <a href="blog.html" class="text-cyanAccent font-semibold">Blog</a>
+      <a href="contact.html">İletişim</a>
     </nav>
 
-    <header class="hero" style="padding: 120px 0 60px;">
-        <div class="container">
-            <!-- Header content will be dynamic -->
-        </div>
-    </header>
+    <div class="flex items-center gap-3">
+      <a href="login.html" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass">Giriş Yap</a>
+      <a href="login.html" class="px-4 py-2 rounded-xl font-semibold bg-gradient-to-r from-cyanAccent to-primary text-black">
+        Ücretsiz Deneme
+      </a>
+    </div>
+  </div>
+</header>
 
-    <section class="features" style="padding: 0 0 80px; background: transparent;">
-        <div class="container" style="position: relative; z-index: 1;">
-            <a href="blog.html" class="back-btn"><i class="fas fa-arrow-left"></i> Blog'a Dön</a>
+<!-- HERO -->
+<section class="relative overflow-hidden py-20">
+  <div class="absolute -left-32 top-0 w-96 h-96 bg-purple-800 rounded-full floating-blob"></div>
+  <div class="absolute right-0 bottom-0 w-96 h-96 bg-cyan-500 rounded-full floating-blob"></div>
 
-            <div id="blogDetail" class="blog-content">
-                <p style="text-align: center;">Yükleniyor...</p>
-            </div>
-        </div>
-    </section>
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+    <span class="px-4 py-2 rounded-full bg-white/10 border border-white/10 text-sm">Blog Yazısı</span>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>Kolay İş Takip</h3>
-                    <p>Küçük işletmelerin dijital dönüşüm ortağı.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Hızlı Erişim</h4>
-                    <a href="index.html">Ana Sayfa</a>
-                    <a href="index.html#features">Özellikler</a>
-                    <a href="index.html#pricing">Fiyatlar</a>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Kurumsal</h4>
-                    <a href="about.html">Hakkımızda</a>
-                    <a href="contact.html">İletişim</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="career.html">Kariyer</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
-            </div>
-        </div>
-    </footer>
+    <h1 id="post-title" class="mt-6 text-4xl lg:text-5xl font-extrabold" data-aos="fade-up">
+      Blog Başlığı Yükleniyor...
+    </h1>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="security.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            const container = document.getElementById('blogDetail');
+    <div class="mt-4 flex items-center justify-center gap-3 text-gray-300 text-sm" data-aos="fade-up" data-aos-delay="120">
+      <i class="fa-regular fa-calendar"></i>
+      <span id="post-date">Tarih yükleniyor...</span>
 
-            if (!id) {
-                window.location.href = 'blog.html';
-                return;
-            }
+      <i class="fa-solid fa-tag ml-4"></i>
+      <span id="post-category">Kategori</span>
+    </div>
+  </div>
+</section>
 
-            try {
-                const { data: post, error } = await supabase
-                    .from('blog_posts')
-                    .select('*')
-                    .eq('id', id)
-                    .single();
+<!-- CONTENT AREA -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid lg:grid-cols-12 gap-12">
 
-                if (error) throw error;
+  <!-- SIDEBAR -->
+  <aside class="lg:col-span-3 glass p-6 rounded-2xl border border-white/10 h-fit sticky top-28" data-aos="fade-right">
 
-                document.title = `${post.title} - Kolay İş Takip`;
+    <h3 class="text-lg font-semibold mb-4">Kategoriler</h3>
+    <ul class="space-y-3 text-gray-300 text-sm">
+      <li><a href="blog.html" class="hover:text-cyanAccent">Genel</a></li>
+      <li><a href="blog.html" class="hover:text-cyanAccent">İş Yönetimi</a></li>
+      <li><a href="blog.html" class="hover:text-cyanAccent">Personel Yönetimi</a></li>
+      <li><a href="blog.html" class="hover:text-cyanAccent">Teklif / CRM</a></li>
+      <li><a href="blog.html" class="hover:text-cyanAccent">Dijitalleşme</a></li>
+    </ul>
 
-                container.innerHTML = `
-                    <h1>${Security.sanitize(post.title)}</h1>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> ${new Date(post.created_at).toLocaleDateString('tr-TR')}</span>
-                        <span><i class="far fa-folder"></i> ${Security.sanitize(post.category)}</span>
-                    </div>
-                    <div class="blog-body">
-                        ${Security.sanitize(post.content).replace(/\n/g, '<br>')}
-                    </div>
-                `;
+    <div class="border-t border-white/10 my-6"></div>
 
-            } catch (error) {
-                console.error('Error loading post:', error);
-                if (container) {
-                    container.innerHTML = '<p style="text-align: center; color: #ef4444;">Yazı yüklenirken bir hata oluştu.</p>';
-                }
-            }
-        });
-    </script>
+    <h3 class="text-lg font-semibold mb-4">Son Yazılar</h3>
+    <ul id="recent-posts" class="space-y-4 text-sm text-gray-300">
+      <li>Yükleniyor...</li>
+    </ul>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <article class="lg:col-span-9 glass p-10 rounded-3xl border border-white/10 leading-relaxed" data-aos="fade-up">
+
+    <div id="post-content" class="prose prose-invert max-w-none">
+      <p>İçerik yükleniyor...</p>
+    </div>
+
+    <div class="mt-10 p-6 glass rounded-xl border border-white/10">
+      <h4 class="text-lg font-semibold mb-2">Yazıyı Faydalı Buldunuz mu?</h4>
+      <p class="text-sm text-gray-300 mb-4">Geri bildiriminiz bizim için çok değerli.</p>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30">Evet</button>
+        <button class="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30">Hayır</button>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black/60 py-12 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-gray-300">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h5 class="text-white font-semibold">Kolay İş Takip</h5>
+        <p class="text-sm mt-2">Modern işletmeler için dijital iş takip platformu.</p>
+      </div>
+
+      <div>
+        <h6 class="font-semibold">Hızlı Erişim</h6>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li><a href="index.html">Ana Sayfa</a></li>
+          <li><a href="index.html#features">Özellikler</a></li>
+          <li><a href="login.html">Giriş Yap</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h6 class="font-semibold">Kurumsal</h6>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li><a href="about.html">Hakkımızda</a></li>
+          <li><a href="contact.html">İletişim</a></li>
+          <li><a href="career.html">Kariyer</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h6 class="font-semibold">Belgeler</h6>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li><a href="gizlilik-politikasi.html">Gizlilik Politikası</a></li>
+          <li><a href="kullanim-sartlari.html">Kullanım Şartları</a></li>
+          <li><a href="kvkk.html">KVKK</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
+      <div>© 2024 Kolay İş Takip</div>
+    </div>
+  </div>
+</footer>
+
+<!-- SUPABASE LOAD BLOG POST -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<script>
+AOS.init({ once: true });
+
+gsap.to(".floating-blob", {
+  y: -50,
+  duration: 3,
+  repeat: -1,
+  yoyo: true,
+  ease: "sine.inOut"
+});
+
+const supabaseClient = supabase;
+
+async function loadPost() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  if (!slug) return;
+
+  const { data, error } = await supabaseClient
+    .from("blog")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (!data) return;
+
+  document.getElementById("post-title").innerText = data.title;
+  document.getElementById("post-date").innerText = new Date(data.created_at).toLocaleDateString("tr-TR");
+  document.getElementById("post-category").innerText = data.category;
+
+  document.getElementById("post-content").innerHTML = data.content;
+}
+
+async function loadRecentPosts() {
+  const { data } = await supabaseClient
+    .from("blog")
+    .select("title, slug")
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  const list = document.getElementById("recent-posts");
+  list.innerHTML = "";
+
+  data.forEach(post => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="blog-detail.html?slug=${post.slug}" class="hover:text-cyanAccent">${post.title}</a>`;
+    list.appendChild(li);
+  });
+}
+
+loadPost();
+loadRecentPosts();
+</script>
+
 </body>
-
 </html>

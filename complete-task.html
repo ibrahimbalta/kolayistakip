@@ -1,524 +1,196 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Görev Tamamla</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Görev Tamamla | Kolay İş Takip</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5',
+            cyanAccent: '#06b6d4',
+            purpleDeep: '#2d064e',
+            purpleMid: '#6a1a8c'
+          }
         }
+      }
+    }
+  </script>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 100%;
-            padding: 2.5rem;
-            text-align: center;
-        }
+  <!-- Lottie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
-        .icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2.5rem;
-            color: white;
-        }
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-        h1 {
-            font-size: 1.75rem;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
+  <style>
+    body { background: linear-gradient(135deg,#4b0082 0%,#6a1a8c 100%); }
 
-        .company-name {
-            color: #6366f1;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-        }
+    /* glass style (index.html ile aynı) */
+    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
 
-        .task-box {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid #6366f1;
-        }
-
-        .task-label {
-            font-size: 0.875rem;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .task-desc {
-            font-size: 1.125rem;
-            color: #1f2937;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-
-        .employee-name {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .btn-complete {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-        }
-
-        .btn-complete:active {
-            transform: translateY(0);
-        }
-
-        .success-message {
-            display: none;
-            background: #dcfce7;
-            color: #166534;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-weight: 600;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        .error-message {
-            display: none;
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-weight: 600;
-        }
-
-        .error-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        .loading {
-            display: none;
-        }
-
-        .loading.show {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .completed-badge {
-            display: none;
-            background: #dcfce7;
-            color: #166534;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .completed-badge.show {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-    </style>
+    /* fade */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn 0.7s ease both; }
+  </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="icon">
-            <i class="fa-solid fa-clipboard-check"></i>
-        </div>
+<body class="font-inter min-h-screen flex items-center justify-center p-4 text-gray-50">
 
-        <h1 id="taskTitle">Görev Detayı</h1>
-        <div class="company-name" id="companyName">Yükleniyor...</div>
+<!-- Success Modal -->
+<div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-xl hidden items-center justify-center z-50">
+  <div class="glass p-8 rounded-3xl border border-white/10 w-full max-w-sm text-center animate-fadeIn card-glow">
+      <div id="lottieSuccess" class="w-40 h-40 mx-auto mb-4"></div>
+      <h2 class="text-white text-2xl font-bold mb-3">Görev Tamamlandı!</h2>
+      <p class="text-gray-200 mb-6">Göreviniz başarıyla işaretlendi.</p>
+      <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
+        Kapat
+      </button>
+  </div>
+</div>
 
-        <div id="completedBadge" class="completed-badge">
-            <i class="fa-solid fa-check-circle"></i>
-            Bu görev tamamlanmış
-        </div>
 
-        <div class="task-box">
-            <div class="task-label">Göreviniz</div>
-            <div class="task-desc" id="taskDescription">Yükleniyor...</div>
-        </div>
+<!-- MAIN CARD -->
+<div class="glass p-10 rounded-3xl border border-white/10 text-center animate-fadeIn max-w-lg w-full card-glow">
 
-        <div class="employee-name" id="employeeName">
-            <i class="fa-solid fa-user"></i> Yükleniyor...
-        </div>
+  <div class="flex items-center justify-between mb-6">
+    <div class="text-left">
+      <h1 id="taskTitle" class="text-xl font-bold text-white">Görev</h1>
+      <p id="companyName" class="text-cyanAccent text-sm">Yükleniyor...</p>
+    </div>
+    <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-md">
+      <i class="fa-solid fa-clipboard-check text-white text-2xl"></i>
+    </div>
+  </div>
 
-        <button id="completeBtn" class="btn btn-complete">
-            <i class="fa-solid fa-check loading"></i>
-            <i class="fa-solid fa-check-circle"></i>
-            Görevi Tamamladım
-        </button>
+  <!-- Progress Bar -->
+  <div class="w-full bg-white/10 rounded-full h-3 mb-6 overflow-hidden">
+    <div id="progressBar" class="h-3 bg-cyanAccent w-1/4 transition-all"></div>
+  </div>
 
-        <div id="successMessage" class="success-message">
-            <i class="fa-solid fa-check-circle"></i> Görev başarıyla tamamlandı!
-        </div>
+  <!-- Task Description -->
+  <div class="glass border border-white/10 rounded-2xl p-6 text-left shadow-inner mb-6">
+    <div class="text-xs text-gray-300 uppercase tracking-wide mb-2 font-semibold">Görev Açıklaması</div>
+    <div id="taskDescription" class="text-white text-lg leading-relaxed">Yükleniyor...</div>
+  </div>
 
-        <div id="errorMessage" class="error-message">
-            <i class="fa-solid fa-exclamation-circle"></i> Bir hata oluştu. Lütfen tekrar deneyin.
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2.5rem;
-            color: white;
-            }
+  <!-- Employee -->
+  <div id="employeeName" class="text-gray-300 mb-6 flex items-center justify-center gap-2">
+    <i class="fa-solid fa-user"></i> Yükleniyor...
+  </div>
 
-            h1 {
-            font-size: 1.75rem;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-            }
+  <!-- Complete Button -->
+  <button id="completeBtn" 
+    class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition disabled:opacity-40 disabled:cursor-not-allowed">
+    <i class="fa-solid fa-spinner loading hidden animate-spin"></i>
+    <i class="fa-solid fa-check-circle"></i>
+    Görevi Tamamladım
+  </button>
 
-            .company-name {
-            color: #6366f1;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            }
+  <div id="errorMessage" class="hidden bg-red-500/20 text-red-200 border border-red-500/40 p-4 rounded-xl mt-4 font-semibold">
+  </div>
 
-            .task-box {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid #6366f1;
-            }
+</div>
 
-            .task-label {
-            font-size: 0.875rem;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-            }
 
-            .task-desc {
-            font-size: 1.125rem;
-            color: #1f2937;
-            font-weight: 500;
-            line-height: 1.6;
-            }
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
-            .employee-name {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            }
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const taskId = urlParams.get("id");
 
-            .btn {
-            width: 100%;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            }
+const progressBar = document.getElementById("progressBar");
+const completeBtn = document.getElementById("completeBtn");
+const errorMessage = document.getElementById("errorMessage");
 
-            .btn-complete {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            }
+function updateProgress(percent) {
+  progressBar.style.width = percent + "%";
+}
 
-            .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-            }
+async function loadTask() {
+  updateProgress(20);
 
-            .btn-complete:active {
-            transform: translateY(0);
-            }
+  try {
+    const { data, error } = await supabase.rpc("get_task_details_public", { p_task_id: taskId });
+    if (error) throw error;
 
-            .success-message {
-            display: none;
-            background: #dcfce7;
-            color: #166534;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-weight: 600;
-            }
+    updateProgress(60);
 
-            .success-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-            }
+    const task = data?.[0];
+    if (!task) throw new Error("Görev bulunamadı");
 
-            .error-message {
-            display: none;
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-weight: 600;
-            }
+    document.getElementById("taskDescription").textContent = task.description;
+    document.getElementById("employeeName").innerHTML = `<i class='fa-solid fa-user'></i> ${task.employee_name}`;
+    document.getElementById("companyName").textContent = task.company_name || "Firma";
 
-            .error-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-            }
+    if (task.completed) {
+      completeBtn.classList.add("hidden");
+      updateProgress(100);
+    }
 
-            .loading {
-            display: none;
-            }
+    updateProgress(100);
+  } catch (err) {
+    errorMessage.textContent = "Görev yüklenirken hata oluştu.";
+    errorMessage.classList.remove("hidden");
+    completeBtn.disabled = true;
+  }
+}
 
-            .loading.show {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-            }
+function openSuccessModal() {
+  document.getElementById("successModal").classList.remove("hidden");
 
-            @keyframes spin {
-            0% {
-            transform: rotate(0deg);
-            }
+  lottie.loadAnimation({
+    container: document.getElementById("lottieSuccess"),
+    renderer: "svg",
+    loop: false,
+    autoplay: true,
+    path: "https://lottie.host/20c232f1-0931-431a-bb03-27f3c32a945e/3Wc58xA1oE.json"
+  });
 
-            100% {
-            transform: rotate(360deg);
-            }
-            }
+  confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+}
 
-            @keyframes slideIn {
-            from {
-            opacity: 0;
-            transform: translateY(-10px);
-            }
+function closeModal() {
+  document.getElementById("successModal").classList.add("hidden");
+}
 
-            to {
-            opacity: 1;
-            transform: translateY(0);
-            }
-            }
+completeBtn.addEventListener("click", async () => {
+  completeBtn.disabled = true;
+  completeBtn.querySelector(".loading").classList.remove("hidden");
+  completeBtn.querySelector(".fa-check-circle").classList.add("hidden");
 
-            .completed-badge {
-            display: none;
-            background: #dcfce7;
-            color: #166534;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            }
+  try {
+    const { error } = await supabase.rpc("complete_task_public", { p_task_id: taskId });
+    if (error) throw error;
 
-            .completed-badge.show {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            }
-            </style>
-            </head>
+    openSuccessModal();
+    completeBtn.classList.add("hidden");
+    updateProgress(100);
+  } catch (err) {
+    errorMessage.textContent = "Görev tamamlanırken hata oluştu.";
+    errorMessage.classList.remove("hidden");
+    completeBtn.disabled = false;
+  }
 
-            <body>
-                <div class="container">
-                    <div class="icon">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                    </div>
+  completeBtn.querySelector(".loading").classList.add("hidden");
+  completeBtn.querySelector(".fa-check-circle").classList.remove("hidden");
+});
 
-                    <h1 id="taskTitle">Görev Detayı</h1>
-                    <div class="company-name" id="companyName">Yükleniyor...</div>
+loadTask();
+</script>
 
-                    <div id="completedBadge" class="completed-badge">
-                        <i class="fa-solid fa-check-circle"></i>
-                        Bu görev tamamlanmış
-                    </div>
-
-                    <div class="task-box">
-                        <div class="task-label">Göreviniz</div>
-                        <div class="task-desc" id="taskDescription">Yükleniyor...</div>
-                    </div>
-
-                    <div class="employee-name" id="employeeName">
-                        <i class="fa-solid fa-user"></i> Yükleniyor...
-                    </div>
-
-                    <button id="completeBtn" class="btn btn-complete">
-                        <i class="fa-solid fa-check loading"></i>
-                        <i class="fa-solid fa-check-circle"></i>
-                        Görevi Tamamladım
-                    </button>
-
-                    <div id="successMessage" class="success-message">
-                        <i class="fa-solid fa-check-circle"></i> Görev başarıyla tamamlandı!
-                    </div>
-
-                    <div id="errorMessage" class="error-message">
-                        <i class="fa-solid fa-exclamation-circle"></i> Bir hata oluştu. Lütfen tekrar deneyin.
-                    </div>
-                </div>
-
-                <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-                <script src="supabase-config.js"></script>
-                <script>
-                    // Get task ID from URL
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const taskId = urlParams.get('id');
-
-                    const completeBtn = document.getElementById('completeBtn');
-                    const successMessage = document.getElementById('successMessage');
-                    const errorMessage = document.getElementById('errorMessage');
-                    const completedBadge = document.getElementById('completedBadge');
-
-                    // Load task details
-                    async function loadTask() {
-                        if (!taskId) {
-                            document.getElementById('taskDescription').textContent = 'Geçersiz görev linki';
-                            completeBtn.disabled = true;
-                            return;
-                        }
-
-                        try {
-                            // Use RPC function to bypass RLS for public access
-                            const { data, error } = await supabase
-                                .rpc('get_task_details_public', { p_task_id: taskId });
-
-                            if (error) throw error;
-
-                            // RPC returns an array of rows
-                            const taskData = data && data.length > 0 ? data[0] : null;
-
-                            if (taskData) {
-                                document.getElementById('taskDescription').textContent = taskData.description;
-                                document.getElementById('employeeName').innerHTML = `<i class="fa-solid fa-user"></i> ${taskData.employee_name}`;
-                                document.getElementById('companyName').textContent = taskData.company_name || 'Firma';
-
-                                if (taskData.completed) {
-                                    completeBtn.style.display = 'none';
-                                    completedBadge.classList.add('show');
-                                }
-                            } else {
-                                throw new Error('Görev bulunamadı');
-                            }
-                        } catch (error) {
-                            console.error('Error loading task:', error);
-                            errorMessage.textContent = 'Görev yüklenirken bir hata oluştu veya görev bulunamadı.';
-                            errorMessage.classList.add('show');
-                            completeBtn.disabled = true;
-                        }
-                    }
-
-                    // Complete task
-                    completeBtn.addEventListener('click', async () => {
-                        completeBtn.disabled = true;
-                        const icon = completeBtn.querySelector('.fa-check-circle');
-                        const loading = completeBtn.querySelector('.loading');
-                        icon.style.display = 'none';
-                        loading.classList.add('show');
-
-                        try {
-                            // Use RPC function for secure completion
-                            const { error } = await supabase
-                                .rpc('complete_task_public', { p_task_id: taskId });
-
-                            if (error) throw error;
-
-                            loading.classList.remove('show');
-                            completeBtn.style.display = 'none';
-                            successMessage.classList.add('show');
-                            completedBadge.classList.add('show');
-
-                            // Confetti effect (optional)
-                            setTimeout(() => {
-                                document.body.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                            }, 300);
-
-                        } catch (error) {
-                            console.error('Error completing task:', error);
-                            loading.classList.remove('show');
-                            icon.style.display = 'inline';
-                            completeBtn.disabled = false;
-                            errorMessage.classList.add('show');
-                        }
-                    });
-
-                    // Load task on page load
-                    loadTask();
-                </script>
-            </body>
-
+</body>
 </html>

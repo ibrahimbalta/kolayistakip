@@ -24,8 +24,11 @@ alter table public.contact_messages enable row level security;
 alter table public.blog_posts enable row level security;
 
 -- Policies for contact_messages
+-- Allow ANYONE (including unauthenticated/anon users) to INSERT
 create policy "Enable insert for everyone" on public.contact_messages
-  for insert with check (true);
+  for insert 
+  to anon, authenticated
+  with check (true);
 
 create policy "Enable read for admins only" on public.contact_messages
   for select using (

@@ -2,342 +2,310 @@
 <html lang="tr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kullanım Şartları - Kolay İş Takip</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: #0f172a;
-            color: #f1f5f9;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kullanım Şartları - Kolay İş Takip</title>
+  <meta name="description" content="Kolay İş Takip Kullanım Şartları">
 
-        .legal-content-wrapper {
-            padding: 120px 0 60px;
-        }
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4f46e5",
+            purpleDeep: "#2d064e",
+            purpleMid: "#6a1a8c",
+            cyanAccent: "#06b6d4",
+          },
+        },
+      },
+    };
+  </script>
 
-        .legal-header-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-            margin-bottom: 60px;
-            border-radius: 24px;
-        }
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-        .legal-header-section h1 {
-            font-size: 3rem;
-            margin: 0 0 15px 0;
-            font-weight: 800;
-        }
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-        .legal-header-section p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            margin: 0;
-        }
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-        .legal-article {
-            background: #1e293b;
-            padding: 60px;
-            border-radius: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-            margin-bottom: 40px;
-        }
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
 
-        .legal-article h2 {
-            color: #f1f5f9;
-            font-size: 2rem;
-            margin: 40px 0 20px 0;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #334155;
-            font-weight: 700;
-        }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
 
-        .legal-article h2:first-of-type {
-            margin-top: 0;
-        }
-
-        .legal-article h3 {
-            color: #cbd5e1;
-            font-size: 1.5rem;
-            margin: 30px 0 15px 0;
-            font-weight: 600;
-        }
-
-        .legal-article p,
-        .legal-article li {
-            color: #cbd5e1;
-            line-height: 1.8;
-            margin: 15px 0;
-            font-size: 1.05rem;
-        }
-
-        .legal-article ul,
-        .legal-article ol {
-            padding-left: 30px;
-            margin: 20px 0;
-        }
-
-        .legal-article li {
-            margin: 10px 0;
-        }
-
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
-            padding: 30px;
-            border-left: 5px solid #f59e0b;
-            border-radius: 12px;
-            margin: 30px 0;
-        }
-
-        .highlight-box strong {
-            color: #fbbf24;
-            font-size: 1.1rem;
-        }
-
-        .highlight-box p {
-            color: #e5e7eb;
-        }
-
-        @media (max-width: 768px) {
-            .legal-content-wrapper {
-                padding: 100px 0 40px;
-            }
-
-            .legal-header-section h1 {
-                font-size: 2rem;
-            }
-
-            .legal-article {
-                padding: 30px 20px;
-            }
-
-            .legal-article h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    .floating-blob {
+      filter: blur(20px);
+      opacity: 0.25;
+    }
+  </style>
 </head>
 
-<body class="landing-page">
-    <nav class="navbar" aria-label="Ana gezinme">
-        <div class="container">
-            <a href="index.html" class="logo" style="text-decoration: none;"><i class="fa-solid fa-check-double"></i>
-                Kolay İş Takip</a>
-            <button class="hamburger-menu" aria-label="Menüyü Aç/Kapat">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="nav-links">
-                <a href="index.html">Ana Sayfa</a>
-                <a href="index.html#features">Özellikler</a>
-                <a href="index.html#pricing">Fiyatlar</a>
-                <a href="about.html">Hakkımızda</a>
-                <a href="contact.html">İletişim</a>
-                <a href="login.html" class="btn-nav">Giriş Yap</a>
-            </div>
-        </div>
-    </nav>
+<body class="bg-gradient-to-b from-purpleDeep to-purpleMid text-gray-100">
 
-    <div class="legal-content-wrapper">
-        <div class="container">
-            <div class="legal-header-section">
-                <h1>📋 Kullanım Şartları</h1>
-                <p>Son Güncellenme: 28 Kasım 2025</p>
-            </div>
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center py-4">
+      <a href="index.html" class="flex items-center gap-3 text-white no-underline">
+        <span class="p-2 rounded-lg glass">
+          <i class="fa-solid fa-check-double text-primary"></i>
+        </span>
+        <span class="font-semibold text-lg">Kolay İş Takip</span>
+      </a>
 
-            <div class="legal-article">
-                <div class="highlight-box">
-                    <strong>Önemli:</strong> Kolay İş Takip sistemini kullanarak aşağıdaki şartları ve koşulları kabul
-                    etmiş sayılırsınız. Lütfen kullanmaya başlamadan önce dikkatlice okuyunuz.
-                </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="index.html#features" class="hover:text-cyanAccent transition">Özellikler</a>
+        <a href="index.html#pricing" class="hover:text-cyanAccent transition">Fiyatlar</a>
+        <a href="sektorler.html" class="hover:text-cyanAccent transition">Sektörler</a>
+        <a href="about.html" class="hover:text-cyanAccent transition">Hakkımızda</a>
+        <a href="career.html" class="hover:text-cyanAccent transition">Kariyer</a>
+        <a href="blog.html" class="hover:text-cyanAccent transition">Blog</a>
+        <a href="contact.html" class="hover:text-cyanAccent transition">İletişim</a>
+      </nav>
 
-                <h2>1. Genel Hükümler</h2>
-                <p>Kolay İş Takip, işletmelerin iş süreçlerini dijitalleştirmelerine yardımcı olan bir SaaS (Software
-                    as a Service) platformudur. Bu platform üzerinden görev yönetimi, çalışan takibi, randevu planlama
-                    ve teklif oluşturma gibi hizmetler sunulmaktadır.</p>
-
-                <h2>2. Hizmetin Kapsamı</h2>
-                <h3>2.1 Sunulan Özellikler</h3>
-                <ul>
-                    <li>Görev oluşturma ve takip sistemi</li>
-                    <li>Çalışan yönetimi</li>
-                    <li>Randevu planlama ve yönetimi</li>
-                    <li>Müşterilere teklif gönderimi</li>
-                    <li>WhatsApp entegrasyonu</li>
-                    <li>Performans analizi ve raporlama</li>
-                </ul>
-
-                <h3>2.2 Deneme Süresi</h3>
-                <p>Yeni kullanıcılara 7 günlük ücretsiz deneme süresi tanınmaktadır. Deneme süresinin bitiminde,
-                    hizmete devam etmek için premium üyelik gerekmektedir.</p>
-
-                <h2>3. Kullanıcı Sorumlulukları</h2>
-                <h3>3.1 Hesap Güvenliği</h3>
-                <ul>
-                    <li>Hesap bilgilerinizi güvenli tutmak sizin sorumluluğunuzdadır</li>
-                    <li>Şifrenizi kimseyle paylaşmayınız</li>
-                    <li>Hesabınızda yetkisiz bir aktivite fark ederseniz derhal bizimle iletişime geçiniz</li>
-                    <li>Hesabınız üzerinden gerçekleşen tüm işlemlerden siz sorumlusunuz</li>
-                </ul>
-
-                <h3>3.2 İçerik Sorumluluğu</h3>
-                <ul>
-                    <li>Sisteme yüklediğiniz tüm veriler (müşteri bilgileri, görevler, vb.) sizin sorumluluğunuzdadır
-                    </li>
-                    <li>Yasadışı, zararlı, tehditkar, hakaret içeren içerik paylaşılamaz</li>
-                    <li>Telif hakkı ihlali içeren içerikler paylaşılamaz</li>
-                </ul>
-
-                <h2>4. Hizmet Kullanım Kuralları</h2>
-                <h3>4.1 Yasak Faaliyetler</h3>
-                <p>Aşağıdaki faaliyetler kesinlikle yasaktır:</p>
-                <ul>
-                    <li>Sistemi hack'lemeye veya güvenlik açıklarını istismar etmeye çalışmak</li>
-                    <li>Diğer kullanıcıların hesaplarına yetkisiz erişim sağlamak</li>
-                    <li>Spam veya otomatik sistem kullanarak toplu mesaj göndermek</li>
-                    <li>Sistemi aşırı yükleyecek şekilde kullanmak</li>
-                    <li>Hizmeti tersine mühendislik yapmak veya kopyalamak</li>
-                </ul>
-
-                <h2>5. Ödeme ve Abonelik</h2>
-                <h3>5.1 Premium Üyelik</h3>
-                <p>Premium üyelik ücretleri aylık veya yıllık olarak tahsil edilir. Ücretler önceden bildirilmeksizin
-                    değişebilir, ancak mevcut aboneler için geçerli dönem boyunca ücret değişikliği yapılmaz.</p>
-
-                <h3>5.2 İptal ve İade</h3>
-                <ul>
-                    <li>Aboneliğinizi istediğiniz zaman iptal edebilirsiniz</li>
-                    <li>İptal işlemi sonrası mevcut dönem sonuna kadar hizmete erişiminiz devam eder</li>
-                    <li>Ödeme yapıldıktan sonra iade talepleri değerlendirilmez</li>
-                </ul>
-
-                <h2>6. Fikri Mülkiyet Hakları</h2>
-                <p>Kolay İş Takip platformu, yazılımı, tasarımı, logoları ve tüm içeriği bizim mülkiyetimizde veya
-                    lisansımız altındadır. Bu materyaller telif hakkı, marka ve diğer fikri mülkiyet yasaları ile
-                    korunmaktadır.</p>
-
-                <h2>7. Hizmetin Askıya Alınması veya Sonlandırılması</h2>
-                <p>Aşağıdaki durumlarda hesabınızı askıya alabilir veya sonlandırabiliriz:</p>
-                <ul>
-                    <li>Kullanım şartlarının ihlali</li>
-                    <li>Ödeme yapılmaması</li>
-                    <li>Yasadışı faaliyetler</li>
-                    <li>Diğer kullanıcılara zarar verici davranışlar</li>
-                </ul>
-
-                <h2>8. Veri Yedekleme</h2>
-                <p>Verileriniz düzenli olarak yedeklenmekle birlikte, kendi verilerinizin yedeğini almanız önerilir.
-                    Veri kaybından dolayı sorumluluk kabul etmemekteyiz.</p>
-
-                <h2>9. Sorumluluk Reddi</h2>
-                <p>Kolay İş Takip "olduğu gibi" sunulmaktadır. Hizmetin kesintisiz, hatasız veya güvenli olacağına dair
-                    garanti vermemekteyiz. Hizmet kullanımından kaynaklanan dolaylı zararlardan sorumlu değiliz.</p>
-
-                <h2>10. Değişiklikler</h2>
-                <p>Bu kullanım şartlarını istediğimiz zaman güncelleme hakkını saklı tutarız. Önemli değişiklikler
-                    e-posta yoluyla bildirilecektir. Değişikliklerden sonra hizmeti kullanmaya devam etmeniz, yeni
-                    şartları kabul ettiğiniz anlamına gelir.</p>
-
-                <h2>11. İletişim</h2>
-                <p>Kullanım şartları ile ilgili sorularınız için bizimle iletişime geçebilirsiniz:</p>
-                <ul>
-                    <li><strong>E-posta:</strong> destek@kolayistakip.com</li>
-                    <li><strong>Adres:</strong> [Şirket Adresiniz]</li>
-                </ul>
-
-                <div class="highlight-box" style="margin-top: 50px;">
-                    <p><strong>Son Not:</strong> Bu kullanım şartları Türkiye Cumhuriyeti yasalarına tabidir.
-                        Uyuşmazlık durumunda Türkiye mahkemeleri yetkilidir.</p>
-                </div>
-            </div>
-        </div>
+      <div class="flex items-center gap-3">
+        <a href="login.html" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş Yap</a>
+        <a href="login.html" class="px-4 py-2 rounded-xl font-semibold bg-gradient-to-r from-cyanAccent to-primary text-black shadow-lg">
+          Ücretsiz Deneme
+        </a>
+        <button id="mobileBtn" class="md:hidden p-2 rounded-lg glass">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>Kolay İş Takip</h3>
-                    <p>Küçük işletmelerin dijital dönüşüm ortağı. İşlerinizi kolaylaştırın, verimliliğinizi artırın.
-                    </p>
-                    <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Hızlı Erişim</h4>
-                    <a href="index.html#features">Özellikler</a>
-                    <a href="index.html#pricing">Fiyatlar</a>
-                    <a href="login.html">Giriş Yap</a>
-                    <a href="login.html">Kayıt Ol</a>
-                </div>
-                <div class="footer-links-group">
-                    <h4>Kurumsal</h4>
-                    <a href="about.html">Hakkımızda</a>
-                    <a href="contact.html">İletişim</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="career.html">Kariyer</a>
-                </div>
-                <div class="footer-newsletter">
-                    <h4>Bültenimize Abone Olun</h4>
-                    <p>Yeniliklerden haberdar olmak için e-posta adresinizi bırakın.</p>
-                    <form class="newsletter-form"
-                        onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
-                        <input type="email" placeholder="E-posta adresiniz" required>
-                        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="footer-legal">
-                    <a href="kullanim-sartlari.html">Kullanım Şartları</a>
-                    <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
-                    <a href="kvkk.html">KVKK</a>
-                </div>
-                <p>&copy; 2024 Kolay İş Takip. Tüm hakları saklıdır.</p>
-            </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden px-6 pb-6 hidden">
+      <div class="flex flex-col gap-3">
+        <a href="index.html#features" class="py-2">Özellikler</a>
+        <a href="index.html#pricing" class="py-2">Fiyatlar</a>
+        <a href="sektorler.html" class="py-2">Sektörler</a>
+        <a href="about.html" class="py-2">Hakkımızda</a>
+        <a href="career.html" class="py-2">Kariyer</a>
+        <a href="blog.html" class="py-2">Blog</a>
+        <a href="contact.html" class="py-2">İletişim</a>
+        <a href="login.html" class="py-2 font-medium">Giriş Yap</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-20 text-center">
+    <div class="absolute -left-20 -top-20 w-96 h-96 bg-purple-700 rounded-full floating-blob"></div>
+    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-600 rounded-full floating-blob"></div>
+
+    <div class="relative z-10">
+      <h1 class="text-4xl lg:text-5xl font-extrabold mb-4" data-aos="fade-up">Kullanım Şartları</h1>
+      <p class="max-w-2xl mx-auto text-gray-300 text-lg" data-aos="fade-up" data-aos-delay="120">
+        Kolay İş Takip platformunu kullanarak aşağıdaki şartları kabul etmiş olursunuz.
+      </p>
+      <p class="text-sm text-gray-400 mt-3">Son Güncelleme: 28 Kasım 2025</p>
+    </div>
+  </section>
+
+  <!-- CONTENT AREA -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid lg:grid-cols-[260px_1fr] gap-10">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="hidden lg:block glass p-6 rounded-2xl h-fit sticky top-24 border border-white/10" data-aos="fade-right">
+      <h3 class="text-xl font-semibold mb-4">Bu Sayfada</h3>
+      <ul class="space-y-3 text-gray-300 text-sm">
+        <li><a href="#genel" class="hover:text-cyanAccent">1. Genel Hükümler</a></li>
+        <li><a href="#hizmet" class="hover:text-cyanAccent">2. Hizmetin Kapsamı</a></li>
+        <li><a href="#kullanici" class="hover:text-cyanAccent">3. Kullanıcı Sorumlulukları</a></li>
+        <li><a href="#yasak" class="hover:text-cyanAccent">4. Yasak Faaliyetler</a></li>
+        <li><a href="#odeme" class="hover:text-cyanAccent">5. Ödeme ve Abonelik</a></li>
+        <li><a href="#fikri" class="hover:text-cyanAccent">6. Fikri Mülkiyet</a></li>
+        <li><a href="#askiya" class="hover:text-cyanAccent">7. Hizmetin Askıya Alınması</a></li>
+        <li><a href="#yedek" class="hover:text-cyanAccent">8. Veri Yedekleme</a></li>
+        <li><a href="#sorumluluk" class="hover:text-cyanAccent">9. Sorumluluk Reddi</a></li>
+        <li><a href="#degisiklik" class="hover:text-cyanAccent">10. Değişiklikler</a></li>
+        <li><a href="#iletisim" class="hover:text-cyanAccent">11. İletişim</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <article class="glass p-10 rounded-3xl border border-white/10 leading-relaxed text-gray-200" data-aos="fade-up">
+
+      <h2 id="genel" class="text-2xl font-bold mb-4">1. Genel Hükümler</h2>
+      <p class="mb-6">
+        Kolay İş Takip, işletmelerin iş süreçlerini dijitalleştirmelerine yardımcı olan bir SaaS platformudur. Görev yönetimi,
+        çalışan takibi, randevu planlama ve teklif oluşturma gibi hizmetler sunmaktadır.
+      </p>
+
+      <h2 id="hizmet" class="text-2xl font-bold mt-10 mb-4">2. Hizmetin Kapsamı</h2>
+
+      <h3 class="text-xl font-semibold mb-2">2.1 Sunulan Özellikler</h3>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Görev oluşturma ve takip sistemi</li>
+        <li>Çalışan yönetimi</li>
+        <li>Randevu planlama ve yönetimi</li>
+        <li>Müşterilere teklif gönderimi</li>
+        <li>WhatsApp entegrasyonu</li>
+        <li>Performans analizi ve raporlama</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-2">2.2 Deneme Süresi</h3>
+      <p class="mb-6">
+        Yeni kullanıcılara 7 günlük ücretsiz deneme süresi tanınmaktadır. Süre bitince hizmete devam etmek için premium üyelik gereklidir.
+      </p>
+
+      <h2 id="kullanici" class="text-2xl font-bold mt-10 mb-4">3. Kullanıcı Sorumlulukları</h2>
+
+      <h3 class="text-xl font-semibold mb-2">3.1 Hesap Güvenliği</h3>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Hesap bilgilerinizi güvenli tutmak sizin sorumluluğunuzdadır</li>
+        <li>Şifrenizi kimseyle paylaşmayınız</li>
+        <li>Şüpheli bir aktivite fark ederseniz bize bildirin</li>
+        <li>Hesabınızdan yapılan tüm işlemlerden siz sorumlusunuz</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mb-2">3.2 İçerik Sorumluluğu</h3>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Sisteme yüklenen tüm içeriklerden kullanıcı sorumludur</li>
+        <li>Yasadışı veya hakaret içeren içerikler paylaşılmaz</li>
+        <li>Telif hakkı ihlal eden içeriklere izin verilmez</li>
+      </ul>
+
+      <h2 id="yasak" class="text-2xl font-bold mt-10 mb-4">4. Hizmet Kullanım Kuralları</h2>
+
+      <h3 class="text-xl font-semibold mb-2">4.1 Yasak Faaliyetler</h3>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Sistemi hack'leme girişimleri</li>
+        <li>Yetkisiz hesap erişimi</li>
+        <li>Spam veya toplu mesaj gönderme</li>
+        <li>Sistemi aşırı yükleme</li>
+        <li>Hizmeti tersine mühendislik yapma</li>
+      </ul>
+
+      <h2 id="odeme" class="text-2xl font-bold mt-10 mb-4">5. Ödeme ve Abonelik</h2>
+
+      <h3 class="text-xl font-semibold mb-2">5.1 Premium Üyelik</h3>
+      <p class="mb-6">
+        Üyelik ücretleri aylık veya yıllık olarak tahsil edilir ve değişiklik hakkı saklıdır.
+      </p>
+
+      <h3 class="text-xl font-semibold mb-2">5.2 İptal ve İade</h3>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Abonelik istediğiniz zaman iptal edilebilir</li>
+        <li>Dönem sonuna kadar erişim devam eder</li>
+        <li>Ödeme yapıldıktan sonra iade yapılmaz</li>
+      </ul>
+
+      <h2 id="fikri" class="text-2xl font-bold mt-10 mb-4">6. Fikri Mülkiyet Hakları</h2>
+      <p class="mb-6">
+        Platformun tüm içeriği Kolay İş Takip’e aittir ve lisanslıdır. Telif ve marka yasalarıyla korunur.
+      </p>
+
+      <h2 id="askiya" class="text-2xl font-bold mt-10 mb-4">7. Hizmetin Askıya Alınması veya Sonlandırılması</h2>
+      <ul class="mb-6 list-disc ml-6 space-y-1">
+        <li>Kullanım şartlarının ihlali</li>
+        <li>Ödeme yapılmaması</li>
+        <li>Yasadışı veya zararlı davranışlar</li>
+      </ul>
+
+      <h2 id="yedek" class="text-2xl font-bold mt-10 mb-4">8. Veri Yedekleme</h2>
+      <p class="mb-6">
+        Veriler düzenli olarak yedeklenir ancak veri kaybı sorumluluğu kullanıcıya aittir.
+      </p>
+
+      <h2 id="sorumluluk" class="text-2xl font-bold mt-10 mb-4">9. Sorumluluk Reddi</h2>
+      <p class="mb-6">
+        Kolay İş Takip “olduğu gibi” sunulur. Kesintisiz veya hatasız çalışma garantisi verilmez.
+      </p>
+
+      <h2 id="degisiklik" class="text-2xl font-bold mt-10 mb-4">10. Değişiklikler</h2>
+      <p class="mb-6">
+        Şartları dilediğimiz zaman güncelleme hakkını saklı tutarız. Hizmeti kullanmaya devam etmeniz güncellemeleri kabul ettiğiniz anlamına gelir.
+      </p>
+
+      <h2 id="iletisim" class="text-2xl font-bold mt-10 mb-4">11. İletişim</h2>
+      <p class="mb-2">E-posta: info@kolayistakip.com</p>
+      <p class="mb-6">Adres:Merkez/BARTIN</p>
+
+      <p class="text-sm text-gray-400">Not: Bu kullanım şartları Türkiye Cumhuriyeti yasalarına tabidir.</p>
+    </article>
+
+  </section>
+
+  <!-- FOOTER (same as all pages) -->
+  <footer class="bg-black/60 py-12 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 text-gray-300">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h5 class="text-white font-semibold">Kolay İş Takip</h5>
+          <p class="text-sm mt-2">Küçük işletmelerin dijital dönüşüm ortağı.</p>
         </div>
-    </footer>
 
-    <script>
-        const hamburgerBtn = document.querySelector('.hamburger-menu');
-        const navLinks = document.querySelector('.nav-links');
-        const icon = hamburgerBtn.querySelector('i');
+        <div>
+          <h6 class="font-semibold">Hızlı Erişim</h6>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="index.html#features">Özellikler</a></li>
+            <li><a href="login.html">Giriş Yap</a></li>
+            <li><a href="login.html">Kayıt Ol</a></li>
+          </ul>
+        </div>
 
-        hamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            if (navLinks.classList.contains(' active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            } else {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
-        });
+        <div>
+          <h6 class="font-semibold">Kurumsal</h6>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="about.html">Hakkımızda</a></li>
+            <li><a href="contact.html">İletişim</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="career.html">Kariyer</a></li>
+          </ul>
+        </div>
 
-        document.addEventListener('click', (e) => {
-            if (!navLinks.contains(e.target) && !hamburgerBtn.contains(e.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
-        });
+        <div>
+          <h6 class="font-semibold">Bülten</h6>
+          <form class="mt-3 flex gap-2" onsubmit="event.preventDefault(); alert('Teşekkürler!')">
+            <input type="email" placeholder="E-posta adresiniz" required class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm">
+            <button class="px-3 py-2 rounded-lg bg-gradient-to-r from-cyanAccent to-primary text-black">Gönder</button>
+          </form>
+        </div>
+      </div>
 
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            });
-        });
-    </script>
+      <div class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
+        <div class="flex gap-4">
+          <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+          <a href="kullanim-sartlari.html">Kullanım Şartları</a>
+          <a href="kvkk.html">KVKK</a>
+        </div>
+        <div class="mt-3 md:mt-0">
+          © 2024 Kolay İş Takip — Tüm Hakları Saklıdır.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    AOS.init({ once: true, duration: 700 });
+
+    document.getElementById("mobileBtn")?.addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(".floating-blob", {
+      y: -60,
+      ease: "sine.inOut",
+      scrollTrigger: { scrub: true }
+    });
+  </script>
+
 </body>
 
 </html>

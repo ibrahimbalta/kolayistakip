@@ -1,408 +1,237 @@
+<!-- Fully enhanced Tailwind version with mobile optimization & improved visuals -->
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alan Rezervasyonu - Kolay İş Takip</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alan Rezervasyonu - Kolay İş Takip</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5',
+            purpleDeep: '#2d064e',
+            purpleMid: '#6a1a8c',
+            cyanAccent: '#06b6d4'
+          }
         }
+      }
+    }
+  </script>
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #4f46e5, #4338ca);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .card h2 {
-            color: #4f46e5;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: #856404;
-        }
-
-        .areas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-        }
-
-        .area-btn {
-            padding: 15px 10px;
-            border: 2px solid;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .area-btn.bos {
-            background: #d1f4e0;
-            border-color: #28a745;
-            color: #155724;
-        }
-
-        .area-btn.opsiyonda {
-            background: #fff3cd;
-            border-color: #ffc107;
-            color: #856404;
-        }
-
-        .area-btn.rezerve {
-            background: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .area-btn.selected {
-            border-width: 3px;
-            border-color: #4f46e5;
-            box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
-            transform: scale(1.05);
-        }
-
-        .area-btn:not(.rezerve):hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .selected-info {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #4f46e5;
-        }
-
-        .selected-info strong {
-            color: #4f46e5;
-            font-size: 1.1rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .form-group label .required {
-            color: #dc3545;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-        }
-
-        .btn {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 968px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .areas-grid {
-                max-height: 300px;
-            }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
-        .loading i {
-            font-size: 3rem;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-calendar-check"></i> Alan Rezervasyon Sistemi</h1>
-            <p>Müsait alanları görüntüleyin ve hemen rezerve edin</p>
-        </div>
-        <div class="content">
-            <div>
-                <div class="card">
-                    <h2><i class="fas fa-list"></i> Müsait Alanlar</h2>
-                    <div class="info-box">
-                        <strong>Bilgi:</strong> <strong style="color: #155724;">Yeşil</strong> alanlar müsait, <strong
-                            style="color: #856404;">Sarı</strong> alanlar opsiyonda (seçilebilir), <strong
-                            style="color: #721c24;">Kırmızı</strong> alanlar rezerve edilmiş.
-                    </div>
-                    <div id="areasGrid" class="areas-grid">
-                        <div class="loading"><i class="fas fa-spinner"></i>
-                            <p>Alanlar yükleniyor...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="card">
-                    <h2><i class="fas fa-edit"></i> Rezervasyon Bilgileri</h2>
-                    <div id="selectedInfo" class="selected-info" style="display: none;">
-                        <p><strong>Seçili Alan:</strong> <span id="selectedAreaInfo"></span></p>
-                    </div>
-                    <!-- Kroki Görseli -->
-                    <div id="krokiImageContainer"
-                        style="display: none; margin-bottom: 20px; background: white; padding: 15px; border-radius: 12px;">
-                        <h3 style="color: #4f46e5; margin-bottom: 15px; font-size: 1.1rem;"><i class="fas fa-image"></i>
-                            Fuar Alanı Krokisi</h3>
-                        <img id="krokiImage" src="" alt="Alan Kroki Görseli"
-                            style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    </div>
-                    <form id="reservationForm">
-                        <div class="form-group">
-                            <label>Firma Ünvanı <span class="required">*</span></label>
-                            <input type="text" id="companyName" required placeholder="Firma adınızı giriniz">
-                        </div>
-                        <div class="form-group">
-                            <label>Yetkili Ad Soyad <span class="required">*</span></label>
-                            <input type="text" id="contactName" required placeholder="Yetkili kişinin adı">
-                        </div>
-                        <div class="form-group">
-                            <label>Telefon Numarası <span class="required">*</span></label>
-                            <input type="tel" id="phone" required placeholder="(5XX) XXX XX XX">
-                        </div>
-                        <div class="form-group">
-                            <label>E-posta Adresi <span class="required">*</span></label>
-                            <input type="email" id="email" required placeholder="ornek@firma.com">
-                        </div>
-                        <div class="form-group">
-                            <label>Özel İstekler / Notlar</label>
-                            <textarea id="specialRequests" rows="4"
-                                placeholder="Varsa ekipman talepleriniz veya özel notlarınız..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
-                            <i class="fas fa-check-circle"></i> Rezervasyonu Tamamla
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<body class="min-h-screen bg-gradient-to-b from-purpleDeep to-purpleMid text-gray-100 py-4 px-3 font-inter">
+
+  <!-- MAIN CONTAINER -->
+  <div class="max-w-7xl mx-auto bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-4 sm:p-6 lg:p-10 transition-all">
+
+    <!-- HEADER -->
+    <div class="text-center mb-8 sm:mb-12">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3 flex items-center justify-center gap-3 drop-shadow-lg">
+        <i class="fas fa-calendar-check text-cyanAccent"></i> Alan Rezervasyon Sistemi
+      </h1>
+      <p class="text-gray-300 text-sm sm:text-base max-w-lg mx-auto">Müsait alanları görüntüleyin ve hemen rezerve edin</p>
     </div>
-    <script src="supabase-config.js"></script>
-    <script>
-        let availableAreas = [];
-        let selectedArea = null;
-        function formatPrice(amount, currency) {
-            const locale = currency === 'TRY' ? 'tr-TR' : 'en-US';
-            return new Intl.NumberFormat(locale, { style: 'currency', currency: currency, minimumFractionDigits: 0 }).format(amount);
-        }
-        function formatType(type) {
-            const typeMap = { 'stand': 'Fuar Standı', 'toplanti': 'Toplantı Odası', 'masa': 'Coworking Masası', 'kort': 'Spor Kortu', 'loca': 'Loca', 'saatlik': 'Saatlik', 'gunluk': 'Günlük/Seans', 'tek_fiyat': 'Tek Fiyat' };
-            return typeMap[type] || type;
-        }
-        async function loadAreas() {
-            try {
-                const { data, error } = await supabase.from('reservations').select('*').order('alan_no', { ascending: true });
-                if (error) throw error;
-                availableAreas = data || [];
-                renderAreas();
-            } catch (error) {
-                console.error('Error loading areas:', error);
-                document.getElementById('areasGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #dc3545;"><i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i><p>Alanlar yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.</p></div>';
-            }
-        }
-        function renderAreas() {
-            const grid = document.getElementById('areasGrid');
-            if (availableAreas.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #666;"><i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i><p>Henüz rezerve edilebilir alan bulunmamaktadır.</p></div>';
-                return;
-            }
-            grid.innerHTML = '';
-            availableAreas.forEach(area => {
-                const div = document.createElement('div');
-                div.className = `area-btn ${area.durum}`;
-                div.dataset.id = area.id;
-                const statusText = area.durum.toUpperCase();
-                div.innerHTML = `<strong>${area.alan_no}</strong><br>${area.alan_buyukluk || ''}<br><small>(${statusText})</small>`;
-                if (area.durum !== 'rezerve') div.onclick = () => selectArea(area);
-                grid.appendChild(div);
-            });
-        }
-        function selectArea(area) {
-            selectedArea = area;
-            document.querySelectorAll('.area-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-id="${area.id}"]`).classList.add('selected');
-            document.getElementById('selectedInfo').style.display = 'block';
-            document.getElementById('selectedAreaInfo').innerHTML = `<span style="color: #4f46e5; font-weight: 700;">${area.alan_no}</span> | ${formatType(area.alan_tipi)} | ${area.alan_buyukluk || '-'} | ${formatPrice(area.fiyat_miktar, area.para_birimi)} (${formatType(area.fiyat_tipi)})`;
 
-            // Show kroki image if available
-            const imageContainer = document.getElementById('krokiImageContainer');
-            const imageElement = document.getElementById('krokiImage');
-            if (area.kroki_url) {
-                imageElement.src = area.kroki_url;
-                imageContainer.style.display = 'block';
-            } else {
-                imageContainer.style.display = 'none';
-            }
+    <!-- RESPONSIVE GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
 
-            document.getElementById('submitBtn').disabled = false;
-        }
-        document.getElementById('reservationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!selectedArea) { alert('Lütfen önce bir alan seçiniz.'); return; }
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
-            try {
-                const { error } = await supabase.from('reservations').update({
-                    durum: 'rezerve',
-                    reserved_by_company: document.getElementById('companyName').value,
-                    reserved_by_name: document.getElementById('contactName').value,
-                    reserved_by_phone: document.getElementById('phone').value,
-                    reserved_by_email: document.getElementById('email').value,
-                    special_requests: document.getElementById('specialRequests').value
-                }).eq('id', selectedArea.id);
-                if (error) throw error;
-                alert(`✅ Rezervasyonunuz başarıyla alındı!\\n\\nAlan: ${selectedArea.alan_no}\\nFirma: ${document.getElementById('companyName').value}\\n\\nDetaylar için e-posta adresinizi kontrol ediniz.`);
-                document.getElementById('reservationForm').reset();
-                document.getElementById('selectedInfo').style.display = 'none';
-                document.getElementById('krokiImageContainer').style.display = 'none';
-                selectedArea = null;
-                await loadAreas();
-            } catch (error) {
-                console.error('Error submitting reservation:', error);
-                alert('❌ Rezervasyon kaydedilirken bir hata oluştu. Lütfen tekrar deneyiniz.\\n\\n' + error.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Rezervasyonu Tamamla';
-            }
-        });
-        document.addEventListener('DOMContentLoaded', loadAreas);
-    </script>
+      <!-- LEFT AREA LIST -->
+      <div class="bg-white/10 p-5 sm:p-7 rounded-2xl shadow-xl border border-white/10 hover:bg-white/20 transition-all">
+        <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-3">
+          <i class="fas fa-list text-cyanAccent"></i> Müsait Alanlar
+        </h2>
+
+        <div class="text-yellow-200 bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-xl text-sm mb-5">
+          <strong>Bilgi:</strong>
+          <span class="text-green-200 font-semibold">Yeşil</span> müsait,
+          <span class="text-yellow-200 font-semibold">Sarı</span> opsiyonda,
+          <span class="text-red-300 font-semibold">Kırmızı</span> rezerve.
+        </div>
+
+        <div id="areasGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[430px] overflow-y-auto p-4 bg-white/5 rounded-xl shadow-inner">
+          <div class="text-center text-gray-300 py-10 animate-pulse col-span-full">
+            <i class="fas fa-spinner fa-spin text-3xl"></i>
+            <p>Alanlar yükleniyor...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT FORM SECTION -->
+      <div class="bg-white/10 p-5 sm:p-7 rounded-2xl shadow-xl border border-white/10 hover:bg-white/20 transition-all">
+        <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-3">
+          <i class="fas fa-edit text-cyanAccent"></i> Rezervasyon Bilgileri
+        </h2>
+
+        <div id="selectedInfo" class="hidden bg-white/10 border-l-4 border-primary p-4 rounded-xl mb-5">
+          <p class="text-sm text-gray-200">
+            <strong class="text-cyanAccent">Seçili Alan:</strong>
+            <span id="selectedAreaInfo"></span>
+          </p>
+        </div>
+
+        <!-- KROKİ -->
+        <div id="krokiImageContainer" class="hidden bg-white/10 p-4 rounded-xl mb-5">
+          <h3 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+            <i class="fas fa-image text-cyanAccent"></i> Fuar Alanı Krokisi
+          </h3>
+          <img id="krokiImage" class="rounded-xl max-h-80 w-full object-contain shadow-lg" />
+        </div>
+
+        <!-- FORM -->
+        <form id="reservationForm" class="space-y-4">
+          <div>
+            <label class="text-sm font-medium">Firma Ünvanı <span class="text-red-400">*</span></label>
+            <input id="companyName" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-gray-100 focus:border-cyanAccent outline-none transition" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Yetkili Ad Soyad <span class="text-red-400">*</span></label>
+            <input id="contactName" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-gray-100 focus:border-cyanAccent outline-none transition" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Telefon Numarası <span class="text-red-400">*</span></label>
+            <input id="phone" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-gray-100 focus:border-cyanAccent outline-none transition" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">E-posta Adresi <span class="text-red-400">*</span></label>
+            <input id="email" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-gray-100 focus:border-cyanAccent outline-none transition" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Özel İstekler / Notlar</label>
+            <textarea id="specialRequests" rows="4" class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-gray-100 focus:border-cyanAccent outline-none transition"></textarea>
+          </div>
+
+          <button id="submitBtn" disabled class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary font-semibold shadow-xl disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.02] transition">
+            <i class="fas fa-check-circle"></i> Rezervasyonu Tamamla
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORIGINAL JS WITH IMPROVED UI FEEDBACK -->
+  <script src="supabase-config.js"></script>
+  <script>
+    let availableAreas = [];
+    let selectedArea = null;
+
+    function formatPrice(amount, currency) {
+      return new Intl.NumberFormat('tr-TR', { style: 'currency', currency, minimumFractionDigits: 0 }).format(amount);
+    }
+
+    function formatType(type) {
+      const map = { stand: 'Fuar Standı', toplanti: 'Toplantı Odası', masa: 'Coworking Masası', kort: 'Spor Kortu', loca: 'Loca', saatlik: 'Saatlik', gunluk: 'Günlük/Seans', tek_fiyat: 'Tek Fiyat' };
+      return map[type] || type;
+    }
+
+    async function loadAreas() {
+      const grid = document.getElementById('areasGrid');
+      try {
+        const { data, error } = await supabase.from('reservations').select('*').order('alan_no');
+        if (error) throw error;
+        availableAreas = data || [];
+        renderAreas();
+      } catch {
+        grid.innerHTML = `<p class='text-red-300 col-span-full text-center py-4'>Alanlar yüklenirken hata oluştu.</p>`;
+      }
+    }
+
+    function renderAreas() {
+      const grid = document.getElementById('areasGrid');
+      grid.innerHTML = '';
+      if (availableAreas.length===0) {
+        grid.innerHTML = `<p class='col-span-full text-center text-gray-300 py-4'>Alan bulunamadı.</p>`;
+        return;
+      }
+
+      availableAreas.forEach(area => {
+        const div = document.createElement('div');
+        div.dataset.id = area.id;
+
+        let style = 'bg-green-500/20 border-green-400 text-green-200';
+        if (area.durum==='opsiyonda') style='bg-yellow-500/20 border-yellow-400 text-yellow-200';
+        if (area.durum==='rezerve') style='bg-red-500/20 border-red-400 text-red-200 opacity-50 cursor-not-allowed';
+
+        div.className = `p-4 border rounded-xl text-center font-semibold text-sm transition transform hover:scale-[1.03] ${style}`;
+
+        div.innerHTML = `
+          <strong class='text-white text-lg'>${area.alan_no}</strong><br>
+          <span class='text-xs text-gray-300'>${area.alan_buyukluk || ''}</span><br>
+          <small class='opacity-70 uppercase'>(${area.durum})</small>
+        `;
+
+        if (area.durum!=='rezerve') div.onclick = () => selectArea(area);
+        grid.appendChild(div);
+      });
+    }
+
+    function selectArea(area) {
+      selectedArea = area;
+
+      document.querySelectorAll('#areasGrid > div').forEach(btn => btn.classList.remove('ring-2','ring-primary','scale-105'));
+
+      const selectedBtn = document.querySelector(`[data-id='${area.id}']`);
+      selectedBtn.classList.add('ring-2','ring-primary','scale-105');
+
+      document.getElementById('selectedInfo').classList.remove('hidden');
+      document.getElementById('selectedAreaInfo').innerHTML = `
+        <span class='text-cyanAccent font-bold'>${area.alan_no}</span> |
+        ${formatType(area.alan_tipi)} |
+        ${area.alan_buyukluk || '-'} |
+        ${formatPrice(area.fiyat_miktar, area.para_birimi)} (${formatType(area.fiyat_tipi)})`;
+
+      if (area.kroki_url) {
+        document.getElementById('krokiImage').src = area.kroki_url;
+        document.getElementById('krokiImageContainer').classList.remove('hidden');
+      } else {
+        document.getElementById('krokiImageContainer').classList.add('hidden');
+      }
+
+      document.getElementById('submitBtn').disabled = false;
+    }
+
+    document.getElementById('reservationForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!selectedArea) return alert('Lütfen bir alan seçiniz.');
+
+      const btn = document.getElementById('submitBtn');
+      btn.innerHTML = `<i class='fas fa-spinner fa-spin'></i> Kaydediliyor...`;
+      btn.disabled = true;
+
+      try {
+        const { error } = await supabase.from('reservations').update({
+          durum: 'rezerve',
+          reserved_by_company: document.getElementById('companyName').value,
+          reserved_by_name: document.getElementById('contactName').value,
+          reserved_by_phone: document.getElementById('phone').value,
+          reserved_by_email: document.getElementById('email').value,
+          special_requests: document.getElementById('specialRequests').value,
+        }).eq('id', selectedArea.id);
+
+        if (error) throw error;
+        alert('Rezervasyon başarıyla alındı!');
+        loadAreas();
+
+      } catch (err) {
+        alert('Hata: ' + err.message);
+      }
+
+      btn.innerHTML = `<i class='fas fa-check-circle'></i> Rezervasyonu Tamamla`;
+      btn.disabled = false;
+    });
+
+    document.addEventListener('DOMContentLoaded', loadAreas);
+  </script>
 </body>
-
 </html>

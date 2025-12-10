@@ -26,7 +26,8 @@
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <!-- AOS -->
@@ -38,10 +39,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
-    .glass { background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); }
-    .btn-cta { background: linear-gradient(90deg,#06b6d4,#4f46e5); color: #000; }
-    .floating-blob { filter: blur(18px); opacity: .25; }
-    html { scroll-behavior: smooth; }
+    .glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-cta {
+      background: linear-gradient(90deg, #06b6d4, #4f46e5);
+      color: #000;
+    }
+
+    .floating-blob {
+      filter: blur(18px);
+      opacity: .25;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
   </style>
 </head>
 
@@ -69,8 +84,12 @@
         </nav>
 
         <div class="flex items-center gap-3">
-          <a href="login.html" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş Yap</a>
-          <a href="login.html" class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz Deneme</a>
+          <a href="login.html"
+            class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş
+            Yap</a>
+          <a href="login.html"
+            class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz
+            Deneme</a>
           <button id="mobileBtn" class="md:hidden ml-2 p-2 rounded-lg glass">
             <i class="fa-solid fa-bars"></i>
           </button>
@@ -94,13 +113,18 @@
   <main>
     <!-- HERO -->
     <section class="relative overflow-hidden pt-10 pb-16">
-      <div class="absolute -left-24 -top-24 w-96 h-96 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-full floating-blob"></div>
-      <div class="absolute -right-24 -bottom-24 w-80 h-80 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-full floating-blob"></div>
+      <div
+        class="absolute -left-24 -top-24 w-96 h-96 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-full floating-blob">
+      </div>
+      <div
+        class="absolute -right-24 -bottom-24 w-80 h-80 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-full floating-blob">
+      </div>
 
       <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-20 text-center">
         <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4" data-aos="fade-up">Bize Ulaşın</h1>
         <p class="text-gray-300 text-lg max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="120">
-          Sorularınız, iş ortaklığı teklifi veya destek talepleriniz için bize yazın. Size en kısa sürede dönüş yapacağız.
+          Sorularınız, iş ortaklığı teklifi veya destek talepleriniz için bize yazın. Size en kısa sürede dönüş
+          yapacağız.
         </p>
       </div>
     </section>
@@ -108,7 +132,7 @@
     <!-- CONTACT CARDS + FORM -->
     <section class="container mx-auto px-6 lg:px-12 py-12">
       <div class="grid lg:grid-cols-3 gap-8 items-start">
-        
+
         <!-- Contact Cards (Left) -->
         <div class="lg:col-span-1 space-y-6">
           <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-right">
@@ -117,12 +141,14 @@
               <div>
                 <h4 class="font-semibold text-white">E-posta</h4>
                 <p class="text-sm text-gray-300 mt-2">info@kolayistakip.com</p>
-                <a href="mailto:info@kolayistakip.com" class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mail Gönder</a>
+                <a href="mailto:info@kolayistakip.com"
+                  class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mail Gönder</a>
               </div>
             </div>
           </div>
 
-          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-up" data-aos-delay="80">
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-up"
+            data-aos-delay="80">
             <div class="flex items-start gap-4">
               <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-solid fa-phone"></i></div>
               <div>
@@ -133,13 +159,16 @@
             </div>
           </div>
 
-          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-left" data-aos-delay="160">
+          <div class="p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/3 glass" data-aos="fade-left"
+            data-aos-delay="160">
             <div class="flex items-start gap-4">
-              <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="p-3 rounded-xl bg-white/5 text-cyanAccent text-2xl"><i class="fa-brands fa-whatsapp"></i>
+              </div>
               <div>
                 <h4 class="font-semibold text-white">WhatsApp</h4>
                 <p class="text-sm text-gray-300 mt-2">+90 (545) 346 79 86</p>
-                <a href="https://wa.me/905453467986" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mesaj Gönder</a>
+                <a href="https://wa.me/905453467986" target="_blank" rel="noopener noreferrer"
+                  class="inline-block mt-3 text-sm text-cyanAccent hover:underline">Mesaj Gönder</a>
               </div>
             </div>
           </div>
@@ -150,39 +179,50 @@
           <div class="p-8 rounded-3xl glass border border-white/10 shadow-xl">
             <div class="mb-6">
               <h3 class="text-2xl font-bold">Bize Yazın</h3>
-              <p class="text-sm text-gray-300">Sorunuzu, önerinizi veya iş birliği teklifinizi buradan iletebilirsiniz.</p>
+              <p class="text-sm text-gray-300">Sorunuzu, önerinizi veya iş birliği teklifinizi buradan iletebilirsiniz.
+              </p>
             </div>
 
             <form id="contactForm" class="space-y-4" onsubmit="return false;">
               <div class="grid md:grid-cols-2 gap-4">
                 <div>
                   <label class="text-sm text-gray-300">Adınız Soyadınız</label>
-                  <input id="contactName" type="text" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Adınız Soyadınız">
+                  <input id="contactName" type="text" required
+                    class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none"
+                    placeholder="Adınız Soyadınız">
                 </div>
                 <div>
                   <label class="text-sm text-gray-300">E-posta</label>
-                  <input id="contactEmail" type="email" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="example@ornek.com">
+                  <input id="contactEmail" type="email" required
+                    class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none"
+                    placeholder="example@ornek.com">
                 </div>
               </div>
 
               <div>
                 <label class="text-sm text-gray-300">Konu</label>
-                <input id="contactSubject" type="text" class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Konu (opsiyonel)">
+                <input id="contactSubject" type="text"
+                  class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none"
+                  placeholder="Konu (opsiyonel)">
               </div>
 
               <div>
                 <label class="text-sm text-gray-300">Mesajınız</label>
-                <textarea id="contactMessage" rows="6" required class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none" placeholder="Mesajınızı yazın..."></textarea>
+                <textarea id="contactMessage" rows="6" required
+                  class="mt-2 w-full px-4 py-3 rounded-lg bg-white/5 border border-white/6 focus:outline-none"
+                  placeholder="Mesajınızı yazın..."></textarea>
               </div>
 
               <div class="flex items-center justify-between gap-4">
-                <button id="sendBtn" type="submit" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
+                <button id="sendBtn" type="submit"
+                  class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
                   <i class="fa-solid fa-paper-plane"></i>
                   Gönder
                 </button>
 
                 <div class="text-sm text-gray-400">
-                  Veya bizi arayın: <a href="tel:+905453467986" class="text-cyanAccent hover:underline">+90 (545) 346 79 86</a>
+                  Veya bizi arayın: <a href="tel:+905453467986" class="text-cyanAccent hover:underline">+90 (545) 346 79
+                    86</a>
                 </div>
               </div>
             </form>
@@ -198,9 +238,11 @@
       <div class="max-w-xl" data-aos="fade-up">
         <h3 class="text-2xl font-bold mb-4">Hızlı Destek</h3>
         <p class="text-gray-300 mb-6">
-          Teknik destek, satış veya entegrasyon hakkında hızlıca görüşmek isterseniz, sizi arayalım — formda 'Arayın' yazın.
+          Teknik destek, satış veya entegrasyon hakkında hızlıca görüşmek isterseniz, sizi arayalım — formda 'Arayın'
+          yazın.
         </p>
-        <a href="career.html" class="btn-cta inline-flex items-center gap-3 px-6 py-3 rounded-2xl font-semibold shadow-lg">
+        <a href="career.html"
+          class="btn-cta inline-flex items-center gap-3 px-6 py-3 rounded-2xl font-semibold shadow-lg">
           Kariyerimize Göz At
         </a>
       </div>
@@ -215,9 +257,11 @@
             <p class="text-sm mt-2">Küçük işletmelerin dijital dönüşüm ortağı.</p>
             <div class="flex gap-3 mt-4">
               <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-instagram"></i></a>
-              <a href="https://x.com/Kolayistakip_" class="p-2 rounded bg-white/5"><i class="fa-brands fa-twitter"></i></a>
+              <a href="https://x.com/Kolayistakip_" class="p-2 rounded bg-white/5"><i
+                  class="fa-brands fa-twitter"></i></a>
               <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-linkedin"></i></a>
-              <a href="https://www.youtube.com/@kolayistakip" class="p-2 rounded bg-white/5"><i class="fa-brands fa-youtube"></i></a>
+              <a href="https://www.youtube.com/@kolayistakip" class="p-2 rounded bg-white/5"><i
+                  class="fa-brands fa-youtube"></i></a>
             </div>
           </div>
 
@@ -244,13 +288,15 @@
           <div>
             <h6 class="font-semibold">Bültenimize Abone Olun</h6>
             <form class="mt-3 flex gap-2" onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
-              <input type="email" placeholder="E-posta adresiniz" required class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm" />
+              <input type="email" placeholder="E-posta adresiniz" required
+                class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm" />
               <button class="px-3 py-2 rounded-lg btn-cta">Gönder</button>
             </form>
           </div>
         </div>
 
-        <div class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
+        <div
+          class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
           <div class="flex gap-4">
             <a href="kullanim-sartlari.html">Kullanım Şartları</a>
             <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
@@ -307,9 +353,12 @@
         btn.disabled = true;
         feedback.innerHTML = '';
 
+        // Prepend subject to message if subject exists
+        const fullMessage = subject ? `Konu: ${subject}\n\n${message}` : message;
+
         const { error } = await supabase
           .from('contact_messages')
-          .insert([{ name, email, subject, message }]);
+          .insert([{ name, email, message: fullMessage }]);
 
         if (error) throw error;
 
@@ -326,4 +375,5 @@
   </script>
 
 </body>
+
 </html>

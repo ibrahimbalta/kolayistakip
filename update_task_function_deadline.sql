@@ -1,8 +1,10 @@
--- Public Task Access Functions
--- These functions allow anonymous users (employees) to view and complete tasks
--- without exposing the entire database via RLS.
+-- Migration: Update get_task_details_public function to include deadline
+-- This script drops the existing function and recreates it with the new deadline field
 
--- 1. Get Task Details (Public)
+-- First, drop the existing function
+DROP FUNCTION IF EXISTS public.get_task_details_public(UUID);
+
+-- Recreate the function with deadline field
 CREATE OR REPLACE FUNCTION public.get_task_details_public(p_task_id UUID)
 RETURNS TABLE (
     id UUID,
@@ -12,7 +14,7 @@ RETURNS TABLE (
     company_name TEXT,
     deadline DATE
 ) 
-SECURITY DEFINER -- Runs with privileges of the creator (admin), bypassing RLS
+SECURITY DEFINER
 AS $$
 BEGIN
     RETURN QUERY
@@ -29,22 +31,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 2. Complete Task (Public)
-CREATE OR REPLACE FUNCTION public.complete_task_public(p_task_id UUID)
-RETURNS VOID
-SECURITY DEFINER
-AS $$
-BEGIN
-    UPDATE public.tasks
-    SET 
-        completed = true,
-        completed_at = NOW()
-    WHERE id = p_task_id;
-END;
-$$ LANGUAGE plpgsql;
-
 -- Grant access to anon (public) role
 GRANT EXECUTE ON FUNCTION public.get_task_details_public(UUID) TO anon;
-GRANT EXECUTE ON FUNCTION public.complete_task_public(UUID) TO anon;
 GRANT EXECUTE ON FUNCTION public.get_task_details_public(UUID) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.complete_task_public(UUID) TO authenticated;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,165 +33,201 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    body { background: linear-gradient(135deg,#4b0082 0%,#6a1a8c 100%); }
+    body {
+      background: linear-gradient(135deg, #4b0082 0%, #6a1a8c 100%);
+    }
 
     /* glass style (index.html ile aynı) */
-    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
+    .glass {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+    }
 
     /* fade */
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .animate-fadeIn { animation: fadeIn 0.7s ease both; }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.7s ease both;
+    }
   </style>
 </head>
 
 <body class="font-inter min-h-screen flex items-center justify-center p-4 text-gray-50">
 
-<!-- Success Modal -->
-<div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-xl hidden items-center justify-center z-50">
-  <div class="glass p-8 rounded-3xl border border-white/10 w-full max-w-sm text-center animate-fadeIn card-glow">
+  <!-- Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-xl hidden items-center justify-center z-50">
+    <div class="glass p-8 rounded-3xl border border-white/10 w-full max-w-sm text-center animate-fadeIn card-glow">
       <div id="lottieSuccess" class="w-40 h-40 mx-auto mb-4"></div>
       <h2 class="text-white text-2xl font-bold mb-3">Görev Tamamlandı!</h2>
       <p class="text-gray-200 mb-6">Göreviniz başarıyla işaretlendi.</p>
-      <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
+      <button onclick="closeModal()"
+        class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg">
         Kapat
       </button>
-  </div>
-</div>
-
-
-<!-- MAIN CARD -->
-<div class="glass p-10 rounded-3xl border border-white/10 text-center animate-fadeIn max-w-lg w-full card-glow">
-
-  <div class="flex items-center justify-between mb-6">
-    <div class="text-left">
-      <h1 id="taskTitle" class="text-xl font-bold text-white">Görev</h1>
-      <p id="companyName" class="text-cyanAccent text-sm">Yükleniyor...</p>
-    </div>
-    <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-md">
-      <i class="fa-solid fa-clipboard-check text-white text-2xl"></i>
     </div>
   </div>
 
-  <!-- Progress Bar -->
-  <div class="w-full bg-white/10 rounded-full h-3 mb-6 overflow-hidden">
-    <div id="progressBar" class="h-3 bg-cyanAccent w-1/4 transition-all"></div>
+
+  <!-- MAIN CARD -->
+  <div class="glass p-10 rounded-3xl border border-white/10 text-center animate-fadeIn max-w-lg w-full card-glow">
+
+    <div class="flex items-center justify-between mb-6">
+      <div class="text-left">
+        <h1 id="taskTitle" class="text-xl font-bold text-white">Görev</h1>
+        <p id="companyName" class="text-cyanAccent text-sm">Yükleniyor...</p>
+      </div>
+      <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-md">
+        <i class="fa-solid fa-clipboard-check text-white text-2xl"></i>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-white/10 rounded-full h-3 mb-6 overflow-hidden">
+      <div id="progressBar" class="h-3 bg-cyanAccent w-1/4 transition-all"></div>
+    </div>
+
+    <!-- Task Description -->
+    <div class="glass border border-white/10 rounded-2xl p-6 text-left shadow-inner mb-6">
+      <div class="text-xs text-gray-300 uppercase tracking-wide mb-2 font-semibold">Görev Açıklaması</div>
+      <div id="taskDescription" class="text-white text-lg leading-relaxed">Yükleniyor...</div>
+    </div>
+
+    <!-- Employee -->
+    <div id="employeeName" class="text-gray-300 mb-3 flex items-center justify-center gap-2">
+      <i class="fa-solid fa-user"></i> Yükleniyor...
+    </div>
+
+    <!-- Deadline -->
+    <div id="deadlineSection" class="text-gray-300 mb-6 flex items-center justify-center gap-2 hidden">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Termin: <span id="deadlineDate" class="font-semibold text-cyanAccent"></span></span>
+    </div>
+
+    <!-- Complete Button -->
+    <button id="completeBtn"
+      class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition disabled:opacity-40 disabled:cursor-not-allowed">
+      <i class="fa-solid fa-spinner loading hidden animate-spin"></i>
+      <i class="fa-solid fa-check-circle"></i>
+      Görevi Tamamladım
+    </button>
+
+    <div id="errorMessage"
+      class="hidden bg-red-500/20 text-red-200 border border-red-500/40 p-4 rounded-xl mt-4 font-semibold">
+    </div>
+
   </div>
 
-  <!-- Task Description -->
-  <div class="glass border border-white/10 rounded-2xl p-6 text-left shadow-inner mb-6">
-    <div class="text-xs text-gray-300 uppercase tracking-wide mb-2 font-semibold">Görev Açıklaması</div>
-    <div id="taskDescription" class="text-white text-lg leading-relaxed">Yükleniyor...</div>
-  </div>
 
-  <!-- Employee -->
-  <div id="employeeName" class="text-gray-300 mb-6 flex items-center justify-center gap-2">
-    <i class="fa-solid fa-user"></i> Yükleniyor...
-  </div>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
 
-  <!-- Complete Button -->
-  <button id="completeBtn" 
-    class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary text-black font-semibold shadow-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition disabled:opacity-40 disabled:cursor-not-allowed">
-    <i class="fa-solid fa-spinner loading hidden animate-spin"></i>
-    <i class="fa-solid fa-check-circle"></i>
-    Görevi Tamamladım
-  </button>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get("id");
 
-  <div id="errorMessage" class="hidden bg-red-500/20 text-red-200 border border-red-500/40 p-4 rounded-xl mt-4 font-semibold">
-  </div>
+    const progressBar = document.getElementById("progressBar");
+    const completeBtn = document.getElementById("completeBtn");
+    const errorMessage = document.getElementById("errorMessage");
 
-</div>
-
-
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const taskId = urlParams.get("id");
-
-const progressBar = document.getElementById("progressBar");
-const completeBtn = document.getElementById("completeBtn");
-const errorMessage = document.getElementById("errorMessage");
-
-function updateProgress(percent) {
-  progressBar.style.width = percent + "%";
-}
-
-async function loadTask() {
-  updateProgress(20);
-
-  try {
-    const { data, error } = await supabase.rpc("get_task_details_public", { p_task_id: taskId });
-    if (error) throw error;
-
-    updateProgress(60);
-
-    const task = data?.[0];
-    if (!task) throw new Error("Görev bulunamadı");
-
-    document.getElementById("taskDescription").textContent = task.description;
-    document.getElementById("employeeName").innerHTML = `<i class='fa-solid fa-user'></i> ${task.employee_name}`;
-    document.getElementById("companyName").textContent = task.company_name || "Firma";
-
-    if (task.completed) {
-      completeBtn.classList.add("hidden");
-      updateProgress(100);
+    function updateProgress(percent) {
+      progressBar.style.width = percent + "%";
     }
 
-    updateProgress(100);
-  } catch (err) {
-    errorMessage.textContent = "Görev yüklenirken hata oluştu.";
-    errorMessage.classList.remove("hidden");
-    completeBtn.disabled = true;
-  }
-}
+    async function loadTask() {
+      updateProgress(20);
 
-function openSuccessModal() {
-  document.getElementById("successModal").classList.remove("hidden");
+      try {
+        const { data, error } = await supabase.rpc("get_task_details_public", { p_task_id: taskId });
+        if (error) throw error;
 
-  lottie.loadAnimation({
-    container: document.getElementById("lottieSuccess"),
-    renderer: "svg",
-    loop: false,
-    autoplay: true,
-    path: "https://lottie.host/20c232f1-0931-431a-bb03-27f3c32a945e/3Wc58xA1oE.json"
-  });
+        updateProgress(60);
 
-  confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-}
+        const task = data?.[0];
+        if (!task) throw new Error("Görev bulunamadı");
 
-function closeModal() {
-  document.getElementById("successModal").classList.add("hidden");
-}
+        document.getElementById("taskDescription").textContent = task.description;
+        document.getElementById("employeeName").innerHTML = `<i class='fa-solid fa-user'></i> ${task.employee_name}`;
+        document.getElementById("companyName").textContent = task.company_name || "Firma";
 
-completeBtn.addEventListener("click", async () => {
-  completeBtn.disabled = true;
-  completeBtn.querySelector(".loading").classList.remove("hidden");
-  completeBtn.querySelector(".fa-check-circle").classList.add("hidden");
+        // Display deadline if exists
+        if (task.deadline) {
+          const deadlineDate = new Date(task.deadline);
+          const formattedDate = deadlineDate.toLocaleDateString('tr-TR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          document.getElementById("deadlineDate").textContent = formattedDate;
+          document.getElementById("deadlineSection").classList.remove("hidden");
+        }
 
-  try {
-    const { error } = await supabase.rpc("complete_task_public", { p_task_id: taskId });
-    if (error) throw error;
+        if (task.completed) {
+          completeBtn.classList.add("hidden");
+          updateProgress(100);
+        }
 
-    openSuccessModal();
-    completeBtn.classList.add("hidden");
-    updateProgress(100);
-  } catch (err) {
-    errorMessage.textContent = "Görev tamamlanırken hata oluştu.";
-    errorMessage.classList.remove("hidden");
-    completeBtn.disabled = false;
-  }
+        updateProgress(100);
+      } catch (err) {
+        errorMessage.textContent = "Görev yüklenirken hata oluştu.";
+        errorMessage.classList.remove("hidden");
+        completeBtn.disabled = true;
+      }
+    }
 
-  completeBtn.querySelector(".loading").classList.add("hidden");
-  completeBtn.querySelector(".fa-check-circle").classList.remove("hidden");
-});
+    function openSuccessModal() {
+      document.getElementById("successModal").classList.remove("hidden");
 
-loadTask();
-</script>
+      lottie.loadAnimation({
+        container: document.getElementById("lottieSuccess"),
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        path: "https://lottie.host/20c232f1-0931-431a-bb03-27f3c32a945e/3Wc58xA1oE.json"
+      });
+
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+    }
+
+    function closeModal() {
+      document.getElementById("successModal").classList.add("hidden");
+    }
+
+    completeBtn.addEventListener("click", async () => {
+      completeBtn.disabled = true;
+      completeBtn.querySelector(".loading").classList.remove("hidden");
+      completeBtn.querySelector(".fa-check-circle").classList.add("hidden");
+
+      try {
+        const { error } = await supabase.rpc("complete_task_public", { p_task_id: taskId });
+        if (error) throw error;
+
+        openSuccessModal();
+        completeBtn.classList.add("hidden");
+        updateProgress(100);
+      } catch (err) {
+        errorMessage.textContent = "Görev tamamlanırken hata oluştu.";
+        errorMessage.classList.remove("hidden");
+        completeBtn.disabled = false;
+      }
+
+      completeBtn.querySelector(".loading").classList.add("hidden");
+      completeBtn.querySelector(".fa-check-circle").classList.remove("hidden");
+    });
+
+    loadTask();
+  </script>
 
 </body>
+
 </html>

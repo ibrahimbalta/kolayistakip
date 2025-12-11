@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             phone: task.employee_phone,
             customer_id: task.customer_id,
             completed: task.completed,
+            deadline: task.deadline,
             createdAt: new Date(task.created_at).toLocaleDateString('tr-TR'),
             completedAt: task.completed_at ? new Date(task.completed_at) : null
         }));
@@ -297,6 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const desc = document.getElementById('taskDesc').value;
         const empId = document.getElementById('employeeSelect').value;
         const customerId = document.getElementById('customerSelect')?.value || null;
+        const deadline = document.getElementById('taskDeadline')?.value || null;
 
         if (!empId) {
             alert('Lütfen bir çalışan seçin.');
@@ -313,7 +315,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 employee_id: employee.id,
                 employee_name: employee.name,
                 employee_phone: employee.phone,
-                completed: false
+                completed: false,
+                deadline: deadline
             };
 
             // Add customer info if selected
@@ -381,6 +384,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const taskLink = `${window.location.origin}/complete-task.html?id=${task.id}`;
             const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Merhaba ${task.name}, ${companyName} tarafından atanan yeni bir görevin var:\n\nGörevin: ${task.desc}\n\nGörevi tamamladığında buraya tıkla:\n${taskLink}`)}`;
 
+            // Get customer info if exists
+            const customer = task.customer_id ? customers.find(c => c.id === task.customer_id) : null;
+            const customerDisplay = customer ? `<div class="task-meta"><i class="fa-solid fa-building"></i> ${Security.sanitize(customer.name)}</div>` : '';
+
             const taskDiv = document.createElement('div');
             taskDiv.className = `task-item ${task.completed ? 'completed' : ''}`;
             taskDiv.innerHTML = `
@@ -390,6 +397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span class="task-meta">${task.createdAt}</span>
                     </div>
                     <div class="task-meta"><i class="fa-solid fa-user"></i> ${Security.sanitize(task.name)}</div>
+                    ${customerDisplay}
                 </div>
                 <div class="task-actions">
                     <a href="${whatsappUrl}" target="_blank" class="action-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Paylaş</a>
@@ -399,6 +407,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
 
             // Add event listeners
+            taskDiv.querySelector('.task-content').addEventListener('click', () => showEditTaskModal(task));
             taskDiv.querySelector('.btn-complete').addEventListener('click', () => toggleTaskStatus(task.id));
             taskDiv.querySelector('.btn-delete').addEventListener('click', () => deleteTask(task.id));
 
@@ -449,6 +458,114 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // --- Task Edit Functions ---
+    window.showEditTaskModal = function (task) {
+        const modal = document.getElementById('editTaskModal');
+        const editTaskId = document.getElementById('editTaskId');
+        const editTaskDesc = document.getElementById('editTaskDesc');
+        const editTaskEmployee = document.getElementById('editTaskEmployee');
+        const editTaskCustomer = document.getElementById('editTaskCustomer');
+
+        // Set task ID
+        editTaskId.value = task.id;
+
+        // Set task description
+        editTaskDesc.value = task.desc;
+
+        // Populate employee dropdown
+        editTaskEmployee.innerHTML = '<option value="">Çalışan Seçin...</option>';
+        employees.forEach(emp => {
+            const option = document.createElement('option');
+            option.value = emp.id;
+            option.textContent = emp.name;
+            if (emp.id === task.employeeId) {
+                option.selected = true;
+            }
+            editTaskEmployee.appendChild(option);
+        });
+
+        // Populate customer dropdown
+        editTaskCustomer.innerHTML = '<option value="">Müşteri Seçin...</option>';
+        customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.id;
+            option.textContent = `${customer.name} (${customer.email})`;
+            if (customer.id === task.customer_id) {
+                option.selected = true;
+            }
+            editTaskCustomer.appendChild(option);
+        });
+
+        // Set deadline if exists
+        const editTaskDeadline = document.getElementById('editTaskDeadline');
+        if (editTaskDeadline && task.deadline) {
+            editTaskDeadline.value = task.deadline;
+        }
+
+        // Show modal
+        modal.style.display = 'flex';
+    };
+
+    window.closeEditTaskModal = function () {
+        document.getElementById('editTaskModal').style.display = 'none';
+        document.getElementById('editTaskForm').reset();
+    };
+
+    // Handle edit task form submission
+    document.getElementById('editTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const taskId = document.getElementById('editTaskId').value;
+        const desc = document.getElementById('editTaskDesc').value;
+        const empId = document.getElementById('editTaskEmployee').value;
+        const customerId = document.getElementById('editTaskCustomer').value || null;
+        const deadline = document.getElementById('editTaskDeadline')?.value || null;
+
+        if (!empId) {
+            alert('Lütfen bir çalışan seçin.');
+            return;
+        }
+
+        const employee = employees.find(e => e.id == empId);
+        const customer = customerId ? customers.find(c => c.id == customerId) : null;
+
+        try {
+            const updateData = {
+                description: desc,
+                employee_id: employee.id,
+                employee_name: employee.name,
+                employee_phone: employee.phone,
+                deadline: deadline
+            };
+
+            // Add customer info if selected
+            if (customer) {
+                updateData.customer_id = customer.id;
+                updateData.customer_name = customer.name;
+                updateData.customer_email = customer.email;
+            } else {
+                // Clear customer info if unselected
+                updateData.customer_id = null;
+                updateData.customer_name = null;
+                updateData.customer_email = null;
+            }
+
+            const { error } = await supabase
+                .from('tasks')
+                .update(updateData)
+                .eq('id', taskId);
+
+            if (error) throw error;
+
+            closeEditTaskModal();
+            await loadTasks(); // Refresh list immediately
+            alert('Görev başarıyla güncellendi!');
+        } catch (error) {
+            console.error('Error updating task:', error);
+            alert('Görev güncellenirken bir hata oluştu.');
+        }
+    });
+
     // --- Employee Management ---
     window.showAddEmployeeModal = function () {
         document.getElementById('addEmployeeModal').style.display = 'flex';
@@ -497,13 +614,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const activeTaskCount = tasks.filter(t => t.employeeId == emp.id && !t.completed).length;
             const tr = document.createElement('tr');
 
-            console.log(`Rendering emp: ${emp.name}, Dept ID: ${emp.department_id}, Departments loaded: ${departments.length}`);
+            console.log(`Rendering emp: ${emp.name}, Dept ID: ${emp.department_id}, Departments loaded: ${departments.length} `);
 
             const departmentName = emp.department_id ?
                 (departments.find(d => d.id === emp.department_id)?.name || '<span style="color:red">Tanımsız</span>') : '-';
 
             tr.innerHTML = `
-                <td><div style="font-weight:500;">${Security.sanitize(emp.name)}</div></td>
+            < td > <div style="font-weight:500;">${Security.sanitize(emp.name)}</div></td >
                 <td>${Security.sanitize(emp.phone)}</td>
                 <td><span style="background:#eff6ff; color:var(--primary); padding:2px 8px; border-radius:4px; font-size:0.85rem;">${activeTaskCount} Görev</span></td>
                 <td><span style="color:var(--text-secondary); font-size:0.9rem;">${departmentName}</span></td>
@@ -513,7 +630,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <button class="btn-delete-emp" style="color:#ef4444; background:none; border:none; cursor:pointer; font-size:1.1rem;"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
-            `;
+        `;
 
             // Add event listeners
             tr.querySelector('.btn-edit-emp').addEventListener('click', () => showEditEmployeeModal(emp));
@@ -697,26 +814,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (customers.length === 0) {
             customerCardsGrid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
+    < div style = "grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);" >
                     <i class="fa-solid fa-user-group" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
                     <p>Henüz müşteri eklenmemiş.</p>
-                </div>
-            `;
+                </div >
+    `;
             return;
         }
 
         if (displayCustomers.length === 0) {
             customerCardsGrid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
+    < div style = "grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);" >
                     <i class="fa-solid fa-search" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
                     <p>Arama kriterlerine uygun müşteri bulunamadı.</p>
-                </div>
-            `;
+                </div >
+    `;
             return;
         }
 
         displayCustomers.forEach(customer => {
-            console.log(`Rendering customer: ${customer.name}, Sector: ${customer.sector}, Status: ${customer.status}`);
+            console.log(`Rendering customer: ${customer.name}, Sector: ${customer.sector}, Status: ${customer.status} `);
 
             // Get initials for avatar
             const initials = customer.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -741,14 +858,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const card = document.createElement('div');
             card.style.cssText = `
-                background: white;
-                border: 1px solid #e5e7eb;
-                border-radius: 12px;
-                padding: 1rem;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                transition: all 0.3s ease;
-                cursor: pointer;
-            `;
+background: white;
+border: 1px solid #e5e7eb;
+border - radius: 12px;
+padding: 1rem;
+box - shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease;
+cursor: pointer;
+`;
             card.onmouseenter = () => {
                 card.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
                 card.style.transform = 'translateY(-2px)';
@@ -759,7 +876,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             card.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+    < div style = "display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;" >
                     <div style="width: 40px; height: 40px; border-radius: 50%; background: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.95rem;">
                         ${initials}
                     </div>
@@ -770,7 +887,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                         <div style="font-size: 0.75rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(customer.sector)} • ${totalTasks} Görev</div>
                     </div>
-                </div>
+                </div >
                 
                 <div style="display: flex; justify-content: space-around; margin-bottom: 0.75rem; padding: 0.5rem 0; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6;">
                     <div style="text-align: center;">
@@ -802,7 +919,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <i class="fa-solid fa-trash"></i> Sil
                     </button>
                 </div>
-            `;
+`;
 
             // Add event listeners
             card.querySelector('.btn-share-customer').addEventListener('click', (e) => {
@@ -870,11 +987,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (customerTasks.length === 0) {
             container.innerHTML = `
-                <div style="text-align: center; padding: 3rem 1rem; color: var(--secondary);">
+    < div style = "text-align: center; padding: 3rem 1rem; color: var(--secondary);" >
                     <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
                     <p style="margin: 0;">Bu müşteriye atanmış görev bulunmuyor.</p>
-                </div>
-            `;
+                </div >
+    `;
         } else {
             container.innerHTML = customerTasks.map(task => {
                 const statusIcon = task.completed
@@ -889,27 +1006,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const employeeName = employee ? employee.name : task.name || 'Bilinmiyor';
 
                 return `
-                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
-                                    ${Security.sanitize(task.desc)}
-                                </div>
-                                <div style="font-size: 0.85rem; color: #6b7280; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                    <span><i class="fa-solid fa-user" style="font-size: 0.75rem;"></i> ${Security.sanitize(employeeName)}</span>
-                                    <span>•</span>
-                                    <span><i class="fa-solid fa-calendar" style="font-size: 0.75rem;"></i> ${task.createdAt}</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                ${statusIcon}
-                                <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
-                                    ${statusText}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+    < div style = "background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;" >
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+            <div style="flex: 1;">
+                <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+                    ${Security.sanitize(task.desc)}
+                </div>
+                <div style="font-size: 0.85rem; color: #6b7280; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <span><i class="fa-solid fa-user" style="font-size: 0.75rem;"></i> ${Security.sanitize(employeeName)}</span>
+                    <span>•</span>
+                    <span><i class="fa-solid fa-calendar" style="font-size: 0.75rem;"></i> ${task.createdAt}</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                ${statusIcon}
+                <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
+                    ${statusText}
+                </span>
+            </div>
+        </div>
+                    </div >
+    `;
             }).join('');
         }
 

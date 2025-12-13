@@ -530,22 +530,26 @@
 
             <!-- VIEW: RESERVATIONS -->
             <section id="view-reservations" class="view-section" style="display:none;">
-                <div class="content-grid" style="grid-template-columns: 1fr 2fr;">
-                    <!-- Form Card -->
-                    <div class="card">
-                        <h2><i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> Yeni Alan Tanımlama
-                        </h2>
-                        <form id="reservationForm">
-                            <input type="hidden" id="editReservationId">
+                <!-- Compact Horizontal Form -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h2 style="margin-bottom: 1.25rem;"><i class="fa-solid fa-plus-circle"
+                            style="color: var(--primary);"></i> Yeni Alan Tanımlama</h2>
+                    <form id="reservationForm">
+                        <input type="hidden" id="editReservationId">
 
-                            <div class="form-group">
-                                <label for="alanNo">Alan Kodu/Numarası</label>
-                                <input type="text" id="alanNo" required placeholder="Örn: H301, Kort-2">
+                        <!-- First Row: Main Fields -->
+                        <div
+                            style="display: grid; grid-template-columns: 150px 180px 200px 150px 1fr auto; gap: 12px; align-items: end; margin-bottom: 12px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="alanNo" style="font-size: 0.75rem; margin-bottom: 4px;">Alan
+                                    Kodu/Numarası</label>
+                                <input type="text" id="alanNo" required placeholder="Örn: F301"
+                                    style="padding: 10px 12px;">
                             </div>
 
-                            <div class="form-group">
-                                <label for="alanTipi">Alan Tipi</label>
-                                <select id="alanTipi" required>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="alanTipi" style="font-size: 0.75rem; margin-bottom: 4px;">Alan Tipi</label>
+                                <select id="alanTipi" required style="padding: 10px 12px;">
                                     <option value="stand">Fuar Standı</option>
                                     <option value="toplanti">Toplantı Odası</option>
                                     <option value="masa">Coworking Masası</option>
@@ -554,115 +558,117 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="alanBuyukluk">Büyüklük (m² / Kişi Kapasitesi)</label>
-                                <input type="text" id="alanBuyukluk" required placeholder="Örn: 18 m² veya 10 Kişilik">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="alanBuyukluk" style="font-size: 0.75rem; margin-bottom: 4px;">Büyüklük /
+                                    Kapasite</label>
+                                <input type="text" id="alanBuyukluk" required placeholder="Örn: 24 m² veya 20 kişilik"
+                                    style="padding: 10px 12px;">
                             </div>
 
-                            <div class="form-group">
-                                <label for="fiyatTipi">Fiyatlandırma Şekli</label>
-                                <select id="fiyatTipi" required>
-                                    <option value="saatlik">Saatlik</option>
-                                    <option value="gunluk">Günlük/Seanslık</option>
-                                    <option value="tek_fiyat">Tek Fiyat</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="fiyatMiktar">Fiyat</label>
-                                <div style="display: flex; gap: 8px;">
-                                    <select id="paraBirimi" style="flex: 0 0 90px;" required>
-                                        <option value="TRY">₺ (TRY)</option>
-                                        <option value="USD">$ (USD)</option>
-                                        <option value="EUR">€ (EUR)</option>
-                                    </select>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="fiyatMiktar" style="font-size: 0.75rem; margin-bottom: 4px;">Fiyat
+                                    (₺)</label>
+                                <div style="display: flex; align-items: center; gap: 0;">
+                                    <span
+                                        style="background: #f1f5f9; padding: 10px 12px; border: 1px solid var(--border); border-right: none; border-radius: 8px 0 0 8px; color: var(--primary); font-weight: 600;">₺</span>
                                     <input type="number" id="fiyatMiktar" min="0" step="0.01" required
-                                        placeholder="0.00" style="flex: 1;">
+                                        placeholder="0.00"
+                                        style="padding: 10px 12px; border-radius: 0 8px 8px 0; flex: 1;">
                                 </div>
+                                <input type="hidden" id="paraBirimi" value="TRY">
+                                <input type="hidden" id="fiyatTipi" value="tek_fiyat">
                             </div>
 
-                            <div class="form-group">
-                                <label for="alanDurum">Mevcut Durum</label>
-                                <select id="alanDurum" required>
-                                    <option value="bos">Boş</option>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="alanDurum" style="font-size: 0.75rem; margin-bottom: 4px;">Durum</label>
+                                <select id="alanDurum" required style="padding: 10px 12px;">
+                                    <option value="bos">Müsait</option>
                                     <option value="opsiyonda">Opsiyonda</option>
-                                    <option value="rezerve">Rezerve</option>
+                                    <option value="rezerve">Dolu</option>
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="alanAciklama">Açıklama</label>
-                                <textarea id="alanAciklama" rows="3"
-                                    placeholder="Alan hakkında ek bilgiler, notlar..."></textarea>
+                            <button type="submit" class="btn btn-primary" id="reservationSubmitBtn"
+                                style="padding: 10px 24px; white-space: nowrap;">
+                                <i class="fa-solid fa-plus"></i> Tanımla
+                            </button>
+                        </div>
+
+                        <!-- Second Row: Description + Action Buttons -->
+                        <div style="display: flex; gap: 12px; align-items: end;">
+                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                <label for="alanAciklama" style="font-size: 0.75rem; margin-bottom: 4px;">Açıklama
+                                    (Opsiyonel)</label>
+                                <input type="text" id="alanAciklama" placeholder="Alan hakkında ek bilgiler, notlar..."
+                                    style="padding: 10px 12px;">
                             </div>
 
-                            <!-- Rezervasyon Bilgileri (Durum=rezerve olduğunda görünür) -->
-                            <div id="reservationInfoSection"
-                                style="display: none; border-top: 2px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
-                                <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.1rem;">
-                                    <i class="fa-solid fa-building"></i> Rezervasyon Bilgileri
-                                </h3>
-
-                                <div class="form-group">
-                                    <label for="reservedCompany">Firma Ünvanı</label>
-                                    <input type="text" id="reservedCompany" placeholder="Örn: ABC Tekstil Ltd. Şti.">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="reservedName">Yetkili Ad Soyad</label>
-                                    <input type="text" id="reservedName" placeholder="Örn: Ahmet Yılmaz">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="reservedPhone">Telefon</label>
-                                    <input type="tel" id="reservedPhone" placeholder="(5XX) XXX XX XX">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="reservedEmail">E-posta</label>
-                                    <input type="email" id="reservedEmail" placeholder="ornek@firma.com">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="reservedNotes">Özel İstekler / Notlar</label>
-                                    <textarea id="reservedNotes" rows="3"
-                                        placeholder="Varsa özel istekler veya notlar..."></textarea>
-                                </div>
-                            </div>
-
-
-                            <div style="display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap;">
-                                <button type="submit" class="btn btn-primary" id="reservationSubmitBtn"
-                                    style="flex: 1;">
-                                    <i class="fa-solid fa-plus"></i> Alan Ekle
-                                </button>
-                                <button type="button" class="btn" style="background: #6366f1; color: white;"
-                                    onclick="document.getElementById('krokiFileInput').click()">
-                                    <i class="fa-solid fa-image"></i> Görsel Yükle
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn"
+                                    style="background: #f1f5f9; color: #64748b; padding: 10px 14px;"
+                                    onclick="document.getElementById('krokiFileInput').click()" title="Görsel Yükle">
+                                    <i class="fa-solid fa-image"></i>
                                 </button>
                                 <input type="file" id="krokiFileInput" accept="image/*" style="display: none;"
                                     onchange="uploadKrokiImage(this)">
-                                <button type="button" class="btn" style="background: #25d366; color: white;"
-                                    onclick="shareReservations()">
-                                    <i class="fa-brands fa-whatsapp"></i> Paylaş
-                                </button>
-                                <button type="button" class="btn" style="background: #6c757d; color: white;"
-                                    onclick="copyReservationLink()">
-                                    <i class="fa-solid fa-link"></i> Link
+                                <button type="button" class="btn"
+                                    style="background: #f1f5f9; color: #64748b; padding: 10px 14px;"
+                                    onclick="shareReservations()" title="WhatsApp Paylaş">
+                                    <i class="fa-solid fa-share-nodes"></i>
                                 </button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
 
-                    <!-- Cards Grid -->
-                    <div class="card">
-                        <h2><i class="fa-solid fa-grip" style="color: var(--primary);"></i> Tanımlı Alanlar</h2>
-                        <div id="reservationCardsGrid"
-                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 15px;">
-                            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--secondary);">
-                                <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
-                                <p style="margin-top: 10px;">Henüz alan eklenmemiş.</p>
+                        <!-- Hidden Reservation Info Section (for editing reserved areas) -->
+                        <div id="reservationInfoSection"
+                            style="display: none; border-top: 2px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem;">
+                            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1rem;">
+                                <i class="fa-solid fa-building"></i> Rezervasyon Bilgileri
+                            </h3>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="reservedCompany" style="font-size: 0.75rem;">Firma Ünvanı</label>
+                                    <input type="text" id="reservedCompany" placeholder="Örn: ABC Tekstil Ltd. Şti."
+                                        style="padding: 8px 12px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="reservedName" style="font-size: 0.75rem;">Yetkili Ad Soyad</label>
+                                    <input type="text" id="reservedName" placeholder="Örn: Ahmet Yılmaz"
+                                        style="padding: 8px 12px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="reservedPhone" style="font-size: 0.75rem;">Telefon</label>
+                                    <input type="tel" id="reservedPhone" placeholder="(5XX) XXX XX XX"
+                                        style="padding: 8px 12px;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="reservedEmail" style="font-size: 0.75rem;">E-posta</label>
+                                    <input type="email" id="reservedEmail" placeholder="ornek@firma.com"
+                                        style="padding: 8px 12px;">
+                                </div>
                             </div>
+                            <div class="form-group" style="margin-top: 12px; margin-bottom: 0;">
+                                <label for="reservedNotes" style="font-size: 0.75rem;">Özel İstekler / Notlar</label>
+                                <textarea id="reservedNotes" rows="2" placeholder="Varsa özel istekler veya notlar..."
+                                    style="padding: 8px 12px;"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Reservation Cards Section -->
+                <div>
+                    <h2 style="margin-bottom: 1rem; font-weight: 600; color: var(--dark);"><i
+                            class="fa-solid fa-th-large" style="color: var(--primary); margin-right: 8px;"></i>Tanımlı
+                        Alanlar</h2>
+                    <div id="reservationCardsGrid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                        <div
+                            style="grid-column: 1/-1; text-align: center; padding: 60px 40px; color: var(--secondary); background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                            <i class="fa-solid fa-inbox"
+                                style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                            <p style="margin: 0;">Henüz alan eklenmemiş.</p>
                         </div>
                     </div>
                 </div>

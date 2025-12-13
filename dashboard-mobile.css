@@ -107,6 +107,20 @@
         gap: 1rem !important;
     }
 
+    /* Reservation Form - Mobile */
+    #view-reservations .card form>div[style*="grid-template-columns: 150px"] {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    #view-reservations .card form>div[style*="grid-template-columns: 150px"]>button {
+        grid-column: 1 / -1 !important;
+    }
+
+    #view-reservations #reservationCardsGrid {
+        grid-template-columns: 1fr !important;
+    }
+
     /* Sidebar - Mobile Horizontal Scroll */
     .sidebar {
         width: 100%;

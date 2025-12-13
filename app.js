@@ -2256,84 +2256,90 @@ function renderReservations() {
 
     if (reservations.length === 0) {
         grid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 30px; color: var(--secondary);">
-                <i class="fa-solid fa-inbox" style="font-size: 2.5rem; opacity: 0.3;"></i>
-                <p style="margin-top: 8px; font-size: 0.9rem;">Henüz alan eklenmemiş.</p>
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 40px; color: var(--secondary); background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                <p style="margin: 0;">Henüz alan eklenmemiş.</p>
             </div>
         `;
         return;
     }
 
     reservations.forEach(reservation => {
-        const durumColors = {
-            'bos': { bg: '#d1fae5', border: '#10b981', text: '#065f46' },
-            'opsiyonda': { bg: '#fef3c7', border: '#f59e0b', text: '#92400e' },
-            'rezerve': { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' }
+        const durumConfig = {
+            'bos': { borderColor: '#10b981', bgColor: '#ecfdf5', label: 'MÜSAİT', labelBg: '#10b981' },
+            'opsiyonda': { borderColor: '#f59e0b', bgColor: '#fffbeb', label: 'OPSİYON', labelBg: '#f59e0b' },
+            'rezerve': { borderColor: '#ef4444', bgColor: '#fef2f2', label: 'DOLU', labelBg: '#ef4444' }
         };
-        const colors = durumColors[reservation.durum] || { bg: '#f3f4f6', border: '#6b7280', text: '#374151' };
+        const config = durumConfig[reservation.durum] || { borderColor: '#6b7280', bgColor: '#f9fafb', label: 'BİLİNMİYOR', labelBg: '#6b7280' };
 
         const card = document.createElement('div');
         card.style.cssText = `
-            background: ${colors.bg};
-            border: 1.5px solid ${colors.border};
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid ${config.borderColor};
             border-radius: 8px;
-            padding: 10px;
-            transition: all 0.2s;
-            cursor: pointer;
+            padding: 16px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         `;
-        card.onmouseover = () => card.style.transform = 'translateY(-2px)';
-        card.onmouseout = () => card.style.transform = 'translateY(0)';
+        card.onmouseover = () => {
+            card.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            card.style.transform = 'translateY(-2px)';
+        };
+        card.onmouseout = () => {
+            card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+            card.style.transform = 'translateY(0)';
+        };
 
+        // Firma bilgisi (rezerve için)
         const firmaBilgi = reservation.durum === 'rezerve' && reservation.reserved_by_company
             ? `
-                <div style="background: white; padding: 6px 8px; border-radius: 4px; margin-top: 6px; border-left: 2px solid ${colors.border};">
-                    <div style="font-size: 0.6rem; font-weight: 600; color: ${colors.text}; text-transform: uppercase; margin-bottom: 3px;">
-                        <i class="fa-solid fa-building"></i> Rezerve Eden
-                    </div>
-                    <div style="font-weight: 600; color: #111; font-size: 0.75rem; margin-bottom: 2px;">${reservation.reserved_by_company}</div>
-                    ${reservation.reserved_by_name ? `<div style="font-size: 0.65rem; color: #666;"><i class="fa-solid fa-user"></i> ${reservation.reserved_by_name}</div>` : ''}
-                    ${reservation.reserved_by_phone ? `<div style="font-size: 0.65rem; color: #666; margin-top: 1px;"><i class="fa-solid fa-phone"></i> ${reservation.reserved_by_phone}</div>` : ''}
-                    ${reservation.reserved_by_email ? `<div style="font-size: 0.65rem; color: #666; margin-top: 1px;"><i class="fa-solid fa-envelope"></i> ${reservation.reserved_by_email}</div>` : ''}
-                    ${reservation.special_requests ? `<div style="font-size: 0.65rem; color: #666; margin-top: 3px; padding-top: 3px; border-top: 1px dashed #ddd;"><i class="fa-solid fa-note-sticky"></i> ${reservation.special_requests}</div>` : ''}
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+                    <div style="font-size: 0.7rem; color: #6b7280; margin-bottom: 4px;"><i class="fa-solid fa-building"></i> ${reservation.reserved_by_company}</div>
+                    ${reservation.reserved_by_name ? `<div style="font-size: 0.7rem; color: #6b7280;"><i class="fa-solid fa-user"></i> ${reservation.reserved_by_name}</div>` : ''}
                 </div>
-            `
-            : '';
+            ` : '';
 
         card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
-                <div>
-                    <div style="font-size: 1.1rem; font-weight: 700; color: ${colors.text};">${reservation.alan_no}</div>
-                    <div style="font-size: 0.7rem; color: ${colors.text}; opacity: 0.8; margin-top: 1px;">
-                        ${formatReservationType(reservation.alan_tipi)}
-                    </div>
-                </div>
-                <span style="background: ${colors.border}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.6rem; font-weight: 700;">
-                    ${reservation.durum.toUpperCase()}
+            <!-- Header: Alan Kodu + Durum -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #1f2937;">${reservation.alan_no}</h3>
+                <span style="background: ${config.labelBg}; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">
+                    ${config.label}
                 </span>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
-                <div>
-                    <div style="font-size: 0.6rem; color: ${colors.text}; opacity: 0.7;">Büyüklük</div>
-                    <div style="font-weight: 600; font-size: 0.75rem; color: ${colors.text};">${reservation.alan_buyukluk || '-'}</div>
+            <!-- Info: Tip -->
+            <div style="margin-bottom: 8px;">
+                <div style="font-weight: 600; color: #374151; font-size: 0.9rem;">${formatReservationType(reservation.alan_tipi)}</div>
+            </div>
+            
+            <!-- Details Grid -->
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-size: 0.8rem; color: #6b7280;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <i class="fa-solid fa-ruler-combined" style="font-size: 0.7rem;"></i>
+                    <span>${reservation.alan_buyukluk || '-'}</span>
                 </div>
-                <div>
-                    <div style="font-size: 0.6rem; color: ${colors.text}; opacity: 0.7;">Fiyat</div>
-                    <div style="font-weight: 600; font-size: 0.75rem; color: ${colors.text};">${formatPrice(reservation.fiyat_miktar, reservation.para_birimi)}</div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <i class="fa-solid fa-tag" style="font-size: 0.7rem;"></i>
+                    <span style="font-weight: 600; color: #1f2937;">${formatPrice(reservation.fiyat_miktar, reservation.para_birimi)} / ${formatFiyatTipi(reservation.fiyat_tipi)}</span>
                 </div>
             </div>
-
-            ${reservation.aciklama ? `<div style="background: rgba(255,255,255,0.7); padding: 6px 8px; border-radius: 4px; margin-bottom: 6px; border-left: 2px solid ${colors.border};"><div style="font-size: 0.6rem; font-weight: 600; color: ${colors.text}; text-transform: uppercase; margin-bottom: 2px;"><i class="fa-solid fa-info-circle"></i> Açıklama</div><div style="font-size: 0.7rem; color: #333; line-height: 1.3;">${reservation.aciklama}</div></div>` : ''}
-
+            
+            ${reservation.aciklama ? `<div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 12px; padding: 8px; background: #f9fafb; border-radius: 4px;"><i class="fa-solid fa-info-circle"></i> ${reservation.aciklama}</div>` : ''}
+            
             ${firmaBilgi}
-
-            <div style="display: flex; gap: 4px; margin-top: 8px;">
-                ${reservation.durum !== 'rezerve' ? `<button onclick='openFirmaModal("${reservation.id}")' style="flex: 1; background: #8b5cf6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;"><i class="fa-solid fa-building-user"></i> Firma Ekle</button>` : ''}
-                <button onclick='editReservation("${reservation.id}")' style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
-                    <i class="fa-solid fa-edit"></i> Düzenle
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <button onclick='openReservationDetailModal("${reservation.id}")' style="flex: 1; background: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <i class="fa-solid fa-info-circle"></i> Detay
                 </button>
-                <button onclick='deleteReservation("${reservation.id}")' style="flex: 1; background: #ef4444; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 0.7rem;">
-                    <i class="fa-solid fa-trash"></i> Sil
+                <button onclick='editReservation("${reservation.id}")' style="flex: 1; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <i class="fa-solid fa-pen"></i> Düzenle
+                </button>
+                <button onclick='deleteReservation("${reservation.id}")' style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
         `;
@@ -2355,6 +2361,25 @@ function formatReservationType(type) {
         'tek_fiyat': 'Tek Fiyat'
     };
     return typeMap[type] || type;
+}
+
+// Format price type
+function formatFiyatTipi(type) {
+    const typeMap = {
+        'saatlik': 'Saatlik',
+        'gunluk': 'Günlük',
+        'tek_fiyat': 'Tek Fiyat'
+    };
+    return typeMap[type] || 'Tek Fiyat';
+}
+
+// Open reservation detail modal
+window.openReservationDetailModal = function (reservationId) {
+    const reservation = reservations.find(r => r.id === reservationId);
+    if (!reservation) return;
+
+    // For now, just edit the reservation - in future, can show detailed modal
+    editReservation(reservationId);
 }
 
 // Format price with currency

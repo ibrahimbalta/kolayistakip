@@ -620,7 +620,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 (departments.find(d => d.id === emp.department_id)?.name || '<span style="color:red">Tanımsız</span>') : '-';
 
             tr.innerHTML = `
-            < td > <div style="font-weight:500;">${Security.sanitize(emp.name)}</div></td >
+                <td><div style="font-weight:500;">${Security.sanitize(emp.name)}</div></td>
                 <td>${Security.sanitize(emp.phone)}</td>
                 <td><span style="background:#eff6ff; color:var(--primary); padding:2px 8px; border-radius:4px; font-size:0.85rem;">${activeTaskCount} Görev</span></td>
                 <td><span style="color:var(--text-secondary); font-size:0.9rem;">${departmentName}</span></td>
@@ -814,20 +814,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (customers.length === 0) {
             customerCardsGrid.innerHTML = `
-    < div style = "grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);" >
+                <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
                     <i class="fa-solid fa-user-group" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
                     <p>Henüz müşteri eklenmemiş.</p>
-                </div >
+                </div>
     `;
             return;
         }
 
         if (displayCustomers.length === 0) {
             customerCardsGrid.innerHTML = `
-    < div style = "grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);" >
+                <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
                     <i class="fa-solid fa-search" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
                     <p>Arama kriterlerine uygun müşteri bulunamadı.</p>
-                </div >
+                </div>
     `;
             return;
         }
@@ -876,7 +876,7 @@ cursor: pointer;
             };
 
             card.innerHTML = `
-    < div style = "display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;" >
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                     <div style="width: 40px; height: 40px; border-radius: 50%; background: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.95rem;">
                         ${initials}
                     </div>
@@ -887,7 +887,7 @@ cursor: pointer;
                         </div>
                         <div style="font-size: 0.75rem; color: #6b7280; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(customer.sector)} • ${totalTasks} Görev</div>
                     </div>
-                </div >
+                </div>
                 
                 <div style="display: flex; justify-content: space-around; margin-bottom: 0.75rem; padding: 0.5rem 0; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6;">
                     <div style="text-align: center;">
@@ -987,10 +987,10 @@ cursor: pointer;
 
         if (customerTasks.length === 0) {
             container.innerHTML = `
-    < div style = "text-align: center; padding: 3rem 1rem; color: var(--secondary);" >
+                <div style="text-align: center; padding: 3rem 1rem; color: var(--secondary);">
                     <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
                     <p style="margin: 0;">Bu müşteriye atanmış görev bulunmuyor.</p>
-                </div >
+                </div>
     `;
         } else {
             container.innerHTML = customerTasks.map(task => {
@@ -1006,7 +1006,7 @@ cursor: pointer;
                 const employeeName = employee ? employee.name : task.name || 'Bilinmiyor';
 
                 return `
-    < div style = "background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;" >
+                <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
             <div style="flex: 1;">
                 <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
@@ -1025,7 +1025,7 @@ cursor: pointer;
                 </span>
             </div>
         </div>
-                    </div >
+                </div>
     `;
             }).join('');
         }

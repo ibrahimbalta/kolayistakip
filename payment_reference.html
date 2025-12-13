@@ -1,592 +1,141 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ödeme Yap - Kolay İş Takip</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #10b981;
-            --primary-dark: #059669;
-            --bg-color: #f0f9ff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --card-bg: #ffffff;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ödeme Referansı — Kolay İş Takip</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: var(--text-color);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #10b981, #059669);
-            padding: 30px 20px;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .back-btn {
-            position: absolute;
-            left: 20px;
-            top: 30px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-
-        .back-btn:hover {
-            transform: translateX(-3px);
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        /* Package Summary Card */
-        .summary-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .summary-title {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .summary-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-        }
-
-        .summary-name {
-            font-weight: 600;
-            color: #334155;
-            margin-top: 5px;
-        }
-
-        /* Bank Info */
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #334155;
-        }
-
-        .bank-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bank-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: #1e293b;
-            text-align: right;
-        }
-
-        .iban-container {
-            background: #f1f5f9;
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .iban-text {
-            font-family: monospace;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #334155;
-            letter-spacing: 0.5px;
-        }
-
-        .copy-btn {
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--primary-color);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        /* Upload Area */
-        .upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #f8fafc;
-            position: relative;
-        }
-
-        .upload-area:hover,
-        .upload-area.drag-over {
-            border-color: var(--primary-color);
-            background: #ecfdf5;
-        }
-
-        .upload-icon {
-            font-size: 2.5rem;
-            color: #94a3b8;
-            margin-bottom: 15px;
-            transition: color 0.3s;
-        }
-
-        .upload-area:hover .upload-icon {
-            color: var(--primary-color);
-        }
-
-        .upload-text {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-
-        .upload-hint {
-            color: #94a3b8;
-            font-size: 0.8rem;
-        }
-
-        .file-preview {
-            display: none;
-            margin-top: 15px;
-            position: relative;
-        }
-
-        .file-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--primary-dark);
-            font-weight: 500;
-        }
-
-        .remove-file {
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-left: 10px;
-        }
-
-        .remove-file:hover {
-            text-decoration: underline;
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
-        }
-
-        .submit-btn:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 0;
-                min-height: 100vh;
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#4f46e5',
+              cyanAccent: '#06b6d4'
             }
-
-            .content {
-                padding: 20px;
-            }
-
-            .iban-text {
-                font-size: 0.9rem;
-            }
+          }
         }
-    </style>
+      }
+  </script>
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body{
+      background:linear-gradient(140deg,#4b0082 0%,#6a1a8c 100%);
+      min-height:100vh;
+    }
+    .glass{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);}
+    .glow{box-shadow:0 18px 40px rgba(0,0,0,0.3);}
+  </style>
 </head>
+<body class="text-gray-100 font-inter flex flex-col">
 
-<body>
+<!-- NAV -->
+<header class="sticky top-0 bg-black/30 backdrop-blur z-50 border-b border-white/10">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 text-white">
+        <span class="p-2 rounded-xl glass"><i class="fa-solid fa-check-double text-cyanAccent"></i></span>
+        <span class="font-semibold text-lg">Kolay İş Takip</span>
+      </a>
+      <a href="index.html#pricing" class="px-4 py-2 rounded-xl glass hover:bg-white/10 text-sm transition">
+        ← Geri Dön
+      </a>
+  </div>
+</header>
 
-    <div class="container">
-        <div class="header">
-            <a href="index.html#pricing" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-            <h1>Ödeme Yap</h1>
-            <p>Premium üyeliğinizi başlatın</p>
-        </div>
+<!-- CONTENT -->
+<main class="flex-1 flex justify-center items-center px-4 py-10">
+  <div class="glass glow p-8 border border-white/10 rounded-3xl w-full max-w-lg">
 
-        <div class="content">
-            <!-- Summary -->
-            <div class="summary-card">
-                <div class="summary-title">ÖDENECEK TUTAR</div>
-                <div class="summary-price" id="packagePrice">0 TL</div>
-                <div class="summary-name" id="packageName">Paket Yükleniyor...</div>
-            </div>
+      <!-- Title -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold">Ödeme Referansı</h1>
+        <p class="text-gray-300 text-sm">Gönderdiğin ödemenin referans bilgisi</p>
+      </div>
 
-            <!-- Bank Info -->
-            <div class="section-title">
-                <i class="fas fa-university"></i> Banka Bilgileri
-            </div>
-            <div class="bank-card">
-                <div class="info-row">
-                    <span class="info-label">Banka:</span>
-                    <span class="info-value">Akbank</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Alıcı:</span>
-                    <span class="info-value">İbrahim Balta</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Açıklama:</span>
-                    <span class="info-value" id="paymentDescription">Premium Üyelik</span>
-                </div>
+      <!-- Summary -->
+      <div class="glass border border-white/10 rounded-xl px-6 py-4 mb-6 text-center">
+        <div class="text-gray-300 text-sm">ÖDENEN TUTAR</div>
+        <div id="packagePrice" class="text-3xl font-extrabold mt-1 text-cyanAccent">0 TL</div>
+        <div id="packageName" class="mt-1 text-gray-300 text-sm">Paket Yükleniyor...</div>
+      </div>
 
-                <div class="iban-container">
-                    <div class="iban-text" id="ibanNumber">TR87 0046 0001 3688 8000 1294 17</div>
-                    <button class="copy-btn" onclick="copyIBAN()">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div>
-            </div>
+      <!-- Reference -->
+      <h3 class="font-semibold text-gray-200 mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-hashtag text-cyanAccent"></i> Ödeme Referans Kodu
+      </h3>
 
-            <!-- Upload -->
-            <div class="section-title">
-                <i class="fas fa-receipt"></i> Dekont Yükle
-            </div>
+      <div class="glass border border-white/10 p-4 rounded-xl mb-8 flex justify-between items-center">
+        <div id="referenceCode" class="font-mono text-lg font-bold">Yükleniyor...</div>
+        <button onclick="copyReference()" class="p-2 glass rounded hover:bg-white/10"><i class="fa-regular fa-copy"></i></button>
+      </div>
 
-            <div class="upload-area" id="dropZone">
-                <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;"
-                    onchange="handleFileSelect(this.files[0])">
+      <!-- Close Button -->
+      <button onclick="goDashboard()"
+        class="w-full py-3 bg-gradient-to-r from-cyanAccent to-primary rounded-xl shadow-lg font-semibold hover:scale-[1.02] transition">
+        <i class="fa-solid fa-circle-check"></i> Tamam
+      </button>
 
-                <div id="uploadPrompt">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="upload-text">Dosyayı buraya sürükleyin veya tıklayın</div>
-                    <div class="upload-hint">PNG, JPG veya PDF (Max 5MB)</div>
-                </div>
+  </div>
+</main>
 
-                <div id="filePreview" class="file-preview">
-                    <img id="previewImage" src="" alt="Önizleme">
-                    <div class="file-info">
-                        <span id="fileName">dosya.jpg</span>
-                        <span class="remove-file" onclick="removeFile(event)">Sil</span>
-                    </div>
-                </div>
-            </div>
 
-            <button class="submit-btn" id="submitBtn" onclick="submitPayment()" disabled>
-                <i class="fas fa-check-circle"></i> Ödemeyi Tamamla
-            </button>
-        </div>
-    </div>
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-xl hidden justify-center items-center">
+  <div class="glass glow p-6 rounded-2xl text-center w-full max-w-sm">
+      <div class="text-3xl mb-3"><i class="fa-solid fa-check text-cyanAccent"></i></div>
+      <div id="modalText" class="text-gray-200 text-lg font-semibold">Kopyalandı</div>
+      <button onclick="closeModal()" class="mt-4 w-full py-2 bg-gradient-to-r from-cyanAccent to-primary rounded-xl">Tamam</button>
+  </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="auth.js"></script>
 
-    <script>
-        let selectedFile = null;
-        let packageType = '';
-        let packageAmount = 0;
-        let currentUser = null;
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
 
-        // Get URL params
-        const urlParams = new URLSearchParams(window.location.search);
-        packageType = urlParams.get('package');
-        packageAmount = parseFloat(urlParams.get('amount'));
+<script>
+let currentUser=null;
+const url=new URLSearchParams(window.location.search);
+const ref=url.get("ref");
+const packageType=url.get("package");
+const packageAmount=parseFloat(url.get("amount"));
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', async () => {
-            currentUser = await Auth.getCurrentUser();
+document.addEventListener("DOMContentLoaded", async()=>{
+  currentUser=await Auth.getCurrentUser();
 
-            const packageNames = {
-                'monthly': 'Aylık Premium',
-                'yearly': 'Yıllık Premium'
-            };
+  // Paket bilgileri
+  document.getElementById("packagePrice").textContent=packageAmount+" TL";
+  document.getElementById("packageName").textContent=
+    (packageType==="yearly"?"Yıllık Premium":"Aylık Premium");
 
-            document.getElementById('packageName').textContent = packageNames[packageType] || 'Premium Paket';
-            document.getElementById('packagePrice').textContent = packageAmount + ' TL';
+  // Referans kodu
+  document.getElementById("referenceCode").textContent=ref;
+});
 
-            if (currentUser) {
-                document.getElementById('paymentDescription').textContent = `${currentUser.username} - Premium`;
-            }
-        });
+function copyReference(){
+  navigator.clipboard.writeText(ref);
+  showModal("Referans kodu kopyalandı");
+}
 
-        // Copy IBAN
-        function copyIBAN() {
-            const iban = document.getElementById('ibanNumber').textContent.replace(/\s/g, '');
-            navigator.clipboard.writeText(iban).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalIcon = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i>';
-                btn.style.color = '#10b981';
-                btn.style.borderColor = '#10b981';
+function goDashboard(){
+  location.href="dashboard.html";
+}
 
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="far fa-copy"></i>';
-                    btn.style.color = '';
-                    btn.style.borderColor = '';
-                }, 2000);
-            });
-        }
+function showModal(t){
+  document.getElementById("modalText").textContent=t;
+  document.getElementById("modal").classList.remove("hidden");
+}
 
-        // Drag & Drop Logic
-        const dropZone = document.getElementById('dropZone');
+function closeModal(){
+  document.getElementById("modal").classList.add("hidden");
+}
+</script>
 
-        dropZone.addEventListener('click', () => document.getElementById('fileInput').click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('drag-over');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            if (e.dataTransfer.files.length > 0) {
-                handleFileSelect(e.dataTransfer.files[0]);
-            }
-        });
-
-        function handleFileSelect(file) {
-            if (!file) return;
-
-            // Validate size (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('❌ Dosya boyutu 5MB\'dan küçük olmalıdır!');
-                return;
-            }
-
-            selectedFile = file;
-
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.getElementById('filePreview');
-                const prompt = document.getElementById('uploadPrompt');
-                const img = document.getElementById('previewImage');
-                const name = document.getElementById('fileName');
-
-                if (file.type.startsWith('image/')) {
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                } else {
-                    img.style.display = 'none'; // Hide image for PDF
-                }
-
-                name.textContent = file.name;
-                prompt.style.display = 'none';
-                preview.style.display = 'block';
-
-                document.getElementById('submitBtn').disabled = false;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeFile(e) {
-            e.stopPropagation(); // Prevent opening file dialog
-            selectedFile = null;
-            document.getElementById('fileInput').value = '';
-            document.getElementById('filePreview').style.display = 'none';
-            document.getElementById('uploadPrompt').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
-        }
-
-        async function submitPayment() {
-            if (!currentUser) {
-                // Re-check
-                currentUser = await Auth.getCurrentUser();
-                if (!currentUser) {
-                    alert('⚠️ "Ödeme yapmak için önce kayıt olup giriş yapmalısınız!');
-                    const redirectUrl = `payment.html?package=${packageType}&amount=${packageAmount}`;
-                    window.location.href = `login.html?redirect=${encodeURIComponent(redirectUrl)}`;
-                    return;
-                }
-            }
-
-            if (!selectedFile) {
-                alert('❌ Lütfen dekont yükleyin!');
-                return;
-            }
-
-            const btn = document.getElementById('submitBtn');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
-
-            try {
-                // 1. Upload File
-                const fileExt = selectedFile.name.split('.').pop();
-                const fileName = `${currentUser.id}_${Date.now()}.${fileExt}`;
-
-                const { data: uploadData, error: uploadError } = await supabase.storage
-                    .from('payment-receipts')
-                    .upload(fileName, selectedFile);
-
-                if (uploadError) {
-                    throw new Error('Dosya yükleme hatası: ' + uploadError.message);
-                }
-
-                // 2. Get Public URL
-                const { data: urlData } = supabase.storage
-                    .from('payment-receipts')
-                    .getPublicUrl(fileName);
-
-                // 3. Create Payment Request
-                const { error: dbError } = await supabase
-                    .from('payment_requests')
-                    .insert([{
-                        user_id: currentUser.id,
-                        package_type: packageType,
-                        amount: packageAmount,
-                        payment_proof: urlData.publicUrl,
-                        status: 'pending'
-                    }]);
-
-                if (dbError) {
-                    throw new Error('Veritabanı hatası: ' + dbError.message);
-                }
-
-                // Success
-                alert('✅ Ödeme talebiniz başarıyla alındı! Onaylandığında hesabınız aktif edilecektir.');
-                window.location.href = 'dashboard.html';
-
-            } catch (error) {
-                console.error('Payment Error:', error);
-                alert('❌ Bir hata oluştu: ' + error.message);
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
-        }
-    </script>
 </body>
-
 </html>

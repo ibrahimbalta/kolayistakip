@@ -1,792 +1,206 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ödeme Yap - Kolay İş Takip</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #10b981;
-            --primary-dark: #059669;
-            --bg-color: #f0f9ff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --card-bg: #ffffff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ödeme Yap — Kolay İş Takip</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: var(--text-color);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #10b981, #059669);
-            padding: 30px 20px;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .back-btn {
-            position: absolute;
-            left: 20px;
-            top: 30px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-
-        .back-btn:hover {
-            transform: translateX(-3px);
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        /* Package Summary Card */
-        .summary-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .summary-title {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .summary-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-        }
-
-        .summary-name {
-            font-weight: 600;
-            color: #334155;
-            margin-top: 5px;
-        }
-
-        /* Bank Info */
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #334155;
-        }
-
-        .bank-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bank-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: #1e293b;
-            text-align: right;
-        }
-
-        .iban-container {
-            background: #f1f5f9;
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .iban-text {
-            font-family: monospace;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #334155;
-            letter-spacing: 0.5px;
-        }
-
-        .copy-btn {
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--primary-color);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        /* Upload Area */
-        .upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #f8fafc;
-            position: relative;
-        }
-
-        .upload-area:hover,
-        .upload-area.drag-over {
-            border-color: var(--primary-color);
-            background: #ecfdf5;
-        }
-
-        .upload-icon {
-            font-size: 2.5rem;
-            color: #94a3b8;
-            margin-bottom: 15px;
-            transition: color 0.3s;
-        }
-
-        .upload-area:hover .upload-icon {
-            color: var(--primary-color);
-        }
-
-        .upload-text {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-
-        .upload-hint {
-            color: #94a3b8;
-            font-size: 0.8rem;
-        }
-
-        .file-preview {
-            display: none;
-            margin-top: 15px;
-            position: relative;
-        }
-
-        .file-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--primary-dark);
-            font-weight: 500;
-        }
-
-        .remove-file {
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-left: 10px;
-        }
-
-        .remove-file:hover {
-            text-decoration: underline;
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
-        }
-
-        .submit-btn:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Custom Modal Notification */
-        .notification-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .notification-modal.show {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#4f46e5',
+              cyanAccent: '#06b6d4',
+              purpleDeep: '#2d064e',
+              purpleMid: '#6a1a8c'
             }
-
-            to {
-                opacity: 1;
-            }
+          }
         }
+      }
+  </script>
 
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
+  <!-- ICONS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .notification-content {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            animation: slideIn 0.4s ease;
-        }
-
-        .notification-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .notification-icon.success {
-            color: #10b981;
-        }
-
-        .notification-icon.warning {
-            color: #f59e0b;
-        }
-
-        .notification-icon.error {
-            color: #ef4444;
-        }
-
-        .notification-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 15px;
-        }
-
-        .notification-message {
-            font-size: 1rem;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .notification-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-        }
-
-        .notification-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
-        }
-
-        .notification-btn.warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
-        }
-
-        .notification-btn.warning:hover {
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 0;
-                min-height: 100vh;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .iban-text {
-                font-size: 0.9rem;
-            }
-
-            .notification-content {
-                padding: 30px 20px;
-            }
-
-            .notification-icon {
-                font-size: 3rem;
-            }
-
-            .notification-title {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
+  <style>
+    body { background: linear-gradient(135deg,#4b0082 0%,#6a1a8c 100%); }
+    .glass{ background:rgba(255,255,255,0.08); backdrop-filter:blur(10px); }
+    .card-glow{ box-shadow:0 18px 30px rgba(0,0,0,0.28); }
+    @keyframes fadeIn{ from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:none;} }
+    .fade{ animation:fadeIn .6s ease both; }
+  </style>
 </head>
+<body class="font-inter text-gray-100 min-h-screen flex flex-col">
 
-<body>
+<!-- NAVBAR -->
+<header class="sticky top-0 bg-black/30 backdrop-blur border-b border-white/10 z-50">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="index.html" class="flex items-center gap-3 text-white">
+      <span class="p-2 rounded-lg glass card-glow"><i class="fa-solid fa-check-double text-cyanAccent"></i></span>
+      <span class="font-semibold text-lg">Kolay İş Takip</span>
+    </a>
+    <a href="index.html#pricing" class="px-4 py-2 rounded-xl glass text-sm hover:bg-white/10">
+      ← Fiyatlara Geri Dön
+    </a>
+  </div>
+</header>
 
-    <div class="container">
-        <div class="header">
-            <a href="index.html#pricing" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-            <h1>Ödeme Yap</h1>
-            <p>Premium üyeliğinizi başlatın</p>
-        </div>
+<!-- CONTENT -->
+<main class="flex-1 flex justify-center items-center px-4 py-10">
+  <div class="glass card-glow border border-white/10 rounded-2xl p-8 w-full max-w-lg fade">
 
-        <div class="content">
-            <!-- Summary -->
-            <div class="summary-card">
-                <div class="summary-title">ÖDENECEK TUTAR</div>
-                <div class="summary-price" id="packagePrice">0 TL</div>
-                <div class="summary-name" id="packageName">Paket Yükleniyor...</div>
-            </div>
-
-            <!-- Bank Info -->
-            <div class="section-title">
-                <i class="fas fa-university"></i> Banka Bilgileri
-            </div>
-            <div class="bank-card">
-                <div class="info-row">
-                    <span class="info-label">Banka:</span>
-                    <span class="info-value">Akbank</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Alıcı:</span>
-                    <span class="info-value">İbrahim Balta</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Açıklama:</span>
-                    <span class="info-value" id="paymentDescription">Premium Üyelik</span>
-                </div>
-
-                <div class="iban-container">
-                    <div class="iban-text" id="ibanNumber">TR87 0046 0001 3688 8000 1294 17</div>
-                    <button class="copy-btn" onclick="copyIBAN()">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Upload -->
-            <div class="section-title">
-                <i class="fas fa-receipt"></i> Dekont Yükle
-            </div>
-
-            <div class="upload-area" id="dropZone">
-                <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;"
-                    onchange="handleFileSelect(this.files[0])">
-
-                <div id="uploadPrompt">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="upload-text">Dosyayı buraya sürükleyin veya tıklayın</div>
-                    <div class="upload-hint">PNG, JPG veya PDF (Max 5MB)</div>
-                </div>
-
-                <div id="filePreview" class="file-preview">
-                    <img id="previewImage" src="" alt="Önizleme">
-                    <div class="file-info">
-                        <span id="fileName">dosya.jpg</span>
-                        <span class="remove-file" onclick="removeFile(event)">Sil</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="submit-btn" id="submitBtn" onclick="submitPayment()" disabled>
-                <i class="fas fa-check-circle"></i> Ödemeyi Tamamla
-            </button>
-        </div>
+    <!-- TITLE -->
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold">Ödeme İşlemi</h1>
+      <p class="text-gray-300 text-sm">Premium üyeliğinizi aktif edin</p>
     </div>
 
-    <!-- Notification Modal -->
-    <div id="notificationModal" class="notification-modal">
-        <div class="notification-content">
-            <div id="notificationIcon" class="notification-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2 id="notificationTitle" class="notification-title">Başlık</h2>
-            <p id="notificationMessage" class="notification-message">Mesaj</p>
-            <button id="notificationBtn" class="notification-btn" onclick="closeNotification()">Tamam</button>
-        </div>
+    <!-- SUMMARY -->
+    <div class="glass border border-white/10 rounded-xl p-5 mb-6 text-center">
+      <div class="text-gray-300 text-sm">ÖDENECEK TUTAR</div>
+      <div id="packagePrice" class="text-3xl font-extrabold mt-1 text-cyanAccent">0 TL</div>
+      <div id="packageName" class="mt-1 text-gray-300 text-sm">Yükleniyor...</div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="auth.js"></script>
+    <!-- BANK -->
+    <h3 class="text-gray-200 font-semibold mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-building-columns text-cyanAccent"></i> Banka Bilgileri
+    </h3>
 
-    <script>
-        let selectedFile = null;
-        let packageType = '';
-        let packageAmount = 0;
-        let currentUser = null;
-        let notificationCallback = null;
+    <div class="glass border border-white/10 rounded-xl p-5 mb-6">
+      <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Banka:</span><span>Akbank</span></div>
+      <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Alıcı:</span><span>İbrahim Balta</span></div>
+      <div class="flex justify-between text-sm mb-2"><span class="text-gray-300">Açıklama:</span><span id="paymentDescription">Premium</span></div>
 
-        // Get URL params
-        const urlParams = new URLSearchParams(window.location.search);
-        packageType = urlParams.get('package');
-        packageAmount = parseFloat(urlParams.get('amount'));
+      <div class="mt-4 bg-white/10 rounded-xl flex justify-between items-center px-3 py-2">
+        <span class="font-semibold tracking-wide" id="ibanNumber">TR87 0046 0001 3688 8000 1294 17</span>
+        <button onclick="copyIBAN()" class="p-2 rounded glass hover:bg-white/20"><i class="fa-regular fa-copy"></i></button>
+      </div>
+    </div>
 
-        // Notification System
-        function showNotification(type, title, message, callback) {
-            const modal = document.getElementById('notificationModal');
-            const icon = document.getElementById('notificationIcon');
-            const titleEl = document.getElementById('notificationTitle');
-            const messageEl = document.getElementById('notificationMessage');
-            const btn = document.getElementById('notificationBtn');
+    <!-- UPLOAD -->
+    <h3 class="text-gray-200 font-semibold mb-3 flex items-center gap-2">
+      <i class="fa-solid fa-file-arrow-up text-cyanAccent"></i> Dekont Yükle
+    </h3>
 
-            // Set icon based on type
-            if (type === 'success') {
-                icon.className = 'notification-icon success';
-                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
-                btn.className = 'notification-btn';
-            } else if (type === 'warning') {
-                icon.className = 'notification-icon warning';
-                icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                btn.className = 'notification-btn warning';
-            } else if (type === 'error') {
-                icon.className = 'notification-icon error';
-                icon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                btn.className = 'notification-btn';
-            }
+    <div id="dropZone" class="glass border border-white/10 rounded-xl p-6 text-center cursor-pointer mb-6">
+      <input type="file" id="fileInput" accept="image/*,.pdf" style="display:none" onchange="handleFileSelect(this.files[0])">
+      <div id="uploadPrompt">
+        <div class="text-4xl text-gray-400 mb-3"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+        <div>Dosyayı buraya bırak veya tıkla</div>
+        <div class="text-xs text-gray-400 mt-1">PNG, JPG veya PDF (MAX 5MB)</div>
+      </div>
 
-            titleEl.textContent = title;
-            messageEl.textContent = message;
-            notificationCallback = callback;
+      <div id="filePreview" class="hidden text-center mt-3">
+        <img id="previewImage" style="max-height:180px;margin:auto;border-radius:12px;">
+        <div class="mt-2 text-sm font-semibold text-cyanAccent" id="fileName"></div>
+        <button onclick="removeFile(event)" class="mt-2 text-red-300 hover:text-red-400 text-sm">Kaldır</button>
+      </div>
+    </div>
 
-            modal.classList.add('show');
-        }
+    <!-- BUTTON -->
+    <button id="submitBtn" onclick="submitPayment()" disabled
+      class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary font-semibold hover:scale-[1.02] transition flex items-center justify-center gap-2 shadow-lg">
+      <i class="fa-solid fa-check"></i> Ödemeyi Gönder
+    </button>
 
-        function closeNotification() {
-            const modal = document.getElementById('notificationModal');
-            modal.classList.remove('show');
+  </div>
+</main>
 
-            if (notificationCallback) {
-                notificationCallback();
-                notificationCallback = null;
-            }
-        }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', async () => {
-            currentUser = await Auth.getCurrentUser();
+<!-- NOTIFICATION MODAL -->
+<div id="notificationModal" class="fixed inset-0 bg-black/50 backdrop-blur-xl hidden justify-center items-center">
+  <div class="glass card-glow p-8 rounded-2xl w-full max-w-sm text-center animate-fade">
+    <div id="notificationIcon" class="text-4xl mb-4"><i class="fa-solid fa-check-circle text-cyanAccent"></i></div>
+    <h2 id="notificationTitle" class="text-xl font-bold mb-2">Başlık</h2>
+    <p id="notificationMessage" class="text-gray-300 text-sm mb-6">Mesaj</p>
+    <button id="notificationBtn" onclick="closeNotification()" 
+      class="w-full py-3 rounded-xl bg-gradient-to-r from-cyanAccent to-primary font-semibold shadow-lg">
+      Tamam
+    </button>
+  </div>
+</div>
 
-            if (!currentUser) {
-                showNotification(
-                    'warning',
-                    'Giriş Gerekli',
-                    'Ödeme işlemi yapabilmek için önce giriş yapmalı veya kayıt olmalısınız.',
-                    () => {
-                        const redirectUrl = `payment.html?package=${packageType}&amount=${packageAmount}`;
-                        window.location.href = `login.html?redirect=${encodeURIComponent(redirectUrl)}`;
-                    }
-                );
-                return;
-            }
 
-            const packageNames = {
-                'monthly': 'Aylık Premium',
-                'yearly': 'Yıllık Premium'
-            };
+<!-- SUPABASE - SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
 
-            document.getElementById('packageName').textContent = packageNames[packageType] || 'Premium Paket';
-            document.getElementById('packagePrice').textContent = packageAmount + ' TL';
+<script>
+let selectedFile=null,currentUser=null,notificationCallback=null;
+const url=new URLSearchParams(location.search);
+const packageType=url.get("package");
+const packageAmount=parseFloat(url.get("amount"));
+function showNotification(type,title,msg,cb=null){
+  document.getElementById("notificationModal").classList.remove("hidden");
+  document.getElementById("notificationTitle").textContent=title;
+  document.getElementById("notificationMessage").textContent=msg;
+  notificationCallback=cb;
+}
+function closeNotification(){
+  document.getElementById("notificationModal").classList.add("hidden");
+  if(notificationCallback){notificationCallback();notificationCallback=null;}
+}
+document.addEventListener("DOMContentLoaded",async()=>{
+  currentUser=await Auth.getCurrentUser();
+  if(!currentUser){
+    showNotification("warn","Giriş gerekli","Ödeme yapmak için giriş yapmalısınız",()=>{
+      location.href=`login.html?redirect=${encodeURIComponent(location.href)}`;
+    });
+    return;
+  }
+  document.getElementById("packagePrice").textContent=packageAmount+" TL";
+  document.getElementById("packageName").textContent=(packageType==="yearly"?"Yıllık Premium":"Aylık Premium");
+  document.getElementById("paymentDescription").textContent=currentUser.username+"—Premium";
+});
+function copyIBAN(){
+  navigator.clipboard.writeText(document.getElementById("ibanNumber").textContent);
+  showNotification("ok","Kopyalandı","IBAN numarası panoya kopyalandı.");
+}
+document.getElementById("dropZone").addEventListener("click",()=>document.getElementById("fileInput").click());
+function handleFileSelect(file){
+  if(file.size>5*1024*1024){showNotification("err","Hata","Dosya 5MB'dan büyük");return;}
+  selectedFile=file;
+  document.getElementById("submitBtn").disabled=false;
+  document.getElementById("uploadPrompt").style.display="none";
+  document.getElementById("filePreview").style.display="block";
+  document.getElementById("fileName").textContent=file.name;
+  if(file.type.startsWith("image/")){
+    let r=new FileReader();
+    r.onload=e=>document.getElementById("previewImage").src=e.target.result;
+    r.readAsDataURL(file);
+  }
+}
+function removeFile(e){
+  e.stopPropagation();
+  selectedFile=null;
+  document.getElementById("filePreview").style.display="none";
+  document.getElementById("uploadPrompt").style.display="block";
+  document.getElementById("submitBtn").disabled=true;
+}
+async function submitPayment(){
+  if(!selectedFile){showNotification("err","Uyarı","Dekont yükleyin");return;}
+  const btn=document.getElementById("submitBtn");
+  btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+  try{
+    const fileExt=selectedFile.name.split('.').pop();
+    const fileName=`${currentUser.id}_${Date.now()}.${fileExt}`;
+    await supabase.storage.from("payment-receipts").upload(fileName,selectedFile);
+    const {data:urlData}=supabase.storage.from("payment-receipts").getPublicUrl(fileName);
+    await supabase.from("payment_requests").insert([{
+      user_id:currentUser.id,package_type:packageType,amount:packageAmount,payment_proof:urlData.publicUrl,status:"pending"
+    }]);
+    showNotification("ok","Başarılı","Dekont gönderildi, 24 saat içinde onaylanır.",()=>location.href="dashboard.html");
+  }catch(e){
+    showNotification("err","Hata","Bir hata oluştu: "+e.message);
+    btn.disabled=false;btn.innerHTML="<i class='fa-solid fa-check'></i> Ödemeyi Gönder";
+  }
+}
+</script>
 
-            if (currentUser) {
-                document.getElementById('paymentDescription').textContent = `${currentUser.username} - Premium`;
-            }
-        });
-
-        // Copy IBAN
-        function copyIBAN() {
-            const iban = document.getElementById('ibanNumber').textContent.replace(/\s/g, '');
-            navigator.clipboard.writeText(iban).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalIcon = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i>';
-                btn.style.color = '#10b981';
-                btn.style.borderColor = '#10b981';
-
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="far fa-copy"></i>';
-                    btn.style.color = '';
-                    btn.style.borderColor = '';
-                }, 2000);
-            });
-        }
-
-        // Drag & Drop Logic
-        const dropZone = document.getElementById('dropZone');
-
-        dropZone.addEventListener('click', () => document.getElementById('fileInput').click());
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('drag-over');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('drag-over');
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
-            if (e.dataTransfer.files.length > 0) {
-                handleFileSelect(e.dataTransfer.files[0]);
-            }
-        });
-
-        function handleFileSelect(file) {
-            if (!file) return;
-
-            // Validate size (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showNotification('error', 'Dosya Çok Büyük', 'Dosya boyutu 5MB\'dan küçük olmalıdır. Lütfen daha küçük bir dosya seçin.');
-                return;
-            }
-
-            selectedFile = file;
-
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.getElementById('filePreview');
-                const prompt = document.getElementById('uploadPrompt');
-                const img = document.getElementById('previewImage');
-                const name = document.getElementById('fileName');
-
-                if (file.type.startsWith('image/')) {
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                } else {
-                    img.style.display = 'none'; // Hide image for PDF
-                }
-
-                name.textContent = file.name;
-                prompt.style.display = 'none';
-                preview.style.display = 'block';
-
-                document.getElementById('submitBtn').disabled = false;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeFile(e) {
-            e.stopPropagation(); // Prevent opening file dialog
-            selectedFile = null;
-            document.getElementById('fileInput').value = '';
-            document.getElementById('filePreview').style.display = 'none';
-            document.getElementById('uploadPrompt').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
-        }
-
-        async function submitPayment() {
-            if (!currentUser) {
-                // Re-check
-                currentUser = await Auth.getCurrentUser();
-                if (!currentUser) {
-                    showNotification(
-                        'warning',
-                        'Giriş Gerekli',
-                        'Ödeme yapmak için önce kayıt olup giriş yapmalısınız!',
-                        () => {
-                            const redirectUrl = `payment.html?package=${packageType}&amount=${packageAmount}`;
-                            window.location.href = `login.html?redirect=${encodeURIComponent(redirectUrl)}`;
-                        }
-                    );
-                    return;
-                }
-            }
-
-            if (!selectedFile) {
-                showNotification('warning', 'Dekont Gerekli', 'Lütfen ödeme dekontunuzu yükleyin!');
-                return;
-            }
-
-            const btn = document.getElementById('submitBtn');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
-
-            try {
-                // 1. Upload File
-                const fileExt = selectedFile.name.split('.').pop();
-                const fileName = `${currentUser.id}_${Date.now()}.${fileExt}`;
-
-                const { data: uploadData, error: uploadError } = await supabase.storage
-                    .from('payment-receipts')
-                    .upload(fileName, selectedFile);
-
-                if (uploadError) {
-                    throw new Error('Dosya yükleme hatası: ' + uploadError.message);
-                }
-
-                // 2. Get Public URL
-                const { data: urlData } = supabase.storage
-                    .from('payment-receipts')
-                    .getPublicUrl(fileName);
-
-                // 3. Create Payment Request
-                const { error: dbError } = await supabase
-                    .from('payment_requests')
-                    .insert([{
-                        user_id: currentUser.id,
-                        package_type: packageType,
-                        amount: packageAmount,
-                        payment_proof: urlData.publicUrl,
-                        status: 'pending'
-                    }]);
-
-                if (dbError) {
-                    throw new Error('Veritabanı hatası: ' + dbError.message);
-                }
-
-                // Success
-                showNotification(
-                    'success',
-                    'Ödeme Alındı!',
-                    'Ödeme talebiniz başarıyla alındı! Dekontunuz incelendikten sonra hesabınız 24 saat içinde aktif edilecektir.',
-                    () => {
-                        window.location.href = 'dashboard.html';
-                    }
-                );
-
-            } catch (error) {
-                console.error('Payment Error:', error);
-                showNotification('error', 'Hata Oluştu', 'Bir hata oluştu: ' + error.message);
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
-        }
-    </script>
 </body>
-
 </html>

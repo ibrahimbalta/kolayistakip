@@ -37,11 +37,11 @@
     .menu {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
+        gap: 0.35rem;
+        padding: 0.35rem;
+        margin-bottom: 0.35rem;
         background: rgba(0, 0, 0, 0.15);
-        border-radius: 16px;
+        border-radius: 12px;
     }
 
     .menu-item {
@@ -49,18 +49,18 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.35rem;
-        padding: 0.75rem 0.5rem;
-        font-size: 0.7rem;
+        gap: 0.2rem;
+        padding: 0.4rem 0.3rem;
+        font-size: 0.6rem;
         font-weight: 600;
         text-align: center;
         margin-bottom: 0;
         white-space: nowrap;
-        border-radius: 12px;
+        border-radius: 8px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.08);
         transition: all 0.2s ease;
-        min-height: 60px;
+        min-height: 45px;
     }
 
     .menu-item:hover {
@@ -75,22 +75,22 @@
     }
 
     .menu-item i {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         margin-right: 0;
         width: auto;
         display: block;
-        margin-bottom: 0.15rem;
+        margin-bottom: 0.1rem;
     }
 
     .logout-btn {
         width: 100%;
-        margin-top: 0.5rem;
-        padding: 0.875rem 1.5rem;
-        font-size: 1rem;
-        min-height: 44px;
+        margin-top: 0.35rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        min-height: 36px;
         /* Touch target size */
         justify-content: center;
-        border-radius: 12px;
+        border-radius: 10px;
     }
 
     /* Main Content - Mobile */

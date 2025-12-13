@@ -2214,6 +2214,122 @@ window.initializeDepartments = async function () {
 let reservations = [];
 let reservationsSubscription = null;
 
+// ============================================
+// BULK AREA CREATION
+// ============================================
+
+window.openBulkCreateModal = function () {
+    document.getElementById('bulkCreateModal').style.display = 'flex';
+    document.getElementById('bulkCreateForm').reset();
+    updateBulkPreview();
+};
+
+window.closeBulkCreateModal = function () {
+    document.getElementById('bulkCreateModal').style.display = 'none';
+    document.getElementById('bulkCreateForm').reset();
+};
+
+function updateBulkPreview() {
+    const prefix = document.getElementById('bulkPrefix')?.value || '';
+    const startNo = parseInt(document.getElementById('bulkStartNo')?.value) || 0;
+    const endNo = parseInt(document.getElementById('bulkEndNo')?.value) || 0;
+    const preview = document.getElementById('bulkPreview');
+
+    if (startNo > 0 && endNo > 0 && endNo >= startNo) {
+        const count = endNo - startNo + 1;
+        const firstArea = `${prefix.toUpperCase()}${startNo}`;
+        const lastArea = `${prefix.toUpperCase()}${endNo}`;
+        preview.innerHTML = `<i class="fa-solid fa-check-circle" style="color: #10b981;"></i> <strong>${count}</strong> alan oluşturulacak: ${firstArea} → ${lastArea}`;
+    } else if (startNo > endNo && startNo > 0 && endNo > 0) {
+        preview.innerHTML = `<i class="fa-solid fa-exclamation-triangle" style="color: #f59e0b;"></i> Başlangıç numarası bitiş numarasından küçük olmalıdır.`;
+    } else {
+        preview.innerHTML = `<i class="fa-solid fa-info-circle"></i> Oluşturulacak alan sayısı hesaplanacak...`;
+    }
+}
+
+// Add event listeners for bulk preview update
+document.addEventListener('DOMContentLoaded', function () {
+    const bulkStartNo = document.getElementById('bulkStartNo');
+    const bulkEndNo = document.getElementById('bulkEndNo');
+    const bulkPrefix = document.getElementById('bulkPrefix');
+
+    if (bulkStartNo) bulkStartNo.addEventListener('input', updateBulkPreview);
+    if (bulkEndNo) bulkEndNo.addEventListener('input', updateBulkPreview);
+    if (bulkPrefix) bulkPrefix.addEventListener('input', updateBulkPreview);
+});
+
+// Handle bulk create form submission
+document.getElementById('bulkCreateForm')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const prefix = document.getElementById('bulkPrefix').value.toUpperCase();
+    const startNo = parseInt(document.getElementById('bulkStartNo').value);
+    const endNo = parseInt(document.getElementById('bulkEndNo').value);
+    const alanTipi = document.getElementById('bulkAlanTipi').value;
+    const buyukluk = document.getElementById('bulkBuyukluk').value;
+    const fiyat = parseFloat(document.getElementById('bulkFiyat').value);
+    const durum = document.getElementById('bulkDurum').value;
+
+    if (startNo > endNo) {
+        alert('Başlangıç numarası bitiş numarasından küçük olmalıdır.');
+        return;
+    }
+
+    const count = endNo - startNo + 1;
+    if (count > 500) {
+        alert('Tek seferde en fazla 500 alan oluşturabilirsiniz.');
+        return;
+    }
+
+    const confirmCreate = confirm(`${count} adet alan oluşturulacak (${prefix}${startNo} - ${prefix}${endNo}). Devam etmek istiyor musunuz?`);
+    if (!confirmCreate) return;
+
+    // Show loading state
+    const submitBtn = document.querySelector('#bulkCreateForm button[type="submit"]');
+    const originalBtnHtml = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Oluşturuluyor...';
+
+    try {
+        // Prepare all areas
+        const areasToCreate = [];
+        for (let i = startNo; i <= endNo; i++) {
+            areasToCreate.push({
+                user_id: currentUser.id,
+                alan_no: `${prefix}${i}`,
+                alan_tipi: alanTipi,
+                alan_buyukluk: buyukluk,
+                fiyat_miktar: fiyat,
+                para_birimi: 'TRY',
+                fiyat_tipi: 'tek_fiyat',
+                durum: durum
+            });
+        }
+
+        // Insert in batches of 100 to avoid timeout
+        const batchSize = 100;
+        for (let i = 0; i < areasToCreate.length; i += batchSize) {
+            const batch = areasToCreate.slice(i, i + batchSize);
+            const { error } = await supabase
+                .from('reservations')
+                .insert(batch);
+
+            if (error) throw error;
+        }
+
+        closeBulkCreateModal();
+        await loadReservations();
+        alert(`${count} alan başarıyla oluşturuldu!`);
+
+    } catch (error) {
+        console.error('Error creating bulk areas:', error);
+        alert('Alanlar oluşturulurken bir hata oluştu: ' + error.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+    }
+});
+
 // Load reservations from Supabase
 async function loadReservations() {
     try {

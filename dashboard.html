@@ -605,6 +605,11 @@
 
                             <div style="display: flex; gap: 8px;">
                                 <button type="button" class="btn"
+                                    style="background: #8b5cf6; color: white; padding: 10px 14px;"
+                                    onclick="openBulkCreateModal()" title="Toplu Alan Oluştur">
+                                    <i class="fa-solid fa-layer-group"></i> Toplu
+                                </button>
+                                <button type="button" class="btn"
                                     style="background: #f1f5f9; color: #64748b; padding: 10px 14px;"
                                     onclick="document.getElementById('krokiFileInput').click()" title="Görsel Yükle">
                                     <i class="fa-solid fa-image"></i>
@@ -807,6 +812,79 @@ Seviyeler:
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Bulk Create Areas Modal -->
+    <div id="bulkCreateModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 550px;">
+            <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-layer-group" style="color: #8b5cf6;"></i> Toplu Alan
+                Oluştur</h2>
+            <p style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                Birden fazla alanı tek seferde oluşturun. Örn: h100 ile h150 arası 51 alan.
+            </p>
+            <form id="bulkCreateForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Önek (prefix)</label>
+                        <input type="text" id="bulkPrefix" required placeholder="Örn: H"
+                            style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Başlangıç No</label>
+                        <input type="number" id="bulkStartNo" required min="1" placeholder="100">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Bitiş No</label>
+                        <input type="number" id="bulkEndNo" required min="1" placeholder="200">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Alan Tipi</label>
+                        <select id="bulkAlanTipi" required>
+                            <option value="stand">Fuar Standı</option>
+                            <option value="toplanti">Toplantı Odası</option>
+                            <option value="masa">Coworking Masası</option>
+                            <option value="kort">Spor Kortu/Saha</option>
+                            <option value="loca">Stadyum Locası</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Büyüklük</label>
+                        <input type="text" id="bulkBuyukluk" required placeholder="Örn: 18 m²">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Fiyat (₺)</label>
+                        <input type="number" id="bulkFiyat" required min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.75rem;">Durum</label>
+                        <select id="bulkDurum" required>
+                            <option value="bos">Müsait</option>
+                            <option value="opsiyonda">Opsiyonda</option>
+                            <option value="rezerve">Dolu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="bulkPreview"
+                    style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--secondary);">
+                    <i class="fa-solid fa-info-circle"></i> Oluşturulacak alan sayısı hesaplanacak...
+                </div>
+
+                <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+                    <button type="button" onclick="closeBulkCreateModal()" class="btn"
+                        style="background:#f1f5f9; color:var(--dark);">İptal</button>
+                    <button type="submit" class="btn" style="flex:1; background: #8b5cf6; color: white;">
+                        <i class="fa-solid fa-layer-group"></i> Toplu Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Add Employee Modal -->

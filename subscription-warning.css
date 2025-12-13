@@ -57,3 +57,49 @@ body.has-warning .dashboard-layout {
     margin-top: 48px;
     height: calc(100vh - 48px);
 }
+
+/* Mobile responsive for subscription warning */
+@media (max-width: 1024px) {
+    .subscription-warning {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .subscription-warning i {
+        margin-right: 4px;
+        font-size: 0.8rem;
+    }
+
+    .subscription-warning .renew-btn {
+        padding: 4px 10px;
+        font-size: 0.7rem;
+        margin-left: 0;
+    }
+
+    body.has-warning .dashboard-layout {
+        margin-top: 36px;
+        height: calc(100vh - 36px);
+    }
+}
+
+@media (max-width: 480px) {
+    .subscription-warning {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+    }
+
+    .subscription-warning .renew-btn {
+        padding: 3px 8px;
+        font-size: 0.65rem;
+    }
+
+    body.has-warning .dashboard-layout {
+        margin-top: 32px;
+        height: calc(100vh - 32px);
+    }
+}

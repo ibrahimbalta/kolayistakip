@@ -86,8 +86,10 @@
         <div id="krokiImageContainer" class="hidden bg-white/10 p-4 rounded-xl mb-5">
           <h3 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
             <i class="fas fa-image text-cyanAccent"></i> Fuar Alanı Krokisi
+            <span class="text-xs text-gray-400 ml-2">(Büyütmek için tıklayın)</span>
           </h3>
-          <img id="krokiImage" class="rounded-xl max-h-80 w-full object-contain shadow-lg" />
+          <img id="krokiImage" onclick="openLightbox(this.src)"
+            class="rounded-xl max-h-80 w-full object-contain shadow-lg cursor-pointer hover:opacity-90 transition" />
         </div>
 
         <!-- FORM -->
@@ -129,6 +131,17 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightboxModal" onclick="closeLightbox()"
+    class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4 cursor-zoom-out">
+    <button onclick="closeLightbox()"
+      class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 transition z-10">
+      <i class="fas fa-times"></i>
+    </button>
+    <img id="lightboxImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+      onclick="event.stopPropagation()" />
   </div>
 
   <!-- ORIGINAL JS WITH IMPROVED UI FEEDBACK -->
@@ -249,6 +262,23 @@
 
       btn.innerHTML = `<i class='fas fa-check-circle'></i> Rezervasyonu Tamamla`;
       btn.disabled = false;
+    });
+
+    // Lightbox functions
+    function openLightbox(src) {
+      document.getElementById('lightboxImage').src = src;
+      document.getElementById('lightboxModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    // Close lightbox on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
     });
 
     document.addEventListener('DOMContentLoaded', loadAreas);

@@ -2490,13 +2490,84 @@ function formatFiyatTipi(type) {
 }
 
 // Open reservation detail modal
+let currentDetailReservationId = null;
+
 window.openReservationDetailModal = function (reservationId) {
     const reservation = reservations.find(r => r.id === reservationId);
     if (!reservation) return;
 
-    // For now, just edit the reservation - in future, can show detailed modal
-    editReservation(reservationId);
-}
+    currentDetailReservationId = reservationId;
+
+    const durumConfig = {
+        'bos': { label: 'MÜSAİT', color: '#10b981' },
+        'opsiyonda': { label: 'OPSİYON', color: '#f59e0b' },
+        'rezerve': { label: 'DOLU', color: '#ef4444' }
+    };
+    const config = durumConfig[reservation.durum] || { label: 'BİLİNMİYOR', color: '#6b7280' };
+
+    let firmaBilgiHTML = '';
+    if (reservation.durum === 'rezerve' && reservation.reserved_by_company) {
+        firmaBilgiHTML = `
+            <div style="border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 1rem;">
+                <h4 style="font-size: 0.9rem; color: var(--primary); margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-building"></i> Rezervasyon Bilgileri
+                </h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem;">
+                    <div><strong>Firma:</strong> ${reservation.reserved_by_company || '-'}</div>
+                    <div><strong>Yetkili:</strong> ${reservation.reserved_by_name || '-'}</div>
+                    <div><strong>Telefon:</strong> ${reservation.reserved_by_phone || '-'}</div>
+                    <div><strong>E-posta:</strong> ${reservation.reserved_by_email || '-'}</div>
+                </div>
+                ${reservation.special_requests ? `<div style="margin-top: 8px; font-size: 0.85rem;"><strong>Notlar:</strong> ${reservation.special_requests}</div>` : ''}
+            </div>
+        `;
+    }
+
+    const contentHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #1f2937;">${reservation.alan_no}</h3>
+            <span style="background: ${config.color}; color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">${config.label}</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.9rem;">
+            <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div style="color: #6b7280; font-size: 0.75rem; margin-bottom: 4px;">Alan Tipi</div>
+                <div style="font-weight: 600;">${formatReservationType(reservation.alan_tipi)}</div>
+            </div>
+            <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div style="color: #6b7280; font-size: 0.75rem; margin-bottom: 4px;">Büyüklük</div>
+                <div style="font-weight: 600;">${reservation.alan_buyukluk || '-'}</div>
+            </div>
+            <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div style="color: #6b7280; font-size: 0.75rem; margin-bottom: 4px;">Fiyat</div>
+                <div style="font-weight: 600; color: var(--primary);">${formatPrice(reservation.fiyat_miktar, reservation.para_birimi)}</div>
+            </div>
+            <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div style="color: #6b7280; font-size: 0.75rem; margin-bottom: 4px;">Fiyat Tipi</div>
+                <div style="font-weight: 600;">${formatFiyatTipi(reservation.fiyat_tipi)}</div>
+            </div>
+        </div>
+        
+        ${reservation.aciklama ? `<div style="margin-top: 1rem; padding: 12px; background: #f0fdf4; border-radius: 8px; font-size: 0.85rem;"><i class="fa-solid fa-info-circle" style="color: #10b981;"></i> ${reservation.aciklama}</div>` : ''}
+        
+        ${firmaBilgiHTML}
+    `;
+
+    document.getElementById('reservationDetailContent').innerHTML = contentHTML;
+    document.getElementById('reservationDetailModal').style.display = 'flex';
+};
+
+window.closeReservationDetailModal = function () {
+    document.getElementById('reservationDetailModal').style.display = 'none';
+    currentDetailReservationId = null;
+};
+
+window.editFromDetailModal = function () {
+    if (currentDetailReservationId) {
+        closeReservationDetailModal();
+        editReservation(currentDetailReservationId);
+    }
+};
 
 // Format price with currency
 function formatPrice(amount, currency) {
@@ -2604,36 +2675,115 @@ if (reservationForm) {
     }
 }
 
-// Edit reservation
+// Edit reservation - open modal
 window.editReservation = function (id) {
     const reservation = reservations.find(r => r.id === id);
     if (!reservation) return;
 
-    document.getElementById('editReservationId').value = reservation.id;
-    document.getElementById('alanNo').value = reservation.alan_no;
-    document.getElementById('alanTipi').value = reservation.alan_tipi;
-    document.getElementById('alanBuyukluk').value = reservation.alan_buyukluk;
-    document.getElementById('fiyatTipi').value = reservation.fiyat_tipi;
-    document.getElementById('fiyatMiktar').value = reservation.fiyat_miktar;
-    document.getElementById('paraBirimi').value = reservation.para_birimi;
-    document.getElementById('alanDurum').value = reservation.durum;
-    document.getElementById('alanAciklama').value = reservation.aciklama || '';
+    // Fill modal form fields
+    document.getElementById('modalEditReservationId').value = reservation.id;
+    document.getElementById('modalAlanNo').value = reservation.alan_no;
+    document.getElementById('modalAlanTipi').value = reservation.alan_tipi;
+    document.getElementById('modalAlanBuyukluk').value = reservation.alan_buyukluk;
+    document.getElementById('modalFiyatMiktar').value = reservation.fiyat_miktar;
+    document.getElementById('modalAlanDurum').value = reservation.durum;
+    document.getElementById('modalAlanAciklama').value = reservation.aciklama || '';
 
     // Handle reservation info section
-    const reservationInfoSection = document.getElementById('reservationInfoSection');
+    const modalReservationInfoSection = document.getElementById('modalReservationInfoSection');
     if (reservation.durum === 'rezerve') {
-        reservationInfoSection.style.display = 'block';
-        document.getElementById('reservedCompany').value = reservation.reserved_by_company || '';
-        document.getElementById('reservedName').value = reservation.reserved_by_name || '';
-        document.getElementById('reservedPhone').value = reservation.reserved_by_phone || '';
-        document.getElementById('reservedEmail').value = reservation.reserved_by_email || '';
-        document.getElementById('reservedNotes').value = reservation.special_requests || '';
+        modalReservationInfoSection.style.display = 'block';
+        document.getElementById('modalReservedCompany').value = reservation.reserved_by_company || '';
+        document.getElementById('modalReservedName').value = reservation.reserved_by_name || '';
+        document.getElementById('modalReservedPhone').value = reservation.reserved_by_phone || '';
+        document.getElementById('modalReservedEmail').value = reservation.reserved_by_email || '';
+        document.getElementById('modalReservedNotes').value = reservation.special_requests || '';
     } else {
-        reservationInfoSection.style.display = 'none';
+        modalReservationInfoSection.style.display = 'none';
+        // Clear fields
+        document.getElementById('modalReservedCompany').value = '';
+        document.getElementById('modalReservedName').value = '';
+        document.getElementById('modalReservedPhone').value = '';
+        document.getElementById('modalReservedEmail').value = '';
+        document.getElementById('modalReservedNotes').value = '';
     }
 
-    document.getElementById('reservationSubmitBtn').innerHTML = '<i class="fa-solid fa-edit"></i> Alanı Güncelle';
+    // Open modal
+    document.getElementById('reservationEditModal').style.display = 'flex';
 };
+
+// Close edit modal
+window.closeReservationEditModal = function () {
+    document.getElementById('reservationEditModal').style.display = 'none';
+    document.getElementById('reservationEditForm').reset();
+};
+
+// Toggle reservation info section in modal
+window.toggleModalReservationInfo = function () {
+    const durum = document.getElementById('modalAlanDurum').value;
+    const section = document.getElementById('modalReservationInfoSection');
+    if (durum === 'rezerve') {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
+};
+
+// Handle edit modal form submission
+document.getElementById('reservationEditForm')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById('modalEditReservationId').value;
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnHtml = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...';
+
+    try {
+        const formData = {
+            alan_no: document.getElementById('modalAlanNo').value,
+            alan_tipi: document.getElementById('modalAlanTipi').value,
+            alan_buyukluk: document.getElementById('modalAlanBuyukluk').value,
+            fiyat_miktar: parseFloat(document.getElementById('modalFiyatMiktar').value),
+            fiyat_tipi: 'tek_fiyat',
+            para_birimi: 'TRY',
+            durum: document.getElementById('modalAlanDurum').value,
+            aciklama: document.getElementById('modalAlanAciklama').value || null
+        };
+
+        // Add reservation info if status is rezerve
+        if (formData.durum === 'rezerve') {
+            formData.reserved_by_company = document.getElementById('modalReservedCompany').value;
+            formData.reserved_by_name = document.getElementById('modalReservedName').value;
+            formData.reserved_by_phone = document.getElementById('modalReservedPhone').value;
+            formData.reserved_by_email = document.getElementById('modalReservedEmail').value;
+            formData.special_requests = document.getElementById('modalReservedNotes').value;
+        } else {
+            formData.reserved_by_company = null;
+            formData.reserved_by_name = null;
+            formData.reserved_by_phone = null;
+            formData.reserved_by_email = null;
+            formData.special_requests = null;
+        }
+
+        const { error } = await supabase
+            .from('reservations')
+            .update(formData)
+            .eq('id', id);
+
+        if (error) throw error;
+
+        closeReservationEditModal();
+        await loadReservations();
+        alert('✅ Alan başarıyla güncellendi!');
+    } catch (error) {
+        console.error('Error updating reservation:', error);
+        alert('❌ Alan güncellenirken bir hata oluştu: ' + error.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+    }
+});
 
 // Delete reservation
 window.deleteReservation = async function (id) {

@@ -1085,6 +1085,121 @@ Seviyeler:
         </div>
     </div>
 
+    <!-- Reservation Detail Modal -->
+    <div id="reservationDetailModal" class="modal-overlay" style="display:none;"
+        onclick="if(event.target === this) closeReservationDetailModal()">
+        <div class="modal-content card" style="max-width: 500px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;"><i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Alan
+                    Detayları</h2>
+                <button onclick="closeReservationDetailModal()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary);">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="reservationDetailContent">
+                <!-- Content will be populated by JS -->
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                <button onclick="closeReservationDetailModal()" class="btn"
+                    style="flex: 1; background: #f1f5f9; color: var(--dark);">Kapat</button>
+                <button onclick="editFromDetailModal()" class="btn btn-primary" style="flex: 1;"><i
+                        class="fa-solid fa-pen"></i> Düzenle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Edit Modal -->
+    <div id="reservationEditModal" class="modal-overlay" style="display:none;"
+        onclick="if(event.target === this) closeReservationEditModal()">
+        <div class="modal-content card" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i>
+                Alan Düzenle</h2>
+            <form id="reservationEditForm">
+                <input type="hidden" id="modalEditReservationId">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.85rem;">Alan Kodu/Numarası</label>
+                        <input type="text" id="modalAlanNo" required placeholder="Örn: F301">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.85rem;">Alan Tipi</label>
+                        <select id="modalAlanTipi" required>
+                            <option value="stand">Fuar Standı</option>
+                            <option value="toplanti">Toplantı Odası</option>
+                            <option value="masa">Coworking Masası</option>
+                            <option value="kort">Spor Kortu/Saha</option>
+                            <option value="loca">Stadyum Locası</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.85rem;">Büyüklük / Kapasite</label>
+                        <input type="text" id="modalAlanBuyukluk" required placeholder="Örn: 24 m²">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 0.85rem;">Fiyat (₺)</label>
+                        <input type="number" id="modalFiyatMiktar" min="0" step="0.01" required placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-size: 0.85rem;">Durum</label>
+                    <select id="modalAlanDurum" required onchange="toggleModalReservationInfo()">
+                        <option value="bos">Müsait</option>
+                        <option value="opsiyonda">Opsiyonda</option>
+                        <option value="rezerve">Dolu</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-size: 0.85rem;">Açıklama (Opsiyonel)</label>
+                    <input type="text" id="modalAlanAciklama" placeholder="Alan hakkında ek bilgiler...">
+                </div>
+
+                <!-- Reservation Info Section (shown when durum = rezerve) -->
+                <div id="modalReservationInfoSection"
+                    style="display: none; border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1rem;">
+                        <i class="fa-solid fa-building"></i> Rezervasyon Bilgileri
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 0.85rem;">Firma Ünvanı</label>
+                            <input type="text" id="modalReservedCompany" placeholder="Örn: ABC Ltd. Şti.">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 0.85rem;">Yetkili Ad Soyad</label>
+                            <input type="text" id="modalReservedName" placeholder="Örn: Ahmet Yılmaz">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 0.85rem;">Telefon</label>
+                            <input type="tel" id="modalReservedPhone" placeholder="(5XX) XXX XX XX">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 0.85rem;">E-posta</label>
+                            <input type="email" id="modalReservedEmail" placeholder="ornek@firma.com">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 12px; margin-bottom: 0;">
+                        <label style="font-size: 0.85rem;">Özel İstekler / Notlar</label>
+                        <textarea id="modalReservedNotes" rows="2" placeholder="Varsa özel istekler..."></textarea>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" onclick="closeReservationEditModal()" class="btn"
+                        style="background: #f1f5f9; color: var(--dark);">İptal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;"><i class="fa-solid fa-save"></i>
+                        Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>

@@ -15,14 +15,15 @@
 
     <style>
         :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --accent: #22c55e;
-            --dark: #1e293b;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #7c3aed;
+            --accent: #10b981;
+            --dark: #0f172a;
             --light: #f8fafc;
             --gray: #64748b;
             --border: #e2e8f0;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
 
         * {
@@ -35,7 +36,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: var(--dark);
             line-height: 1.6;
-            background: var(--light);
+            background: white;
         }
 
         /* Navigation */
@@ -94,12 +95,21 @@
 
         /* Hero Section */
         .hero {
-            padding: 8rem 2rem 4rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 10rem 2rem 6rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             color: white;
-            min-height: 70vh;
-            display: flex;
-            align-items: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
         }
 
         .hero-container {
@@ -109,6 +119,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-content h1 {
@@ -119,8 +131,8 @@
         }
 
         .hero-content p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.125rem;
+            opacity: 0.95;
             margin-bottom: 2rem;
             line-height: 1.7;
         }
@@ -132,15 +144,16 @@
             background: white;
             color: var(--primary);
             padding: 1rem 2rem;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
             text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .hero-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
         .hero-image {
@@ -149,8 +162,8 @@
 
         .hero-image img {
             width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         /* Section Styles */
@@ -160,7 +173,7 @@
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
         }
 
         .section-title h2 {
@@ -172,7 +185,7 @@
 
         .section-title p {
             color: var(--gray);
-            font-size: 1.1rem;
+            font-size: 1.125rem;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -184,7 +197,7 @@
 
         /* Services Section */
         .services {
-            background: linear-gradient(135deg, #f5f3ff 0%, #fce7f3 100%);
+            background: var(--light);
         }
 
         .services-grid {
@@ -196,20 +209,21 @@
         .service-card {
             background: white;
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--border);
         }
 
         .service-icon {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 12px;
             display: flex;
@@ -230,6 +244,7 @@
         .service-card p {
             color: var(--gray);
             line-height: 1.7;
+            font-size: 0.9375rem;
         }
 
         /* Products Section */
@@ -241,22 +256,24 @@
 
         .product-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
-            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--border);
         }
 
         .product-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
         }
 
         .product-info {
@@ -264,7 +281,7 @@
         }
 
         .product-info h3 {
-            font-size: 1.15rem;
+            font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--dark);
@@ -272,8 +289,9 @@
 
         .product-info p {
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 0.9375rem;
             margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
         .product-price {
@@ -317,6 +335,7 @@
             justify-content: center;
             color: white;
             font-size: 1rem;
+            flex-shrink: 0;
         }
 
         .contact-item div h4 {
@@ -332,8 +351,8 @@
         .contact-form {
             background: white;
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
         }
 
@@ -353,17 +372,17 @@
             width: 100%;
             padding: 0.875rem 1rem;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .form-group textarea {
@@ -377,16 +396,16 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
         }
 
         /* Footer */
@@ -458,23 +477,25 @@
 
         .team-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
-            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
+            border: 1px solid transparent;
             text-align: center;
         }
 
         .team-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--border);
         }
 
         .team-image {
             width: 100%;
             height: 250px;
             object-fit: cover;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
         }
 
         .team-info {
@@ -514,15 +535,16 @@
 
         .gallery-item {
             position: relative;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s;
             cursor: pointer;
         }
 
         .gallery-item:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .gallery-image {

@@ -1265,6 +1265,8 @@
                 const appointmentBtn = document.getElementById('appointmentBtn');
                 appointmentBtn.style.display = 'inline-flex';
                 appointmentBtn.href = settings.appointment_link;
+                appointmentBtn.setAttribute('target', '_blank');
+                appointmentBtn.setAttribute('rel', 'noopener noreferrer');
             }
 
             // Reservation Link
@@ -1272,6 +1274,8 @@
                 const reservationBtn = document.getElementById('reservationBtn');
                 reservationBtn.style.display = 'inline-flex';
                 reservationBtn.href = settings.reservation_link;
+                reservationBtn.setAttribute('target', '_blank');
+                reservationBtn.setAttribute('rel', 'noopener noreferrer');
             }
 
             // Social Media Links

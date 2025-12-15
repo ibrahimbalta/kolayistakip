@@ -174,6 +174,18 @@ const WebsiteManager = {
                 document.getElementById('websiteSecondaryColor').value = data.secondary_color || '#764ba2';
                 document.getElementById('websiteAccentColor').value = data.accent_color || '#22c55e';
                 document.getElementById('websitePublished').checked = data.is_published || false;
+
+                // Appointment and Reservation Links
+                document.getElementById('websiteAppointmentLink').value = data.appointment_link || '';
+                document.getElementById('websiteReservationLink').value = data.reservation_link || '';
+
+                // Social Media Links
+                document.getElementById('websiteFacebook').value = data.facebook_url || '';
+                document.getElementById('websiteTwitter').value = data.twitter_url || '';
+                document.getElementById('websiteInstagram').value = data.instagram_url || '';
+                document.getElementById('websiteLinkedin').value = data.linkedin_url || '';
+                document.getElementById('websiteYoutube').value = data.youtube_url || '';
+                document.getElementById('websiteTiktok').value = data.tiktok_url || '';
             }
         } catch (error) {
             console.error('Error loading website settings:', error);
@@ -200,7 +212,17 @@ const WebsiteManager = {
                 primary_color: document.getElementById('websitePrimaryColor').value,
                 secondary_color: document.getElementById('websiteSecondaryColor').value,
                 accent_color: document.getElementById('websiteAccentColor').value,
-                is_published: document.getElementById('websitePublished').checked
+                is_published: document.getElementById('websitePublished').checked,
+                // Appointment and Reservation Links
+                appointment_link: document.getElementById('websiteAppointmentLink').value,
+                reservation_link: document.getElementById('websiteReservationLink').value,
+                // Social Media Links
+                facebook_url: document.getElementById('websiteFacebook').value,
+                twitter_url: document.getElementById('websiteTwitter').value,
+                instagram_url: document.getElementById('websiteInstagram').value,
+                linkedin_url: document.getElementById('websiteLinkedin').value,
+                youtube_url: document.getElementById('websiteYoutube').value,
+                tiktok_url: document.getElementById('websiteTiktok').value
             };
 
             if (settingsData.subdomain && !/^[a-z0-9-]+$/.test(settingsData.subdomain)) {

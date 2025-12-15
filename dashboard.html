@@ -983,6 +983,78 @@ Seviyeler:
                                 </div>
                             </div>
 
+                            <!-- Randevu ve Rezervasyon Linkleri -->
+                            <div
+                                style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border: 1px solid #bbf7d0;">
+                                <h4 style="margin-bottom: 1rem; color: #166534; font-size: 1rem;">
+                                    <i class="fa-solid fa-link"></i> Hızlı Erişim Linkleri
+                                </h4>
+                                <div
+                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-solid fa-calendar-check" style="color: #8b5cf6;"></i>
+                                            Randevu Linki</label>
+                                        <input type="url" id="websiteAppointmentLink"
+                                            placeholder="https://kolayistakip.vercel.app/randevu.html?calendar_id=..." />
+                                        <small style="color: var(--secondary);">Randevu modülünden paylaşım linkini
+                                            yapıştırın</small>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-solid fa-calendar-days" style="color: #10b981;"></i>
+                                            Rezervasyon Linki</label>
+                                        <input type="url" id="websiteReservationLink"
+                                            placeholder="https://kolayistakip.vercel.app/alan-rezervasyon.html?user_id=..." />
+                                        <small style="color: var(--secondary);">Rezervasyon modülünden paylaşım linkini
+                                            yapıştırın</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sosyal Medya Linkleri -->
+                            <div
+                                style="background: #eff6ff; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border: 1px solid #bfdbfe;">
+                                <h4 style="margin-bottom: 1rem; color: #1e40af; font-size: 1rem;">
+                                    <i class="fa-solid fa-share-nodes"></i> Sosyal Medya Linkleri
+                                </h4>
+                                <div
+                                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-facebook" style="color: #1877f2;"></i>
+                                            Facebook</label>
+                                        <input type="url" id="websiteFacebook"
+                                            placeholder="https://facebook.com/firmaadi" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-x-twitter" style="color: #000;"></i> Twitter /
+                                            X</label>
+                                        <input type="url" id="websiteTwitter" placeholder="https://x.com/firmaadi" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-instagram" style="color: #e4405f;"></i>
+                                            Instagram</label>
+                                        <input type="url" id="websiteInstagram"
+                                            placeholder="https://instagram.com/firmaadi" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-linkedin" style="color: #0a66c2;"></i>
+                                            LinkedIn</label>
+                                        <input type="url" id="websiteLinkedin"
+                                            placeholder="https://linkedin.com/company/firmaadi" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-youtube" style="color: #ff0000;"></i>
+                                            YouTube</label>
+                                        <input type="url" id="websiteYoutube"
+                                            placeholder="https://youtube.com/@firmaadi" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><i class="fa-brands fa-tiktok" style="color: #000;"></i> TikTok</label>
+                                        <input type="url" id="websiteTiktok"
+                                            placeholder="https://tiktok.com/@firmaadi" />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group"
                                 style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
                                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
@@ -993,6 +1065,7 @@ Seviyeler:
                                 <small style="color: var(--secondary); display: block; margin-top: 5px;">Yayınlandığında
                                     siteniz herkese açık olacaktır.</small>
                             </div>
+
 
                             <button type="submit" class="btn btn-primary"
                                 style="width: 100%; margin-top: 1.5rem; padding: 14px;">

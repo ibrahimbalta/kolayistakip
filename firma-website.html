@@ -497,10 +497,11 @@
                 <i class="fa-solid fa-layer-group"></i>
                 <span id="companyName">Firma Adı</span>
             </a>
-            <ul class="nav-links">
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#hakkimizda">Hakkımızda</a></li>
                 <li><a href="#hizmetler">Hizmetler</a></li>
                 <li><a href="#urunler">Ürünler</a></li>
+                <!-- Dynamic pages will be inserted here -->
                 <li><a href="#iletisim">İletişim</a></li>
             </ul>
         </div>
@@ -566,6 +567,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Dynamic Pages Container -->
+    <div id="dynamicPagesContainer"></div>
 
     <!-- Contact Section -->
     <section class="contact" id="iletisim">
@@ -691,6 +695,16 @@
 
                 renderProducts(products || []);
 
+                // Load pages
+                const { data: pages } = await supabase
+                    .from('website_pages')
+                    .select('*')
+                    .eq('user_id', settings.user_id)
+                    .eq('is_published', true)
+                    .order('created_at', { ascending: true });
+
+                renderPages(pages || []);
+
             } catch (error) {
                 console.error('Error loading website:', error);
                 document.body.innerHTML = `
@@ -804,6 +818,35 @@
                         ${product.price ? `<div class="product-price">₺${parseFloat(product.price).toLocaleString('tr-TR')}</div>` : ''}
                     </div>
                 </div>
+            `).join('');
+        }
+
+        function renderPages(pages) {
+            if (pages.length === 0) return;
+
+            // Add navigation links
+            const navLinks = document.getElementById('navLinks');
+            const contactLi = navLinks.querySelector('li:last-child');
+
+            pages.forEach(page => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#${page.slug}">${escapeHtml(page.title)}</a>`;
+                navLinks.insertBefore(li, contactLi);
+            });
+
+            // Create page sections
+            const container = document.getElementById('dynamicPagesContainer');
+            container.innerHTML = pages.map(page => `
+                <section id="${page.slug}" style="padding: 5rem 2rem; background: ${page.slug === pages[0].slug ? 'var(--light)' : 'white'};">
+                    <div class="container">
+                        <div class="section-title">
+                            <h2>${escapeHtml(page.title)}</h2>
+                        </div>
+                        <div style="max-width: 800px; margin: 0 auto; color: var(--gray); line-height: 1.8;">
+                            ${page.content ? page.content.replace(/\n/g, '<br>') : ''}
+                        </div>
+                    </div>
+                </section>
             `).join('');
         }
 

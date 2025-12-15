@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/:subdomain",
+            "destination": "/firma-website.html"
+        }
+    ]
+}

@@ -1083,11 +1083,18 @@
             easing: 'ease-out-cubic'
         });
 
-        // Smooth scroll for navigation links
+        // Smooth scroll for navigation links (exclude external links)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+
+                // Skip if it's an external link button (will be updated dynamically)
+                if (this.id === 'appointmentBtn' || this.id === 'reservationBtn') {
+                    return;
+                }
+
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',

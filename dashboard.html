@@ -77,6 +77,9 @@
                 <a href="#" class="menu-item" onclick="switchView('reports')">
                     <i class="fa-solid fa-chart-pie"></i> Raporlar
                 </a>
+                <a href="#" class="menu-item" onclick="switchView('website')">
+                    <i class="fa-solid fa-globe"></i> Website
+                </a>
                 <a href="#" class="menu-item" onclick="switchView('settings')">
                     <i class="fa-solid fa-gear"></i> Ayarlar
                 </a>
@@ -811,6 +814,310 @@ Seviyeler:
                     </div>
                 </div>
             </section>
+
+            <!-- VIEW: WEBSITE MANAGEMENT -->
+            <section id="view-website" class="view-section" style="display:none;">
+                <div class="task-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteStatus">-</div>
+                        <div class="stat-label">Website Durumu</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteProductCount" style="color:var(--primary);">0</div>
+                        <div class="stat-label">Ürünler</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteServiceCount" style="color:var(--success);">0</div>
+                        <div class="stat-label">Hizmetler</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="websiteTeamCount" style="color:var(--warning);">0</div>
+                        <div class="stat-label">Ekip Üyeleri</div>
+                    </div>
+                </div>
+
+                <!-- Website Management Tabs -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="website-tabs"
+                        style="display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem;">
+                        <button class="website-tab active" data-tab="settings"
+                            style="padding: 10px 18px; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-gear"></i> Ayarlar
+                        </button>
+                        <button class="website-tab" data-tab="products"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-box"></i> Ürünler
+                        </button>
+                        <button class="website-tab" data-tab="services"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-briefcase"></i> Hizmetler
+                        </button>
+                        <button class="website-tab" data-tab="team"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-users"></i> Ekip
+                        </button>
+                        <button class="website-tab" data-tab="gallery"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-images"></i> Galeri
+                        </button>
+                        <button class="website-tab" data-tab="pages"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-file-lines"></i> Sayfalar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Tab Content -->
+                <div id="website-tab-settings" class="website-tab-content">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-gear" style="color: var(--primary);"></i> Website Ayarları</h2>
+                        <form id="websiteSettingsForm">
+                            <div class="form-group">
+                                <label>Firma Adresi</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <span style="color: var(--secondary); font-weight: 500;">kolayistakip.com/</span>
+                                    <input type="text" id="websiteSubdomain" placeholder="firmaadi" pattern="[a-z0-9-]+"
+                                        style="flex: 1;" />
+                                    <button type="button" onclick="WebsiteManager.checkSubdomain()" class="btn"
+                                        style="background: var(--primary); color: white;">
+                                        <i class="fa-solid fa-check"></i> Kontrol Et
+                                    </button>
+                                </div>
+                                <small style="color: var(--secondary);">Sadece küçük harf, rakam ve tire
+                                    kullanın</small>
+                            </div>
+
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Firma Adı</label>
+                                    <input type="text" id="websiteCompanyName" placeholder="Firma Adınız" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Slogan</label>
+                                    <input type="text" id="websiteSlogan"
+                                        placeholder="Dijital Geleceğinizi Şekillendiriyoruz" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Firma Açıklaması</label>
+                                <textarea id="websiteDescription" rows="3"
+                                    placeholder="Firmanız hakkında kısa açıklama..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Logo</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="file" id="websiteLogoFile" accept="image/*"
+                                        onchange="WebsiteManager.uploadLogo(this)" style="display: none;" />
+                                    <input type="text" id="websiteLogo" placeholder="Logo yükleyin veya URL girin"
+                                        readonly style="flex: 1; background: #f8fafc;" />
+                                    <button type="button" onclick="document.getElementById('websiteLogoFile').click()"
+                                        class="btn"
+                                        style="background: var(--primary); color: white; white-space: nowrap;">
+                                        <i class="fa-solid fa-upload"></i> Yükle
+                                    </button>
+                                </div>
+                                <div id="logoPreview" style="margin-top: 10px; display: none;">
+                                    <img id="logoPreviewImg" src="" alt="Logo"
+                                        style="max-height: 60px; border-radius: 8px; border: 1px solid var(--border);">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hero Görseli</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="file" id="websiteHeroFile" accept="image/*"
+                                        onchange="WebsiteManager.uploadHeroImage(this)" style="display: none;" />
+                                    <input type="text" id="websiteHeroImage"
+                                        placeholder="Hero görseli yükleyin veya URL girin" readonly
+                                        style="flex: 1; background: #f8fafc;" />
+                                    <button type="button" onclick="document.getElementById('websiteHeroFile').click()"
+                                        class="btn"
+                                        style="background: var(--primary); color: white; white-space: nowrap;">
+                                        <i class="fa-solid fa-upload"></i> Yükle
+                                    </button>
+                                </div>
+                                <div id="heroPreview" style="margin-top: 10px; display: none;">
+                                    <img id="heroPreviewImg" src="" alt="Hero"
+                                        style="max-width: 100%; max-height: 150px; border-radius: 8px; border: 1px solid var(--border);">
+                                </div>
+                            </div>
+
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>İletişim E-posta</label>
+                                    <input type="email" id="websiteEmail" placeholder="info@firma.com" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Telefon</label>
+                                    <input type="tel" id="websitePhone" placeholder="0XXX XXX XX XX" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Adres</label>
+                                <textarea id="websiteAddress" rows="2" placeholder="Firma adresiniz..."></textarea>
+                            </div>
+
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Ana Renk</label>
+                                    <input type="color" id="websitePrimaryColor" value="#667eea"
+                                        style="height: 45px; cursor: pointer;" />
+                                </div>
+                                <div class="form-group">
+                                    <label>İkincil Renk</label>
+                                    <input type="color" id="websiteSecondaryColor" value="#764ba2"
+                                        style="height: 45px; cursor: pointer;" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Vurgu Rengi</label>
+                                    <input type="color" id="websiteAccentColor" value="#22c55e"
+                                        style="height: 45px; cursor: pointer;" />
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                    <input type="checkbox" id="websitePublished"
+                                        style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <span style="font-weight: 600; color: var(--primary);">Website'i Yayınla</span>
+                                </label>
+                                <small style="color: var(--secondary); display: block; margin-top: 5px;">Yayınlandığında
+                                    siteniz herkese açık olacaktır.</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary"
+                                style="width: 100%; margin-top: 1.5rem; padding: 14px;">
+                                <i class="fa-solid fa-save"></i> Ayarları Kaydet
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Products Tab Content -->
+                <div id="website-tab-products" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-box" style="color: var(--primary);"></i> Ürünler</h2>
+                            <button onclick="WebsiteManager.openProductModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Ürün Ekle
+                            </button>
+                        </div>
+                        <div id="websiteProductsGrid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                <i class="fa-solid fa-box"
+                                    style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                                <p>Henüz ürün eklenmemiş.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Tab Content -->
+                <div id="website-tab-services" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-briefcase" style="color: var(--primary);"></i> Hizmetler</h2>
+                            <button onclick="WebsiteManager.openServiceModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Hizmet Ekle
+                            </button>
+                        </div>
+                        <div id="websiteServicesGrid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                <i class="fa-solid fa-briefcase"
+                                    style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                                <p>Henüz hizmet eklenmemiş.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Tab Content -->
+                <div id="website-tab-team" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-users" style="color: var(--primary);"></i> Ekip Üyeleri</h2>
+                            <button onclick="WebsiteManager.openTeamModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Üye Ekle
+                            </button>
+                        </div>
+                        <div id="websiteTeamGrid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                <i class="fa-solid fa-users"
+                                    style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                                <p>Henüz ekip üyesi eklenmemiş.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Tab Content -->
+                <div id="website-tab-gallery" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-images" style="color: var(--primary);"></i> Galeri</h2>
+                            <button onclick="WebsiteManager.openGalleryModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Görsel Ekle
+                            </button>
+                        </div>
+                        <div id="websiteGalleryGrid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                                <i class="fa-solid fa-images"
+                                    style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                                <p>Henüz görsel eklenmemiş.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pages Tab Content -->
+                <div id="website-tab-pages" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-file-lines" style="color: var(--primary);"></i> Sayfalar</h2>
+                            <button onclick="WebsiteManager.openPageModal()" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Yeni Sayfa Ekle
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sayfa Başlığı</th>
+                                        <th>Slug</th>
+                                        <th>Durum</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websitePagesList">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center; color:var(--secondary);">Henüz sayfa
+                                            eklenmemiş.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -1213,6 +1520,7 @@ Seviyeler:
     <script src="appointments.js"></script>
     <script src="proposals.js"></script>
     <script src="dashboard-data.js"></script>
+    <script src="website-manager.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1396,6 +1704,225 @@ Seviyeler:
                     <button type="button" onclick="closeFirmaModal()" class="btn"
                         style="background:#f1f5f9; color:var(--dark);">İptal</button>
                     <button type="submit" class="btn btn-primary" style="flex:1;">Kaydet ve Rezerve Et</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Website Product Modal -->
+    <div id="productModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h2 id="productModalTitle" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-box"
+                    style="color: var(--primary);"></i> Ürün Ekle</h2>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Ürün Adı <span style="color: red;">*</span></label>
+                    <input type="text" id="productName" required placeholder="Örn: Premium Paket">
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <input type="text" id="productCategory" placeholder="Örn: Yazılım">
+                </div>
+                <div class="form-group">
+                    <label>Fiyat (₺)</label>
+                    <input type="number" id="productPrice" step="0.01" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Ürün Görseli</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="file" id="productImageFile" accept="image/*"
+                            onchange="WebsiteManager.uploadProductImage(this)" style="display: none;" />
+                        <input type="text" id="productImage" placeholder="Görsel yükleyin" readonly
+                            style="flex: 1; background: #f8fafc;" />
+                        <button type="button" onclick="document.getElementById('productImageFile').click()" class="btn"
+                            style="background: var(--primary); color: white; white-space: nowrap;">
+                            <i class="fa-solid fa-upload"></i> Yükle
+                        </button>
+                    </div>
+                    <div id="productImagePreview" style="margin-top: 10px; display: none;">
+                        <img id="productImagePreviewImg" src="" alt="Ürün"
+                            style="max-width: 100%; max-height: 100px; border-radius: 8px; border: 1px solid var(--border);">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea id="productDescription" rows="3" placeholder="Ürün hakkında kısa açıklama..."></textarea>
+                </div>
+                <div class="form-group" style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="productActive" style="width: 18px; height: 18px;" checked>
+                        <span>Aktif (Sitede göster)</span>
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="button" onclick="document.getElementById('productModal').style.display='none'"
+                        class="btn" style="background:#f1f5f9; color:#333;">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Website Service Modal -->
+    <div id="serviceModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h2 id="serviceModalTitle" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-briefcase"
+                    style="color: var(--primary);"></i> Hizmet Ekle</h2>
+            <form id="serviceForm">
+                <input type="hidden" id="serviceId">
+                <div class="form-group">
+                    <label>Hizmet Adı <span style="color: red;">*</span></label>
+                    <input type="text" id="serviceName" required placeholder="Örn: Web Geliştirme">
+                </div>
+                <div class="form-group">
+                    <label>İkon (FontAwesome sınıfı)</label>
+                    <input type="text" id="serviceIcon" placeholder="fa-solid fa-code">
+                    <small style="color:var(--secondary);">Örn: fa-solid fa-code, fa-solid fa-paint-brush, fa-solid
+                        fa-mobile</small>
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea id="serviceDescription" rows="3"
+                        placeholder="Hizmet hakkında kısa açıklama..."></textarea>
+                </div>
+                <div class="form-group" style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="serviceActive" style="width: 18px; height: 18px;" checked>
+                        <span>Aktif (Sitede göster)</span>
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="button" onclick="document.getElementById('serviceModal').style.display='none'"
+                        class="btn" style="background:#f1f5f9; color:#333;">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Website Team Modal -->
+    <div id="teamModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h2 id="teamModalTitle" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-user-plus"
+                    style="color: var(--primary);"></i> Ekip Üyesi Ekle</h2>
+            <form id="teamForm">
+                <input type="hidden" id="teamId">
+                <div class="form-group">
+                    <label>Ad Soyad <span style="color: red;">*</span></label>
+                    <input type="text" id="teamName" required placeholder="Örn: Ahmet Yılmaz">
+                </div>
+                <div class="form-group">
+                    <label>Pozisyon / Ünvan <span style="color: red;">*</span></label>
+                    <input type="text" id="teamPosition" required placeholder="Örn: Yazılım Geliştirici">
+                </div>
+                <div class="form-group">
+                    <label>Fotoğraf</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="file" id="teamPhotoFile" accept="image/*"
+                            onchange="WebsiteManager.uploadTeamPhoto(this)" style="display: none;" />
+                        <input type="text" id="teamPhoto" placeholder="Fotoğraf yükleyin" readonly
+                            style="flex: 1; background: #f8fafc;" />
+                        <button type="button" onclick="document.getElementById('teamPhotoFile').click()" class="btn"
+                            style="background: var(--primary); color: white; white-space: nowrap;">
+                            <i class="fa-solid fa-upload"></i> Yükle
+                        </button>
+                    </div>
+                    <div id="teamPhotoPreview" style="margin-top: 10px; display: none;">
+                        <img id="teamPhotoPreviewImg" src="" alt="Ekip"
+                            style="max-width: 80px; max-height: 80px; border-radius: 50%; border: 2px solid var(--border);">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Biyografi</label>
+                    <textarea id="teamBio" rows="3" placeholder="Ekip üyesi hakkında kısa bilgi..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Sıralama</label>
+                    <input type="number" id="teamOrder" value="0" min="0">
+                    <small style="color:var(--secondary);">Düşük sayı önce görünür</small>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="button" onclick="document.getElementById('teamModal').style.display='none'"
+                        class="btn" style="background:#f1f5f9; color:#333;">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Website Gallery Modal -->
+    <div id="galleryModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 500px;">
+            <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-image" style="color: var(--primary);"></i> Galeriye
+                Görsel Ekle</h2>
+            <form id="galleryForm">
+                <div class="form-group">
+                    <label>Görsel <span style="color: red;">*</span></label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="file" id="galleryImageFile" accept="image/*"
+                            onchange="WebsiteManager.uploadGalleryImage(this)" style="display: none;" />
+                        <input type="text" id="galleryImage" placeholder="Görsel yükleyin" readonly required
+                            style="flex: 1; background: #f8fafc;" />
+                        <button type="button" onclick="document.getElementById('galleryImageFile').click()" class="btn"
+                            style="background: var(--primary); color: white; white-space: nowrap;">
+                            <i class="fa-solid fa-upload"></i> Yükle
+                        </button>
+                    </div>
+                    <div id="galleryImagePreview" style="margin-top: 10px; display: none;">
+                        <img id="galleryImagePreviewImg" src="" alt="Galeri"
+                            style="max-width: 100%; max-height: 150px; border-radius: 8px; border: 1px solid var(--border);">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Başlık (Opsiyonel)</label>
+                    <input type="text" id="galleryTitle" placeholder="Görsel başlığı">
+                </div>
+                <div class="form-group">
+                    <label>Sıralama</label>
+                    <input type="number" id="galleryOrder" value="0" min="0">
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="button" onclick="document.getElementById('galleryModal').style.display='none'"
+                        class="btn" style="background:#f1f5f9; color:#333;">İptal</button>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Website Page Modal -->
+    <div id="pageModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content card" style="max-width: 800px; width: 95%;">
+            <h2 id="pageModalTitle" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-file-lines"
+                    style="color: var(--primary);"></i> Sayfa Ekle</h2>
+            <form id="pageForm">
+                <input type="hidden" id="pageId">
+                <div class="form-group">
+                    <label>Sayfa Başlığı <span style="color: red;">*</span></label>
+                    <input type="text" id="websitePageTitle" required placeholder="Örn: Hakkımızda">
+                </div>
+                <div class="form-group">
+                    <label>Slug (URL Kısmı) <span style="color: red;">*</span></label>
+                    <input type="text" id="pageSlug" required pattern="[a-z0-9-]+" placeholder="hakkimizda">
+                    <small style="color:var(--secondary);">Sadece küçük harf, rakam ve tire. Örn: hakkimizda,
+                        iletisim</small>
+                </div>
+                <div class="form-group">
+                    <label>İçerik</label>
+                    <textarea id="pageContent" rows="12" style="font-size: 0.95rem;"
+                        placeholder="Sayfa içeriğinizi buraya yazın..."></textarea>
+                </div>
+                <div class="form-group" style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="pagePublished" style="width: 18px; height: 18px;" checked>
+                        <span>Yayında</span>
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:1.5rem;">
+                    <button type="button" onclick="document.getElementById('pageModal').style.display='none'"
+                        class="btn" style="background:#f1f5f9; color:#333;">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
                 </div>
             </form>
         </div>

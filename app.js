@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 else if (text.includes('Randevular')) switchView('appointments');
                 else if (text.includes('Teklifler')) switchView('proposals');
                 else if (text.includes('Müşteriler')) switchView('customers');
-                else if (text.includes('Website Yönetimi')) switchView('website');
+                else if (text.includes('Website')) switchView('website');
                 else if (text.includes('Çalışanlar')) switchView('employees');
                 else if (text.includes('Raporlar')) switchView('reports');
                 else if (text.includes('Ayarlar')) switchView('settings');

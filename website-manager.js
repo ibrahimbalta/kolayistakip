@@ -2,15 +2,19 @@
 const WebsiteManager = {
     currentUser: null,
     currentSettings: null,
+    isInitialized: false,
 
     async init() {
         this.currentUser = await Auth.checkAuth();
         if (!this.currentUser) return;
 
-        // Setup tab switching
-        this.setupTabs();
+        // Setup tab switching and event listeners (only once)
+        if (!this.isInitialized) {
+            this.setupTabs();
+            this.isInitialized = true;
+        }
 
-        // Load initial data
+        // Load initial data (every time)
         await this.loadWebsiteStats();
         await this.loadWebsiteSettings();
     },
@@ -142,26 +146,32 @@ const WebsiteManager = {
             if (data) {
                 document.getElementById('websiteSubdomain').value = data.subdomain || '';
                 document.getElementById('websiteCompanyName').value = data.company_name || '';
+                document.getElementById('websiteSlogan').value = data.slogan || '';
                 document.getElementById('websiteDescription').value = data.description || '';
                 document.getElementById('websiteLogo').value = data.logo_url || '';
+                document.getElementById('websiteHeroImage').value = data.hero_image_url || '';
 
                 // Update Logo Preview
-                const logoPreview = document.getElementById('websiteLogoPreview');
-                const logoPlaceholder = document.getElementById('websiteLogoPlaceholder');
-                if (data.logo_url) {
-                    logoPreview.src = data.logo_url;
+                const logoPreview = document.getElementById('logoPreview');
+                const logoPreviewImg = document.getElementById('logoPreviewImg');
+                if (data.logo_url && logoPreview && logoPreviewImg) {
+                    logoPreviewImg.src = data.logo_url;
                     logoPreview.style.display = 'block';
-                    logoPlaceholder.style.display = 'none';
-                } else {
-                    logoPreview.style.display = 'none';
-                    logoPlaceholder.style.display = 'block';
+                }
+
+                // Update Hero Preview
+                const heroPreview = document.getElementById('heroPreview');
+                const heroPreviewImg = document.getElementById('heroPreviewImg');
+                if (data.hero_image_url && heroPreview && heroPreviewImg) {
+                    heroPreviewImg.src = data.hero_image_url;
+                    heroPreview.style.display = 'block';
                 }
 
                 document.getElementById('websiteEmail').value = data.contact_email || '';
                 document.getElementById('websitePhone').value = data.contact_phone || '';
                 document.getElementById('websiteAddress').value = data.address || '';
-                document.getElementById('websitePrimaryColor').value = data.primary_color || '#0ea5e9';
-                document.getElementById('websiteSecondaryColor').value = data.secondary_color || '#64748b';
+                document.getElementById('websitePrimaryColor').value = data.primary_color || '#667eea';
+                document.getElementById('websiteSecondaryColor').value = data.secondary_color || '#764ba2';
                 document.getElementById('websiteAccentColor').value = data.accent_color || '#22c55e';
                 document.getElementById('websitePublished').checked = data.is_published || false;
             }
@@ -174,23 +184,16 @@ const WebsiteManager = {
     async saveWebsiteSettings() {
         try {
             let logoUrl = document.getElementById('websiteLogo').value;
-            const logoFile = document.getElementById('websiteLogoFile').files[0];
-
-            if (logoFile) {
-                try {
-                    logoUrl = await this.uploadImage(logoFile);
-                } catch (uploadError) {
-                    alert('Logo yüklenirken hata oluştu: ' + uploadError.message);
-                    return;
-                }
-            }
+            let heroImageUrl = document.getElementById('websiteHeroImage').value;
 
             const settingsData = {
                 user_id: this.currentUser.id,
                 subdomain: document.getElementById('websiteSubdomain').value.toLowerCase().trim(),
                 company_name: document.getElementById('websiteCompanyName').value,
+                slogan: document.getElementById('websiteSlogan').value,
                 description: document.getElementById('websiteDescription').value,
                 logo_url: logoUrl,
+                hero_image_url: heroImageUrl,
                 contact_email: document.getElementById('websiteEmail').value,
                 contact_phone: document.getElementById('websitePhone').value,
                 address: document.getElementById('websiteAddress').value,
@@ -201,7 +204,7 @@ const WebsiteManager = {
             };
 
             if (settingsData.subdomain && !/^[a-z0-9-]+$/.test(settingsData.subdomain)) {
-                alert('Subdomain sadece küçük harf, rakam ve tire içerebilir.');
+                alert('Firma adresi sadece küçük harf, rakam ve tire içerebilir.');
                 return;
             }
 
@@ -267,24 +270,47 @@ const WebsiteManager = {
 
             if (error) throw error;
 
-            const tbody = document.getElementById('websiteProductsList');
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--secondary);">Henüz ürün eklenmemiş.</td></tr>';
+            const grid = document.getElementById('websiteProductsGrid');
+            if (!grid) {
+                console.error('Product grid element not found');
                 return;
             }
 
-            tbody.innerHTML = data.map(product => `
-                <tr>
-                    <td><img src="${product.image_url || 'https://via.placeholder.com/50'}" alt="${product.name}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;"></td>
-                    <td>${product.name}</td>
-                    <td>${product.category || '-'}</td>
-                    <td>${product.price ? '₺' + parseFloat(product.price).toFixed(2) : '-'}</td>
-                    <td><span class="status-badge ${product.is_active ? 'status-completed' : 'status-pending'}">${product.is_active ? 'Aktif' : 'Pasif'}</span></td>
-                    <td>
-                        <button onclick="WebsiteManager.openProductModal(${product.id})" class="btn btn-sm"><i class="fa-solid fa-edit"></i></button>
-                        <button onclick="WebsiteManager.deleteProduct(${product.id})" class="btn btn-delete btn-sm"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
+            if (!data || data.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                        <i class="fa-solid fa-box" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                        <p>Henüz ürün eklenmemiş.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = data.map(product => `
+                <div class="product-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border);">
+                    <div style="height: 150px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        ${product.image_url
+                    ? `<img src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">`
+                    : `<i class="fa-solid fa-box" style="font-size: 3rem; color: white; opacity: 0.5;"></i>`
+                }
+                    </div>
+                    <div style="padding: 1rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--dark);">${product.name}</h3>
+                        ${product.category ? `<span style="display: inline-block; background: #eff6ff; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-bottom: 0.5rem;">${product.category}</span>` : ''}
+                        <p style="color: var(--secondary); font-size: 0.9rem; margin: 0.5rem 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${product.description || ''}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                            <span style="font-weight: 700; color: var(--primary);">${product.price ? '₺' + parseFloat(product.price).toLocaleString('tr-TR') : '-'}</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button onclick="WebsiteManager.openProductModal(${product.id})" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
+                                    <i class="fa-solid fa-edit"></i>
+                                </button>
+                                <button onclick="WebsiteManager.deleteProduct(${product.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `).join('');
         } catch (error) {
             console.error('Error loading products:', error);
@@ -374,22 +400,46 @@ const WebsiteManager = {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            const tbody = document.getElementById('websiteServicesList');
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--secondary);">Henüz hizmet eklenmemiş.</td></tr>';
+
+            const grid = document.getElementById('websiteServicesGrid');
+            if (!grid) {
+                console.error('Services grid element not found');
                 return;
             }
-            tbody.innerHTML = data.map(service => `
-                <tr>
-                    <td><i class="${service.icon || 'fa-solid fa-briefcase'}" style="font-size:1.5rem;color:var(--primary);"></i></td>
-                    <td>${service.name}</td>
-                    <td>${service.description ? service.description.substring(0, 50) + '...' : '-'}</td>
-                    <td><span class="status-badge ${service.is_active ? 'status-completed' : 'status-pending'}">${service.is_active ? 'Aktif' : 'Pasif'}</span></td>
-                    <td>
-                        <button onclick="WebsiteManager.openServiceModal(${service.id})" class="btn btn-sm"><i class="fa-solid fa-edit"></i></button>
-                        <button onclick="WebsiteManager.deleteService(${service.id})" class="btn btn-delete btn-sm"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
+
+            if (!data || data.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                        <i class="fa-solid fa-briefcase" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                        <p>Henüz hizmet eklenmemiş.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = data.map(service => `
+                <div class="service-card" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border);">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="${service.icon || 'fa-solid fa-briefcase'}" style="font-size: 1.25rem; color: white;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--dark);">${service.name}</h3>
+                            <p style="color: var(--secondary); font-size: 0.9rem; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${service.description || ''}</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                        <span class="status-badge ${service.is_active ? 'status-completed' : 'status-pending'}" style="font-size: 0.8rem;">${service.is_active ? 'Aktif' : 'Pasif'}</span>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="WebsiteManager.openServiceModal(${service.id})" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button onclick="WebsiteManager.deleteService(${service.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             `).join('');
         } catch (e) { console.error(e); }
     },
@@ -397,20 +447,32 @@ const WebsiteManager = {
     async openServiceModal(serviceId = null) {
         const modal = document.getElementById('serviceModal');
         const form = document.getElementById('serviceForm');
-        form.reset();
-        document.getElementById('serviceId').value = '';
-        document.getElementById('serviceModalTitle').textContent = 'Hizmet Ekle';
+
+        if (!modal) {
+            console.error('serviceModal element not found');
+            return;
+        }
+        if (form) form.reset();
+
+        const serviceIdInput = document.getElementById('serviceId');
+        const serviceModalTitle = document.getElementById('serviceModalTitle');
+        if (serviceIdInput) serviceIdInput.value = '';
+        if (serviceModalTitle) serviceModalTitle.textContent = 'Hizmet Ekle';
 
         if (serviceId) {
-            document.getElementById('serviceModalTitle').textContent = 'Hizmet Düzenle';
+            if (serviceModalTitle) serviceModalTitle.textContent = 'Hizmet Düzenle';
             try {
                 const { data } = await supabase.from('website_services').select('*').eq('id', serviceId).single();
                 if (data) {
-                    document.getElementById('serviceId').value = data.id;
-                    document.getElementById('serviceName').value = data.name;
-                    document.getElementById('serviceIcon').value = data.icon || '';
-                    document.getElementById('serviceDescription').value = data.description || '';
-                    document.getElementById('serviceActive').checked = data.is_active;
+                    if (serviceIdInput) serviceIdInput.value = data.id;
+                    const serviceName = document.getElementById('serviceName');
+                    const serviceIcon = document.getElementById('serviceIcon');
+                    const serviceDescription = document.getElementById('serviceDescription');
+                    const serviceActive = document.getElementById('serviceActive');
+                    if (serviceName) serviceName.value = data.name;
+                    if (serviceIcon) serviceIcon.value = data.icon || '';
+                    if (serviceDescription) serviceDescription.value = data.description || '';
+                    if (serviceActive) serviceActive.checked = data.is_active;
                 }
             } catch (e) { console.error(e); }
         }
@@ -418,24 +480,54 @@ const WebsiteManager = {
     },
 
     async saveService() {
-        const id = document.getElementById('serviceId').value;
+        // Ensure we have currentUser
+        if (!this.currentUser) {
+            this.currentUser = await Auth.checkAuth();
+        }
+        if (!this.currentUser) {
+            alert('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+            return;
+        }
+
+        const serviceIdEl = document.getElementById('serviceId');
+        const serviceNameEl = document.getElementById('serviceName');
+        const serviceIconEl = document.getElementById('serviceIcon');
+        const serviceDescEl = document.getElementById('serviceDescription');
+        const serviceActiveEl = document.getElementById('serviceActive');
+
+        const id = serviceIdEl ? serviceIdEl.value : '';
         const serviceData = {
             user_id: this.currentUser.id,
-            name: document.getElementById('serviceName').value,
-            icon: document.getElementById('serviceIcon').value,
-            description: document.getElementById('serviceDescription').value,
-            is_active: document.getElementById('serviceActive').checked
+            name: serviceNameEl ? serviceNameEl.value : '',
+            icon: serviceIconEl ? serviceIconEl.value : '',
+            description: serviceDescEl ? serviceDescEl.value : '',
+            is_active: serviceActiveEl ? serviceActiveEl.checked : true
         };
 
         try {
-            if (id) await supabase.from('website_services').update(serviceData).eq('id', id);
-            else await supabase.from('website_services').insert([serviceData]);
+            let error;
+            if (id) {
+                const res = await supabase.from('website_services').update(serviceData).eq('id', id);
+                error = res.error;
+            } else {
+                const res = await supabase.from('website_services').insert([serviceData]);
+                error = res.error;
+            }
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
 
             alert('Hizmet başarıyla kaydedildi.');
-            document.getElementById('serviceModal').style.display = 'none';
+            const modal = document.getElementById('serviceModal');
+            if (modal) modal.style.display = 'none';
             this.loadServices();
             this.loadWebsiteStats();
-        } catch (e) { console.error(e); alert('Hata oluştu.'); }
+        } catch (e) {
+            console.error('Save service error:', e);
+            alert('Hata oluştu: ' + (e.message || e));
+        }
     },
 
     async deleteService(id) {
@@ -458,43 +550,69 @@ const WebsiteManager = {
                 .order('display_order', { ascending: true });
 
             if (error) throw error;
+
             const grid = document.getElementById('websiteTeamGrid');
-            if (!data || data.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">Henüz ekip üyesi eklenmemiş.</div>';
+            if (!grid) {
+                console.error('Team grid element not found');
                 return;
             }
+
+            if (!data || data.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                        <i class="fa-solid fa-users" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                        <p>Henüz ekip üyesi eklenmemiş.</p>
+                    </div>
+                `;
+                return;
+            }
+
             grid.innerHTML = data.map(member => `
-                <div class="team-member-card" style="background:white;border-radius:12px;padding:1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                    <img src="${member.photo_url || 'https://via.placeholder.com/150'}" alt="${member.name}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:1rem;">
-                    <h3 style="margin:0.5rem 0;font-size:1.1rem;">${member.name}</h3>
-                    <p style="color:var(--primary);font-weight:600;margin:0.25rem 0;">${member.position}</p>
-                    <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
-                        <button onclick="WebsiteManager.openTeamModal(${member.id})" class="btn btn-sm"><i class="fa-solid fa-edit"></i></button>
-                        <button onclick="WebsiteManager.deleteTeamMember(${member.id})" class="btn btn-delete btn-sm"><i class="fa-solid fa-trash"></i></button>
+                <div class="team-member-card" style="background:white;border-radius:12px;padding:1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border);">
+                    <img src="${member.photo_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=667eea&color=fff&size=100'}" alt="${member.name}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:1rem; border: 3px solid var(--border);">
+                    <h3 style="margin:0.5rem 0;font-size:1.05rem; color: var(--dark);">${member.name}</h3>
+                    <p style="color:var(--primary);font-weight:600;font-size:0.9rem;margin:0.25rem 0;">${member.position}</p>
+                    ${member.bio ? `<p style="color:var(--secondary);font-size:0.85rem;margin:0.5rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${member.bio}</p>` : ''}
+                    <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                        <button onclick="WebsiteManager.openTeamModal(${member.id})" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
+                        <button onclick="WebsiteManager.deleteTeamMember(${member.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error('Error loading team:', e); }
     },
 
     async openTeamModal(memberId = null) {
         const modal = document.getElementById('teamModal');
         const form = document.getElementById('teamForm');
-        form.reset();
-        document.getElementById('teamId').value = '';
-        document.getElementById('teamModalTitle').textContent = 'Ekip Üyesi Ekle';
+
+        if (!modal) {
+            console.error('teamModal element not found');
+            return;
+        }
+        if (form) form.reset();
+
+        const teamIdInput = document.getElementById('teamId');
+        const teamModalTitle = document.getElementById('teamModalTitle');
+        if (teamIdInput) teamIdInput.value = '';
+        if (teamModalTitle) teamModalTitle.textContent = 'Ekip Üyesi Ekle';
 
         if (memberId) {
-            document.getElementById('teamModalTitle').textContent = 'Ekip Üyesi Düzenle';
+            if (teamModalTitle) teamModalTitle.textContent = 'Ekip Üyesi Düzenle';
             try {
                 const { data } = await supabase.from('website_team').select('*').eq('id', memberId).single();
                 if (data) {
-                    document.getElementById('teamId').value = data.id;
-                    document.getElementById('teamName').value = data.name;
-                    document.getElementById('teamPosition').value = data.position;
-                    document.getElementById('teamPhoto').value = data.photo_url || '';
-                    document.getElementById('teamBio').value = data.bio || '';
-                    document.getElementById('teamOrder').value = data.display_order || 0;
+                    if (teamIdInput) teamIdInput.value = data.id;
+                    const teamName = document.getElementById('teamName');
+                    const teamPosition = document.getElementById('teamPosition');
+                    const teamPhoto = document.getElementById('teamPhoto');
+                    const teamBio = document.getElementById('teamBio');
+                    const teamOrder = document.getElementById('teamOrder');
+                    if (teamName) teamName.value = data.name;
+                    if (teamPosition) teamPosition.value = data.position;
+                    if (teamPhoto) teamPhoto.value = data.photo_url || '';
+                    if (teamBio) teamBio.value = data.bio || '';
+                    if (teamOrder) teamOrder.value = data.display_order || 0;
                 }
             } catch (e) { console.error(e); }
         }
@@ -502,25 +620,56 @@ const WebsiteManager = {
     },
 
     async saveTeamMember() {
-        const id = document.getElementById('teamId').value;
+        // Ensure we have currentUser
+        if (!this.currentUser) {
+            this.currentUser = await Auth.checkAuth();
+        }
+        if (!this.currentUser) {
+            alert('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+            return;
+        }
+
+        const teamIdEl = document.getElementById('teamId');
+        const teamNameEl = document.getElementById('teamName');
+        const teamPositionEl = document.getElementById('teamPosition');
+        const teamPhotoEl = document.getElementById('teamPhoto');
+        const teamBioEl = document.getElementById('teamBio');
+        const teamOrderEl = document.getElementById('teamOrder');
+
+        const id = teamIdEl ? teamIdEl.value : '';
         const teamData = {
             user_id: this.currentUser.id,
-            name: document.getElementById('teamName').value,
-            position: document.getElementById('teamPosition').value,
-            photo_url: document.getElementById('teamPhoto').value,
-            bio: document.getElementById('teamBio').value,
-            display_order: parseInt(document.getElementById('teamOrder').value) || 0
+            name: teamNameEl ? teamNameEl.value : '',
+            position: teamPositionEl ? teamPositionEl.value : '',
+            photo_url: teamPhotoEl ? teamPhotoEl.value : '',
+            bio: teamBioEl ? teamBioEl.value : '',
+            display_order: teamOrderEl ? (parseInt(teamOrderEl.value) || 0) : 0
         };
 
         try {
-            if (id) await supabase.from('website_team').update(teamData).eq('id', id);
-            else await supabase.from('website_team').insert([teamData]);
+            let error;
+            if (id) {
+                const res = await supabase.from('website_team').update(teamData).eq('id', id);
+                error = res.error;
+            } else {
+                const res = await supabase.from('website_team').insert([teamData]);
+                error = res.error;
+            }
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
 
             alert('Ekip üyesi kaydedildi.');
-            document.getElementById('teamModal').style.display = 'none';
+            const modal = document.getElementById('teamModal');
+            if (modal) modal.style.display = 'none';
             this.loadTeam();
             this.loadWebsiteStats();
-        } catch (e) { console.error(e); alert('Hata oluştu.'); }
+        } catch (e) {
+            console.error('Save team error:', e);
+            alert('Hata oluştu: ' + (e.message || e));
+        }
     },
 
     async deleteTeamMember(id) {
@@ -543,42 +692,84 @@ const WebsiteManager = {
                 .order('display_order', { ascending: true });
 
             if (error) throw error;
+
             const grid = document.getElementById('websiteGalleryGrid');
-            if (!data || data.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">Henüz görsel eklenmemiş.</div>';
+            if (!grid) {
+                console.error('Gallery grid element not found');
                 return;
             }
-            grid.innerHTML = data.map(image => `
-                <div class="gallery-item" style="position:relative;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                    <img src="${image.image_url}" alt="${image.title || ''}" style="width:100%;height:200px;object-fit:cover;">
-                    <div style="position:absolute;top:8px;right:8px;">
-                        <button onclick="WebsiteManager.deleteGalleryImage(${image.id})" class="btn btn-delete btn-sm"><i class="fa-solid fa-trash"></i></button>
+
+            if (!data || data.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; color:var(--secondary); padding: 3rem;">
+                        <i class="fa-solid fa-images" style="font-size: 3rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                        <p>Henüz görsel eklenmemiş.</p>
                     </div>
-                    ${image.title ? `<div style="padding:0.5rem;background:white;"><strong>${image.title}</strong></div>` : ''}
+                `;
+                return;
+            }
+
+            grid.innerHTML = data.map(image => `
+                <div class="gallery-item" style="position:relative;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border);">
+                    <img src="${image.image_url}" alt="${image.title || ''}" style="width:100%;height:180px;object-fit:cover;">
+                    <div style="position:absolute;top:8px;right:8px;">
+                        <button onclick="WebsiteManager.deleteGalleryImage(${image.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: rgba(220,38,38,0.9); color: white; border: none;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    ${image.title ? `<div style="padding:0.75rem;background:white;"><strong style="font-size:0.9rem;">${image.title}</strong></div>` : ''}
                 </div>
             `).join('');
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error('Error loading gallery:', e); }
     },
 
     openGalleryModal() {
-        document.getElementById('galleryForm').reset();
-        document.getElementById('galleryModal').style.display = 'flex';
+        const modal = document.getElementById('galleryModal');
+        const form = document.getElementById('galleryForm');
+
+        if (!modal) {
+            console.error('galleryModal element not found');
+            return;
+        }
+        if (form) form.reset();
+        modal.style.display = 'flex';
     },
 
     async saveGalleryImage() {
+        // Ensure we have currentUser
+        if (!this.currentUser) {
+            this.currentUser = await Auth.checkAuth();
+        }
+        if (!this.currentUser) {
+            alert('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+            return;
+        }
+
+        const galleryImageEl = document.getElementById('galleryImage');
+        const galleryTitleEl = document.getElementById('galleryTitle');
+        const galleryOrderEl = document.getElementById('galleryOrder');
+
         const galleryData = {
             user_id: this.currentUser.id,
-            image_url: document.getElementById('galleryImage').value,
-            title: document.getElementById('galleryTitle').value,
-            display_order: parseInt(document.getElementById('galleryOrder').value) || 0
+            image_url: galleryImageEl ? galleryImageEl.value : '',
+            title: galleryTitleEl ? galleryTitleEl.value : '',
+            display_order: galleryOrderEl ? (parseInt(galleryOrderEl.value) || 0) : 0
         };
 
         try {
-            await supabase.from('website_gallery').insert([galleryData]);
+            const { error } = await supabase.from('website_gallery').insert([galleryData]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
+
             alert('Görsel eklendi.');
-            document.getElementById('galleryModal').style.display = 'none';
+            const modal = document.getElementById('galleryModal');
+            if (modal) modal.style.display = 'none';
             this.loadGallery();
-        } catch (e) { console.error(e); alert('Hata oluştu.'); }
+        } catch (e) {
+            console.error('Save gallery error:', e);
+            alert('Hata oluştu: ' + (e.message || e));
+        }
     },
 
     async deleteGalleryImage(id) {
@@ -600,42 +791,63 @@ const WebsiteManager = {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
+
             const tbody = document.getElementById('websitePagesList');
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--secondary);">Henüz sayfa eklenmemiş.</td></tr>';
+            if (!tbody) {
+                console.error('Pages tbody element not found');
                 return;
             }
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--secondary); padding: 2rem;">Henüz sayfa eklenmemiş.</td></tr>';
+                return;
+            }
+
             tbody.innerHTML = data.map(page => `
                 <tr>
-                    <td>${page.title}</td>
-                    <td><code>${page.slug}</code></td>
+                    <td style="font-weight: 500;">${page.title}</td>
+                    <td><code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem;">/${page.slug}</code></td>
                     <td><span class="status-badge ${page.is_published ? 'status-completed' : 'status-pending'}">${page.is_published ? 'Yayında' : 'Taslak'}</span></td>
                     <td>
-                        <button onclick="WebsiteManager.openPageModal(${page.id})" class="btn btn-sm"><i class="fa-solid fa-edit"></i></button>
-                        <button onclick="WebsiteManager.deletePage(${page.id})" class="btn btn-delete btn-sm"><i class="fa-solid fa-trash"></i></button>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="WebsiteManager.openPageModal(${page.id})" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
+                            <button onclick="WebsiteManager.deletePage(${page.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
                     </td>
                 </tr>
             `).join('');
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error('Error loading pages:', e); }
     },
 
     async openPageModal(pageId = null) {
         const modal = document.getElementById('pageModal');
         const form = document.getElementById('pageForm');
-        form.reset();
-        document.getElementById('pageId').value = '';
-        document.getElementById('pageModalTitle').textContent = 'Sayfa Ekle';
+
+        if (!modal) {
+            console.error('pageModal element not found');
+            return;
+        }
+        if (form) form.reset();
+
+        const pageIdInput = document.getElementById('pageId');
+        const pageModalTitle = document.getElementById('pageModalTitle');
+        if (pageIdInput) pageIdInput.value = '';
+        if (pageModalTitle) pageModalTitle.textContent = 'Sayfa Ekle';
 
         if (pageId) {
-            document.getElementById('pageModalTitle').textContent = 'Sayfa Düzenle';
+            if (pageModalTitle) pageModalTitle.textContent = 'Sayfa Düzenle';
             try {
                 const { data } = await supabase.from('website_pages').select('*').eq('id', pageId).single();
                 if (data) {
-                    document.getElementById('pageId').value = data.id;
-                    document.getElementById('pageTitle').value = data.title;
-                    document.getElementById('pageSlug').value = data.slug;
-                    document.getElementById('pageContent').value = data.content || '';
-                    document.getElementById('pagePublished').checked = data.is_published;
+                    if (pageIdInput) pageIdInput.value = data.id;
+                    const pageTitle = document.getElementById('websitePageTitle');
+                    const pageSlug = document.getElementById('pageSlug');
+                    const pageContent = document.getElementById('pageContent');
+                    const pagePublished = document.getElementById('pagePublished');
+                    if (pageTitle) pageTitle.value = data.title;
+                    if (pageSlug) pageSlug.value = data.slug;
+                    if (pageContent) pageContent.value = data.content || '';
+                    if (pagePublished) pagePublished.checked = data.is_published;
                 }
             } catch (e) { console.error(e); }
         }
@@ -653,23 +865,69 @@ const WebsiteManager = {
     },
 
     async savePage() {
-        const id = document.getElementById('pageId').value;
+        // Ensure we have currentUser
+        if (!this.currentUser) {
+            this.currentUser = await Auth.checkAuth();
+        }
+        if (!this.currentUser) {
+            alert('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+            return;
+        }
+
+        const pageIdEl = document.getElementById('pageId');
+        const pageTitleEl = document.getElementById('websitePageTitle');
+        const pageSlugEl = document.getElementById('pageSlug');
+        const pageContentEl = document.getElementById('pageContent');
+        const pagePublishedEl = document.getElementById('pagePublished');
+
+        // Get values with safe null checks
+        const title = (pageTitleEl && pageTitleEl.value) ? pageTitleEl.value.trim() : '';
+        const slug = (pageSlugEl && pageSlugEl.value) ? pageSlugEl.value.trim() : '';
+
+        // Validate required fields
+        if (!title) {
+            alert('Lütfen sayfa başlığını girin.');
+            if (pageTitleEl) pageTitleEl.focus();
+            return;
+        }
+        if (!slug) {
+            alert('Lütfen slug (URL kısmı) girin.');
+            if (pageSlugEl) pageSlugEl.focus();
+            return;
+        }
+
+        const id = pageIdEl ? pageIdEl.value : '';
         const pageData = {
             user_id: this.currentUser.id,
-            title: document.getElementById('pageTitle').value,
-            slug: document.getElementById('pageSlug').value,
-            content: document.getElementById('pageContent').value,
-            is_published: document.getElementById('pagePublished').checked
+            title: title,
+            slug: slug,
+            content: pageContentEl ? pageContentEl.value : '',
+            is_published: pagePublishedEl ? pagePublishedEl.checked : false
         };
 
         try {
-            if (id) await supabase.from('website_pages').update(pageData).eq('id', id);
-            else await supabase.from('website_pages').insert([pageData]);
+            let error;
+            if (id) {
+                const res = await supabase.from('website_pages').update(pageData).eq('id', id);
+                error = res.error;
+            } else {
+                const res = await supabase.from('website_pages').insert([pageData]);
+                error = res.error;
+            }
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
 
             alert('Sayfa kaydedildi.');
-            document.getElementById('pageModal').style.display = 'none';
+            const modal = document.getElementById('pageModal');
+            if (modal) modal.style.display = 'none';
             this.loadPages();
-        } catch (e) { console.error(e); alert('Hata oluştu.'); }
+        } catch (e) {
+            console.error('Save page error:', e);
+            alert('Hata oluştu: ' + (e.message || e));
+        }
     },
 
     async deletePage(id) {
@@ -700,6 +958,151 @@ const WebsiteManager = {
         } catch (error) {
             console.error('Error uploading image:', error);
             throw error;
+        }
+    },
+
+    async uploadLogo(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            const url = await this.uploadImage(file, 'website-assets');
+            document.getElementById('websiteLogo').value = url;
+
+            // Show preview
+            const preview = document.getElementById('logoPreview');
+            const previewImg = document.getElementById('logoPreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Logo başarıyla yüklendi!');
+        } catch (error) {
+            console.error('Error uploading logo:', error);
+            alert('Logo yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    },
+
+    async uploadHeroImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            const url = await this.uploadImage(file, 'website-assets');
+            document.getElementById('websiteHeroImage').value = url;
+
+            // Show preview
+            const preview = document.getElementById('heroPreview');
+            const previewImg = document.getElementById('heroPreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Hero görseli başarıyla yüklendi!');
+        } catch (error) {
+            console.error('Error uploading hero image:', error);
+            alert('Hero görseli yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    },
+
+    async uploadProductImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            const url = await this.uploadImage(file, 'website-assets');
+            document.getElementById('productImage').value = url;
+
+            // Show preview
+            const preview = document.getElementById('productImagePreview');
+            const previewImg = document.getElementById('productImagePreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Ürün görseli başarıyla yüklendi!');
+        } catch (error) {
+            console.error('Error uploading product image:', error);
+            alert('Ürün görseli yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    },
+
+    async uploadTeamPhoto(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            const url = await this.uploadImage(file, 'website-assets');
+            document.getElementById('teamPhoto').value = url;
+
+            // Show preview
+            const preview = document.getElementById('teamPhotoPreview');
+            const previewImg = document.getElementById('teamPhotoPreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Ekip üyesi fotoğrafı başarıyla yüklendi!');
+        } catch (error) {
+            console.error('Error uploading team photo:', error);
+            alert('Fotoğraf yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    },
+
+    async uploadGalleryImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            const url = await this.uploadImage(file, 'website-assets');
+            document.getElementById('galleryImage').value = url;
+
+            // Show preview
+            const preview = document.getElementById('galleryImagePreview');
+            const previewImg = document.getElementById('galleryImagePreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Galeri görseli başarıyla yüklendi!');
+        } catch (error) {
+            console.error('Error uploading gallery image:', error);
+            alert('Görsel yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
     }
 };

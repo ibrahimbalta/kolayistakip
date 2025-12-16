@@ -747,6 +747,9 @@ const WebsiteManager = {
             grid.innerHTML = data.map(image => `
                 <div class="gallery-item" style="position:relative;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border);">
                     <img src="${image.image_url}" alt="${image.title || ''}" style="width:100%;height:180px;object-fit:cover;">
+                    <div style="position:absolute;top:8px;left:8px;">
+                        <span style="background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">${image.category || 'Genel'}</span>
+                    </div>
                     <div style="position:absolute;top:8px;right:8px;">
                         <button onclick="WebsiteManager.deleteGalleryImage(${image.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: rgba(220,38,38,0.9); color: white; border: none;"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -780,12 +783,14 @@ const WebsiteManager = {
 
         const galleryImageEl = document.getElementById('galleryImage');
         const galleryTitleEl = document.getElementById('galleryTitle');
+        const galleryCategoryEl = document.getElementById('galleryCategory');
         const galleryOrderEl = document.getElementById('galleryOrder');
 
         const galleryData = {
             user_id: this.currentUser.id,
             image_url: galleryImageEl ? galleryImageEl.value : '',
             title: galleryTitleEl ? galleryTitleEl.value : '',
+            category: galleryCategoryEl ? galleryCategoryEl.value || 'Genel' : 'Genel',
             display_order: galleryOrderEl ? (parseInt(galleryOrderEl.value) || 0) : 0
         };
 

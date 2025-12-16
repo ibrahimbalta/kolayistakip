@@ -2023,6 +2023,20 @@ Seviyeler:
                     <input type="text" id="galleryTitle" placeholder="Görsel başlığı">
                 </div>
                 <div class="form-group">
+                    <label>Kategori <span style="color: red;">*</span></label>
+                    <input type="text" id="galleryCategory" required placeholder="Örn: Araçlar, Projeler, Ofis"
+                        list="galleryCategoryList">
+                    <datalist id="galleryCategoryList">
+                        <option value="Genel">
+                        <option value="Araçlar">
+                        <option value="Projeler">
+                        <option value="Ürünler">
+                        <option value="Ofis">
+                        <option value="Etkinlikler">
+                    </datalist>
+                    <small style="color: var(--secondary);">Aynı kategorideki görseller gruplanarak gösterilir</small>
+                </div>
+                <div class="form-group">
                     <label>Sıralama</label>
                     <input type="number" id="galleryOrder" value="0" min="0">
                 </div>

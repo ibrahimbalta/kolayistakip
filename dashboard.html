@@ -817,6 +817,15 @@ Seviyeler:
 
             <!-- VIEW: WEBSITE MANAGEMENT -->
             <section id="view-website" class="view-section" style="display:none;">
+                <!-- Copy Link Button - aligned to right -->
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                    <button id="copyWebsiteLinkBtn" onclick="copyWebsiteLink()" class="btn"
+                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Website Linkini Kopyala</span>
+                    </button>
+                </div>
+
                 <div class="task-stats">
                     <div class="stat-card">
                         <div class="stat-number" id="websiteStatus">-</div>

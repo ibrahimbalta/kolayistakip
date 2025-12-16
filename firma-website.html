@@ -1267,6 +1267,212 @@
             margin-top: 32px;
         }
 
+        /* ====== MOBILE HAMBURGER MENU ====== */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--gradient-primary);
+            padding: 12px 20px;
+            z-index: 9999;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .mobile-header-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .mobile-header-logo i {
+            font-size: 1.5rem;
+        }
+
+        .mobile-header-logo span {
+            font-weight: 700;
+            font-size: 1.1rem;
+            max-width: 160px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .hamburger-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 22px;
+            height: 2.5px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Slide Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100vh;
+            background: white;
+            z-index: 10000;
+            padding: 80px 24px 40px;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-close:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .mobile-menu-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu-nav li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-menu-nav a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-nav a:hover,
+        .mobile-menu-nav a:active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .mobile-menu-nav a i {
+            width: 24px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Show mobile header on small screens */
+        @media (max-width: 768px) {
+            .mobile-header {
+                display: flex;
+            }
+
+            body {
+                padding-top: 68px;
+            }
+
+            .hero {
+                padding-top: 80px;
+            }
+
+            /* Hide desktop nav container on mobile since we have hamburger */
+            .nav-pills-modern {
+                display: none !important;
+            }
+
+            /* Adjust nav container */
+            .container.text-center.section-spacing[data-aos="fade-up"] {
+                margin-top: 0;
+                display: none;
+            }
+        }
+
         /* Hidden by default */
         .hidden {
             display: none !important;
@@ -1275,6 +1481,41 @@
 </head>
 
 <body>
+
+    <!-- MOBILE HEADER (Hamburger Menu) -->
+    <header class="mobile-header">
+        <div class="mobile-header-logo" id="mobileHeaderLogo">
+            <i class="fa-solid fa-building"></i>
+            <span id="mobileCompanyName">[Firma Adı]</span>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menü">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Slide Menu -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Menüyü Kapat">
+            <i class="fa-solid fa-times"></i>
+        </button>
+        <ul class="mobile-menu-nav">
+            <li><a href="#hero" class="mobile-nav-link"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+            <li><a href="#hakkimizda" class="mobile-nav-link"><i class="fas fa-building"></i> Hakkımızda</a></li>
+            <li id="mobileNavServices"><a href="#hizmetler" class="mobile-nav-link"><i class="fas fa-handshake"></i>
+                    Hizmetler</a></li>
+            <li id="mobileNavProducts"><a href="#urunler" class="mobile-nav-link"><i class="fas fa-box"></i> Ürünler</a>
+            </li>
+            <li id="mobileNavTeam"><a href="#ekip" class="mobile-nav-link"><i class="fas fa-users"></i> Ekip</a></li>
+            <li id="mobileNavGallery"><a href="#galeri" class="mobile-nav-link"><i class="fas fa-images"></i> Galeri</a>
+            </li>
+            <li><a href="#iletisim" class="mobile-nav-link"><i class="fas fa-phone"></i> İletişim</a></li>
+        </ul>
+    </nav>
 
     <!-- HERO -->
     <section class="hero" id="hero" data-aos="fade-down">
@@ -1501,6 +1742,45 @@
             easing: 'ease-out-cubic'
         });
 
+        // ====== MOBILE HAMBURGER MENU FUNCTIONALITY ======
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileMenuOverlay.classList.add('active');
+            hamburgerBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close menu when a nav link is clicked
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
         // Smooth scroll for navigation links (exclude external links)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1657,10 +1937,32 @@
             // Company name
             document.getElementById('companyName').textContent = settings.company_name || 'Firma';
 
+            // Mobile header company name
+            const mobileCompanyName = document.getElementById('mobileCompanyName');
+            if (mobileCompanyName) {
+                mobileCompanyName.textContent = settings.company_name || 'Firma';
+            }
+
             // Logo
             const heroLogo = document.getElementById('heroLogo');
             if (settings.logo_url) {
                 heroLogo.innerHTML = `<img src="${settings.logo_url}" alt="Logo">`;
+
+                // Mobile header logo
+                const mobileHeaderLogo = document.getElementById('mobileHeaderLogo');
+                if (mobileHeaderLogo) {
+                    const logoImg = mobileHeaderLogo.querySelector('img');
+                    const logoIcon = mobileHeaderLogo.querySelector('i');
+                    if (logoImg) {
+                        logoImg.src = settings.logo_url;
+                    } else if (logoIcon) {
+                        // Replace icon with image
+                        const newImg = document.createElement('img');
+                        newImg.src = settings.logo_url;
+                        newImg.alt = 'Logo';
+                        logoIcon.replaceWith(newImg);
+                    }
+                }
             }
 
             // Banner
@@ -1781,6 +2083,9 @@
             if (services.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
+                // Also hide mobile nav link
+                const mobileNavLink = document.getElementById('mobileNavServices');
+                if (mobileNavLink) mobileNavLink.style.display = 'none';
                 return;
             }
 
@@ -1803,6 +2108,9 @@
             if (products.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
+                // Also hide mobile nav link
+                const mobileNavLink = document.getElementById('mobileNavProducts');
+                if (mobileNavLink) mobileNavLink.style.display = 'none';
                 return;
             }
 
@@ -1831,6 +2139,9 @@
             if (team.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
+                // Also hide mobile nav link
+                const mobileNavLink = document.getElementById('mobileNavTeam');
+                if (mobileNavLink) mobileNavLink.style.display = 'none';
                 return;
             }
 
@@ -1859,6 +2170,9 @@
             if (gallery.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
+                // Also hide mobile nav link
+                const mobileNavLink = document.getElementById('mobileNavGallery');
+                if (mobileNavLink) mobileNavLink.style.display = 'none';
                 return;
             }
 

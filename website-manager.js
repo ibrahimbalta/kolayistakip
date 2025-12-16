@@ -1347,8 +1347,53 @@ const WebsiteManager = {
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
+    },
+
+    // --- COPY WEBSITE LINK ---
+    copyWebsiteLink() {
+        // Get subdomain from settings or input field
+        const subdomain = this.currentSettings?.subdomain || document.getElementById('websiteSubdomain')?.value;
+
+        if (!subdomain) {
+            alert('Henüz bir website adresi tanımlanmamış. Lütfen önce "Ayarlar" sekmesinden firma adresinizi belirleyin.');
+            return;
+        }
+
+        // Construct the website URL
+        const websiteUrl = `https://kolayistakip.vercel.app/firma-website.html?subdomain=${subdomain}`;
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(websiteUrl).then(() => {
+            // Visual feedback
+            const btn = document.getElementById('copyWebsiteLinkBtn');
+            if (btn) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Kopyalandı!</span>';
+                btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                }, 2000);
+            }
+
+            console.log('Website link copied:', websiteUrl);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            // Fallback - show the link in an alert
+            prompt('Website linkiniz:', websiteUrl);
+        });
     }
 };
 
 // Expose to global scope
 window.WebsiteManager = WebsiteManager;
+
+// Global copyWebsiteLink function for onclick handler
+window.copyWebsiteLink = function () {
+    if (typeof WebsiteManager !== 'undefined' && WebsiteManager.copyWebsiteLink) {
+        WebsiteManager.copyWebsiteLink();
+    } else {
+        alert('Website Manager henüz yüklenmedi. Lütfen sayfayı yenileyin.');
+    }
+};

@@ -102,6 +102,7 @@ const WebsiteManager = {
             case 'team': await this.loadTeam(); break;
             case 'gallery': await this.loadGallery(); break;
             case 'pages': await this.loadPages(); break;
+            case 'messages': await this.loadMessages(); break;
         }
     },
 
@@ -961,6 +962,123 @@ const WebsiteManager = {
             alert('Silindi.');
             this.loadPages();
         } catch (e) { console.error(e); }
+    },
+
+    // --- MESSAGES ---
+    async loadMessages() {
+        try {
+            const { data, error } = await supabase
+                .from('website_messages')
+                .select('*')
+                .eq('user_id', this.currentUser.id)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            const tbody = document.getElementById('websiteMessagesList');
+            if (!tbody) {
+                console.error('Messages tbody element not found');
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--secondary); padding: 2rem;">Henüz mesaj yok.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map(msg => {
+                const date = new Date(msg.created_at).toLocaleDateString('tr-TR', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const truncatedMsg = msg.message.length > 50 ? msg.message.substring(0, 50) + '...' : msg.message;
+                const readBadge = msg.is_read ? '' : '<span style="display: inline-block; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; margin-right: 8px;" title="Okunmadı"></span>';
+
+                return `
+                    <tr style="${msg.is_read ? '' : 'background: #f0f9ff;'}">
+                        <td style="font-weight: ${msg.is_read ? '400' : '600'};">${readBadge}${this.escapeHtml(msg.sender_name)}</td>
+                        <td><a href="mailto:${msg.sender_email}" style="color: var(--primary);">${this.escapeHtml(msg.sender_email)}</a></td>
+                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${this.escapeHtml(msg.message)}">${this.escapeHtml(truncatedMsg)}</td>
+                        <td style="font-size: 0.85rem; color: var(--secondary);">${date}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button onclick="WebsiteManager.viewMessage('${msg.id}')" class="btn btn-sm" style="padding: 6px 10px;" title="Görüntüle"><i class="fa-solid fa-eye"></i></button>
+                                ${!msg.is_read ? `<button onclick="WebsiteManager.markMessageAsRead('${msg.id}')" class="btn btn-sm" style="padding: 6px 10px; background: #dbeafe; color: #2563eb; border: none;" title="Okundu işaretle"><i class="fa-solid fa-check"></i></button>` : ''}
+                                <button onclick="WebsiteManager.deleteMessage('${msg.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;" title="Sil"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (error) {
+            console.error('Error loading messages:', error);
+        }
+    },
+
+    async viewMessage(id) {
+        try {
+            const { data, error } = await supabase
+                .from('website_messages')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) throw error;
+
+            // Mark as read
+            if (!data.is_read) {
+                await this.markMessageAsRead(id);
+            }
+
+            const date = new Date(data.created_at).toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            alert(`Gönderen: ${data.sender_name}\nE-posta: ${data.sender_email}\nTarih: ${date}\n\nMesaj:\n${data.message}`);
+        } catch (error) {
+            console.error('Error viewing message:', error);
+            alert('Mesaj görüntülenirken hata oluştu.');
+        }
+    },
+
+    async markMessageAsRead(id) {
+        try {
+            const { error } = await supabase
+                .from('website_messages')
+                .update({ is_read: true })
+                .eq('id', id);
+
+            if (error) throw error;
+            this.loadMessages();
+        } catch (error) {
+            console.error('Error marking message as read:', error);
+        }
+    },
+
+    async deleteMessage(id) {
+        if (!confirm('Bu mesajı silmek istediğinize emin misiniz?')) return;
+        try {
+            await supabase.from('website_messages').delete().eq('id', id);
+            alert('Mesaj silindi.');
+            this.loadMessages();
+        } catch (error) {
+            console.error('Error deleting message:', error);
+            alert('Mesaj silinirken hata oluştu.');
+        }
+    },
+
+    escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     },
 
     async uploadImage(file, bucket = 'website-assets') {

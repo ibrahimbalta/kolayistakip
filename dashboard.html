@@ -864,6 +864,10 @@ Seviyeler:
                             style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
                             <i class="fa-solid fa-file-lines"></i> Sayfalar
                         </button>
+                        <button class="website-tab" data-tab="messages"
+                            style="padding: 10px 18px; border: 1px solid #e2e8f0; background: white; color: #64748b; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.3s;">
+                            <i class="fa-solid fa-envelope"></i> Mesajlar
+                        </button>
                     </div>
                 </div>
 
@@ -1191,6 +1195,41 @@ Seviyeler:
                                     <tr>
                                         <td colspan="4" style="text-align:center; color:var(--secondary);">Henüz sayfa
                                             eklenmemiş.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages Tab Content -->
+                <div id="website-tab-messages" class="website-tab-content" style="display:none;">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+                            <h2><i class="fa-solid fa-envelope" style="color: var(--primary);"></i> Gelen Mesajlar</h2>
+                            <button onclick="WebsiteManager.loadMessages()" class="btn"
+                                style="background: var(--primary); color: white;">
+                                <i class="fa-solid fa-refresh"></i> Yenile
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Gönderen</th>
+                                        <th>E-posta</th>
+                                        <th>Mesaj</th>
+                                        <th>Tarih</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="websiteMessagesList">
+                                    <tr>
+                                        <td colspan="5"
+                                            style="text-align:center; color:var(--secondary);padding: 2rem;">Henüz mesaj
+                                            yok.
                                         </td>
                                     </tr>
                                 </tbody>

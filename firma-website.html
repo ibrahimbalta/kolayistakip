@@ -1093,6 +1093,20 @@
                     return;
                 }
 
+                // Skip external protocol links - check the actual href property (not attribute)
+                const realHref = this.href;
+                if (realHref.startsWith('tel:') ||
+                    realHref.startsWith('mailto:') ||
+                    realHref.startsWith('https://wa.me') ||
+                    realHref.startsWith('https://maps.google.com')) {
+                    return; // Let the browser handle these natively
+                }
+
+                // Skip if href is just "#" with no target
+                if (href === '#') {
+                    return;
+                }
+
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
@@ -1469,6 +1483,26 @@
         }
 
         // Contact form handling
+        let websiteUserId = null; // Will be set when loading website data
+        let websiteSubdomain = subdomain;
+
+        // Store user_id from settings for message saving
+        async function loadWebsiteUserIdForMessages() {
+            try {
+                const { data: settings } = await supabase
+                    .from('website_settings')
+                    .select('user_id')
+                    .eq('subdomain', subdomain)
+                    .single();
+                if (settings) {
+                    websiteUserId = settings.user_id;
+                }
+            } catch (e) {
+                console.error('Could not load user_id for messages:', e);
+            }
+        }
+        loadWebsiteUserIdForMessages();
+
         document.getElementById('contactForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -1482,16 +1516,29 @@
             btn.disabled = true;
 
             try {
-                // You can save contact messages to Supabase here
-                setTimeout(() => {
-                    alert('Mesajınız başarıyla gönderildi!');
-                    e.target.reset();
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }, 1000);
+                if (!websiteUserId) {
+                    throw new Error('Website sahibi bulunamadı.');
+                }
+
+                // Save message to database
+                const { error } = await supabase
+                    .from('website_messages')
+                    .insert([{
+                        user_id: websiteUserId,
+                        subdomain: websiteSubdomain,
+                        sender_name: name,
+                        sender_email: email,
+                        message: message
+                    }]);
+
+                if (error) throw error;
+
+                alert('Mesajınız başarıyla gönderildi!');
+                e.target.reset();
             } catch (error) {
                 console.error('Error sending message:', error);
-                alert('Mesaj gönderilirken bir hata oluştu.');
+                alert('Mesaj gönderilirken bir hata oluştu: ' + (error.message || error));
+            } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }

@@ -572,6 +572,40 @@
         font-size: 0.95rem;
         padding: 0.75rem 1.25rem;
     }
+
+    /* Website Tabs - Mobile Horizontal Scroll */
+    .website-tabs {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 0.5rem !important;
+        padding-bottom: 0.75rem !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .website-tabs::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .website-tabs::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 2px;
+    }
+
+    .website-tabs::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 2px;
+    }
+
+    .website-tab {
+        flex: 0 0 auto !important;
+        white-space: nowrap !important;
+        padding: 8px 14px !important;
+        font-size: 0.85rem !important;
+        scroll-snap-align: start;
+    }
 }
 
 /* Small Mobile Adjustments */

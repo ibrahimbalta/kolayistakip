@@ -336,10 +336,10 @@ const WebsiteManager = {
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
                             <span style="font-weight: 700; color: var(--primary);">${product.price ? '₺' + parseFloat(product.price).toLocaleString('tr-TR') : '-'}</span>
                             <div style="display: flex; gap: 0.5rem;">
-                                <button onclick="WebsiteManager.openProductModal(${product.id})" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
+                                <button onclick="WebsiteManager.openProductModal('${product.id}')" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
-                                <button onclick="WebsiteManager.deleteProduct(${product.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
+                                <button onclick="WebsiteManager.deleteProduct('${product.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -466,10 +466,10 @@ const WebsiteManager = {
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
                         <span class="status-badge ${service.is_active ? 'status-completed' : 'status-pending'}" style="font-size: 0.8rem;">${service.is_active ? 'Aktif' : 'Pasif'}</span>
                         <div style="display: flex; gap: 0.5rem;">
-                            <button onclick="WebsiteManager.openServiceModal(${service.id})" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
+                            <button onclick="WebsiteManager.openServiceModal('${service.id}')" class="btn btn-sm" style="padding: 6px 10px; font-size: 0.85rem;">
                                 <i class="fa-solid fa-edit"></i>
                             </button>
-                            <button onclick="WebsiteManager.deleteService(${service.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
+                            <button onclick="WebsiteManager.deleteService('${service.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; font-size: 0.85rem; background: #fee2e2; color: #dc2626; border: none;">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -609,8 +609,8 @@ const WebsiteManager = {
                     <p style="color:var(--primary);font-weight:600;font-size:0.9rem;margin:0.25rem 0;">${member.position}</p>
                     ${member.bio ? `<p style="color:var(--secondary);font-size:0.85rem;margin:0.5rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${member.bio}</p>` : ''}
                     <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
-                        <button onclick="WebsiteManager.openTeamModal(${member.id})" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
-                        <button onclick="WebsiteManager.deleteTeamMember(${member.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="WebsiteManager.openTeamModal('${member.id}')" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
+                        <button onclick="WebsiteManager.deleteTeamMember('${member.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
@@ -751,7 +751,7 @@ const WebsiteManager = {
                         <span style="background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">${image.category || 'Genel'}</span>
                     </div>
                     <div style="position:absolute;top:8px;right:8px;">
-                        <button onclick="WebsiteManager.deleteGalleryImage(${image.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: rgba(220,38,38,0.9); color: white; border: none;"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="WebsiteManager.deleteGalleryImage('${image.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: rgba(220,38,38,0.9); color: white; border: none;"><i class="fa-solid fa-trash"></i></button>
                     </div>
                     ${image.title ? `<div style="padding:0.75rem;background:white;"><strong style="font-size:0.9rem;">${image.title}</strong></div>` : ''}
                 </div>
@@ -850,8 +850,8 @@ const WebsiteManager = {
                     <td><span class="status-badge ${page.is_published ? 'status-completed' : 'status-pending'}">${page.is_published ? 'Yayında' : 'Taslak'}</span></td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
-                            <button onclick="WebsiteManager.openPageModal(${page.id})" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
-                            <button onclick="WebsiteManager.deletePage(${page.id})" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="WebsiteManager.openPageModal('${page.id}')" class="btn btn-sm" style="padding: 6px 10px;"><i class="fa-solid fa-edit"></i></button>
+                            <button onclick="WebsiteManager.deletePage('${page.id}')" class="btn btn-delete btn-sm" style="padding: 6px 10px; background: #fee2e2; color: #dc2626; border: none;"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>

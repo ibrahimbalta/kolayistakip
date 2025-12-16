@@ -29,13 +29,13 @@
         }
 
         .header {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
             text-align: center;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .header i {
@@ -50,16 +50,16 @@
         }
 
         .header p {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .card {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .day-group {
@@ -71,7 +71,7 @@
             font-weight: 700;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .slots-grid {
@@ -81,8 +81,8 @@
         }
 
         .slot-card {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             padding: 15px;
             text-align: center;
@@ -93,7 +93,7 @@
 
         .slot-card:hover:not(.reserved) {
             border-color: #06b6d4;
-            box-shadow: 0 5px 18px rgba(6,182,212,0.30);
+            box-shadow: 0 5px 18px rgba(6, 182, 212, 0.30);
             transform: translateY(-3px);
         }
 
@@ -104,8 +104,8 @@
         }
 
         .slot-card.reserved {
-            background: rgba(255,70,70,0.20);
-            border-color: rgba(255,70,70,0.45);
+            background: rgba(255, 70, 70, 0.20);
+            border-color: rgba(255, 70, 70, 0.45);
             color: #ff8e8e;
             cursor: not-allowed;
             opacity: 0.65;
@@ -137,8 +137,8 @@
             width: 100%;
             padding: 12px;
             border-radius: 12px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: white;
         }
 
@@ -153,14 +153,14 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            background: linear-gradient(to right,#06b6d4,#4f46e5);
+            background: linear-gradient(to right, #06b6d4, #4f46e5);
             color: white;
             transition: 0.25s;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 22px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.4);
         }
 
         .loading {
@@ -175,8 +175,13 @@
         }
 
         @keyframes spin {
-            from {transform:rotate(0deg);}
-            to {transform:rotate(360deg);}
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -266,13 +271,22 @@
                 `;
 
                 groupedSlots[date].forEach(slot => {
-                    const isReserved = slot.status === 'reserved';
-                    const slotClass = isReserved ? 'slot-card reserved' : 'slot-card';
-                    const onclick = isReserved ? '' : `onclick="selectSlot('${slot.slot_id}')"`;
+                    // Check if slot is full based on capacity or status
+                    const isFull = slot.status === 'reserved' ||
+                        (slot.capacity && slot.available_spots <= 0);
+                    const slotClass = isFull ? 'slot-card reserved' : 'slot-card';
+                    const onclick = isFull ? '' : `onclick="selectSlot('${slot.slot_id}')"`;
+
+                    // Show capacity info if available
+                    let capacityInfo = '';
+                    if (slot.capacity) {
+                        capacityInfo = `<div style="font-size: 0.75rem; opacity: 0.8; margin-top: 4px;">${slot.available_spots}/${slot.capacity} yer</div>`;
+                    }
 
                     html += `
                         <div class="${slotClass}" id="slot-${slot.slot_id}" ${onclick}>
                             <div class="slot-time">${slot.slot_time.substring(0, 5)}</div>
+                            ${capacityInfo}
                         </div>
                     `;
                 });
@@ -375,12 +389,16 @@
 
             document.getElementById('content').innerHTML = `
                 <div style="text-align:center; padding:35px;">
-                    <i class="fa-solid fa-circle-check" style="font-size:4rem; color:#06b6d4;"></i>
-                    <h2 style="margin-top:15px;">Randevun Oluşturuldu!</h2>
-                    <p style="margin-top:12px;">${customerName}, randevunuz onaylandı.</p>
+                    <i class="fa-solid fa-clock" style="font-size:4rem; color:#f59e0b;"></i>
+                    <h2 style="margin-top:15px;">Randevunuz Alındı!</h2>
+                    <p style="margin-top:12px;">${customerName}, randevunuz <strong>onay bekliyor</strong>.</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 8px;">
+                        İşletme onayladığında WhatsApp üzerinden bilgilendirileceksiniz.
+                    </p>
                     <div style="margin-top:25px; background:rgba(255,255,255,0.12); padding:15px; border-radius:12px;">
                         <p><b>Tarih:</b> ${dateStr}</p>
                         <p><b>Saat:</b> ${slot.slot_time.substring(0, 5)}</p>
+                        <p style="margin-top: 10px; color: #fcd34d;"><i class="fa-solid fa-hourglass-half"></i> Onay Bekleniyor</p>
                     </div>
                 </div>
             `;
@@ -398,4 +416,5 @@
     </script>
 
 </body>
+
 </html>

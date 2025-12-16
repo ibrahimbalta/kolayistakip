@@ -169,6 +169,7 @@ const WebsiteManager = {
 
                 document.getElementById('websiteEmail').value = data.contact_email || '';
                 document.getElementById('websitePhone').value = data.contact_phone || '';
+                document.getElementById('websiteWhatsapp').value = data.whatsapp_phone || '';
                 document.getElementById('websiteAddress').value = data.address || '';
                 document.getElementById('websitePrimaryColor').value = data.primary_color || '#667eea';
                 document.getElementById('websiteSecondaryColor').value = data.secondary_color || '#764ba2';
@@ -208,6 +209,7 @@ const WebsiteManager = {
                 hero_image_url: heroImageUrl,
                 contact_email: document.getElementById('websiteEmail').value,
                 contact_phone: document.getElementById('websitePhone').value,
+                whatsapp_phone: document.getElementById('websiteWhatsapp').value,
                 address: document.getElementById('websiteAddress').value,
                 primary_color: document.getElementById('websitePrimaryColor').value,
                 secondary_color: document.getElementById('websiteSecondaryColor').value,

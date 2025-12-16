@@ -1240,17 +1240,20 @@
             ${escapeHtml(settings.description || 'kalite ve güven odaklı yaklaşımıyla müşterilerine modern ve sürdürülebilir çözümler sunar.')}
         `;
 
-            // Contact info
+            // Contact info - Phone (clickable for mobile)
             if (settings.contact_phone) {
                 const phoneEl = document.getElementById('contactPhone');
                 phoneEl.classList.remove('hidden');
-                phoneEl.href = `tel:${settings.contact_phone}`;
+                phoneEl.href = `tel:${settings.contact_phone.replace(/\D/g, '')}`;
                 document.getElementById('phoneNumber').textContent = settings.contact_phone;
+            }
 
-                // WhatsApp
+            // WhatsApp - Use whatsapp_phone if available, otherwise use contact_phone
+            const whatsappNumber = settings.whatsapp_phone || settings.contact_phone;
+            if (whatsappNumber) {
                 const whatsappEl = document.getElementById('contactWhatsapp');
                 whatsappEl.classList.remove('hidden');
-                whatsappEl.href = `https://wa.me/${settings.contact_phone.replace(/\D/g, '')}`;
+                whatsappEl.href = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}`;
             }
 
             if (settings.contact_email) {

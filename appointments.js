@@ -374,6 +374,228 @@ function setupRealtimeSlots() {
         .subscribe();
 }
 
+// ============================================
+// WhatsApp Reminder System
+// ============================================
+
+// Get tomorrow's date in YYYY-MM-DD format
+function getTomorrowDate() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+}
+
+// Load tomorrow's appointments for reminder panel
+async function loadTomorrowAppointments() {
+    const reminderList = document.getElementById('reminderList');
+    const pendingRemindersEl = document.getElementById('pendingReminders');
+
+    if (!reminderList || !currentCalendar) return;
+
+    const tomorrow = getTomorrowDate();
+
+    try {
+        const { data: appointments, error } = await supabase
+            .from('appointment_slots')
+            .select('*')
+            .eq('calendar_id', currentCalendar.id)
+            .eq('slot_date', tomorrow)
+            .eq('status', 'reserved')
+            .order('slot_time', { ascending: true });
+
+        if (error) throw error;
+
+        if (!appointments || appointments.length === 0) {
+            reminderList.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--secondary);">
+                    <i class="fa-solid fa-calendar-check" style="font-size: 2rem; opacity: 0.3; display: block; margin-bottom: 0.5rem;"></i>
+                    <p style="margin: 0;">Yarın için randevu bulunmuyor.</p>
+                </div>
+            `;
+            if (pendingRemindersEl) pendingRemindersEl.textContent = '0';
+            return;
+        }
+
+        // Count unreminded appointments
+        const unreminded = appointments.filter(a => !a.reminder_sent).length;
+        if (pendingRemindersEl) pendingRemindersEl.textContent = unreminded;
+
+        // Render reminder cards
+        renderReminderList(appointments, tomorrow);
+
+    } catch (error) {
+        console.error('Error loading tomorrow appointments:', error);
+        reminderList.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                <i class="fa-solid fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <p>Randevular yüklenirken hata oluştu.</p>
+            </div>
+        `;
+    }
+}
+
+// Render reminder list
+function renderReminderList(appointments, dateStr) {
+    const reminderList = document.getElementById('reminderList');
+
+    const tomorrowFormatted = new Date(dateStr).toLocaleDateString('tr-TR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+    });
+
+    let html = `<p style="font-size: 0.85rem; color: var(--secondary); margin-bottom: 1rem;">
+        <i class="fa-solid fa-calendar"></i> ${tomorrowFormatted} - ${appointments.length} randevu
+    </p>`;
+
+    appointments.forEach(apt => {
+        const phone = apt.customer_phone || '';
+        const cleanPhone = phone.replace(/\D/g, '');
+        const isReminded = apt.reminder_sent;
+
+        html += `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; margin-bottom: 8px; background: ${isReminded ? '#f0fdf4' : '#fefce8'}; border-radius: 10px; border-left: 4px solid ${isReminded ? '#22c55e' : '#f59e0b'};">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; background: ${isReminded ? '#dcfce7' : '#fef3c7'}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-user" style="color: ${isReminded ? '#22c55e' : '#f59e0b'};"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #1f2937;">${Security.sanitize(apt.customer_name)}</div>
+                        <div style="font-size: 0.85rem; color: #6b7280;">
+                            <i class="fa-solid fa-clock"></i> ${apt.slot_time.substring(0, 5)} 
+                            ${phone ? `<span style="margin-left: 10px;"><i class="fa-solid fa-phone"></i> ${Security.sanitize(phone)}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    ${cleanPhone ? `
+                        <button onclick="sendWhatsAppReminder('${apt.id}', '${cleanPhone}', '${Security.sanitize(apt.customer_name).replace(/'/g, "\\'")}', '${apt.slot_time.substring(0, 5)}')" 
+                            class="btn" style="background: #25D366; color: white; padding: 8px 12px; font-size: 0.85rem;">
+                            <i class="fa-brands fa-whatsapp"></i> Gönder
+                        </button>
+                    ` : `
+                        <span style="color: #9ca3af; font-size: 0.8rem; padding: 8px;">Telefon yok</span>
+                    `}
+                    ${isReminded ? `
+                        <span style="background: #dcfce7; color: #16a34a; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
+                            <i class="fa-solid fa-check"></i> Gönderildi
+                        </span>
+                    ` : `
+                        <button onclick="markAsReminded('${apt.id}')" class="btn" style="background: #f1f5f9; color: #64748b; padding: 8px 12px; font-size: 0.85rem;">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    });
+
+    reminderList.innerHTML = html;
+}
+
+// Send WhatsApp reminder to a single customer
+function sendWhatsAppReminder(slotId, phone, customerName, time) {
+    // Get business info from settings if available
+    const companyName = window.currentUser?.company_name || 'İşletmemiz';
+
+    const message = `Merhaba ${customerName},
+
+Yarın saat ${time}'de randevunuz bulunmaktadır.
+
+📅 Randevu Hatırlatması
+⏰ Saat: ${time}
+
+İptal veya değişiklik için lütfen bizimle iletişime geçin.
+
+İyi günler dileriz.
+${companyName}`;
+
+    // Format phone number (ensure it starts with country code)
+    let formattedPhone = phone;
+    if (phone.startsWith('0')) {
+        formattedPhone = '90' + phone.substring(1);
+    } else if (!phone.startsWith('90') && !phone.startsWith('+90')) {
+        formattedPhone = '90' + phone;
+    }
+    formattedPhone = formattedPhone.replace(/\+/g, '');
+
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+
+    // Auto-mark as reminded after opening WhatsApp
+    setTimeout(() => {
+        markAsReminded(slotId, true);
+    }, 500);
+}
+
+// Mark appointment as reminded
+async function markAsReminded(slotId, silent = false) {
+    try {
+        const { error } = await supabase
+            .from('appointment_slots')
+            .update({ reminder_sent: true, reminder_sent_at: new Date().toISOString() })
+            .eq('id', slotId);
+
+        if (error) throw error;
+
+        if (!silent) {
+            // Refresh the reminder list
+            await loadTomorrowAppointments();
+        } else {
+            // Just update the UI
+            loadTomorrowAppointments();
+        }
+    } catch (error) {
+        console.error('Error marking as reminded:', error);
+    }
+}
+
+// Send reminders to all unreminded appointments
+async function sendAllReminders() {
+    const tomorrow = getTomorrowDate();
+
+    try {
+        const { data: appointments, error } = await supabase
+            .from('appointment_slots')
+            .select('*')
+            .eq('calendar_id', currentCalendar.id)
+            .eq('slot_date', tomorrow)
+            .eq('status', 'reserved')
+            .is('reminder_sent', null)
+            .order('slot_time', { ascending: true });
+
+        if (error) throw error;
+
+        if (!appointments || appointments.length === 0) {
+            alert('✅ Tüm hatırlatmalar zaten gönderildi!');
+            return;
+        }
+
+        const validAppointments = appointments.filter(a => a.customer_phone);
+
+        if (validAppointments.length === 0) {
+            alert('⚠️ Telefon numarası olan randevu bulunamadı!');
+            return;
+        }
+
+        if (confirm(`${validAppointments.length} kişiye WhatsApp mesajı gönderilecek. Devam etmek istiyor musunuz?\n\nNot: Her müşteri için ayrı WhatsApp penceresi açılacaktır.`)) {
+            for (let i = 0; i < validAppointments.length; i++) {
+                const apt = validAppointments[i];
+                const phone = apt.customer_phone.replace(/\D/g, '');
+
+                // Open WhatsApp with delay to not overwhelm
+                setTimeout(() => {
+                    sendWhatsAppReminder(apt.id, phone, apt.customer_name, apt.slot_time.substring(0, 5));
+                }, i * 1500);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error sending all reminders:', error);
+        alert('❌ Hatırlatmalar gönderilirken hata oluştu!');
+    }
+}
+
 // Initialize when view is shown
 const originalSwitchView = window.switchView;
 window.switchView = function (viewName) {
@@ -381,6 +603,7 @@ window.switchView = function (viewName) {
     if (viewName === 'appointments') {
         setTimeout(() => {
             initializeAppointmentCalendar();
+            loadTomorrowAppointments();
         }, 100);
     }
 };

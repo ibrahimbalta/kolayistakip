@@ -2083,10 +2083,18 @@
             if (services.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
-                // Also hide mobile nav link
+                // Hide mobile nav link
                 const mobileNavLink = document.getElementById('mobileNavServices');
-                if (mobileNavLink) mobileNavLink.style.display = 'none';
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = 'none';
+                }
                 return;
+            } else {
+                // Show mobile nav link if services exist
+                const mobileNavLink = document.getElementById('mobileNavServices');
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = '';
+                }
             }
 
             grid.innerHTML = services.map(service => `
@@ -2108,10 +2116,18 @@
             if (products.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
-                // Also hide mobile nav link
+                // Hide mobile nav link
                 const mobileNavLink = document.getElementById('mobileNavProducts');
-                if (mobileNavLink) mobileNavLink.style.display = 'none';
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = 'none';
+                }
                 return;
+            } else {
+                // Show mobile nav link if products exist
+                const mobileNavLink = document.getElementById('mobileNavProducts');
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = '';
+                }
             }
 
             grid.innerHTML = products.map(product => `
@@ -2139,10 +2155,18 @@
             if (team.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
-                // Also hide mobile nav link
+                // Hide mobile nav link
                 const mobileNavLink = document.getElementById('mobileNavTeam');
-                if (mobileNavLink) mobileNavLink.style.display = 'none';
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = 'none';
+                }
                 return;
+            } else {
+                // Show mobile nav link if team exists
+                const mobileNavLink = document.getElementById('mobileNavTeam');
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = '';
+                }
             }
 
             grid.innerHTML = team.map(member => `
@@ -2170,10 +2194,18 @@
             if (gallery.length === 0) {
                 section.style.display = 'none';
                 if (navLink) navLink.style.display = 'none';
-                // Also hide mobile nav link
+                // Hide mobile nav link
                 const mobileNavLink = document.getElementById('mobileNavGallery');
-                if (mobileNavLink) mobileNavLink.style.display = 'none';
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = 'none';
+                }
                 return;
+            } else {
+                // Show mobile nav link if gallery exists
+                const mobileNavLink = document.getElementById('mobileNavGallery');
+                if (mobileNavLink) {
+                    mobileNavLink.style.display = '';
+                }
             }
 
             // Group gallery items by category

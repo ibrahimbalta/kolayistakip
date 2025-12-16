@@ -131,6 +131,9 @@ async function loadCalendarSlots() {
 
         // Update stats
         updateStats();
+
+        // Load tomorrow's appointments for reminder panel
+        loadTomorrowAppointments();
     } catch (error) {
         console.error('Error loading slots:', error);
     }
@@ -603,7 +606,6 @@ window.switchView = function (viewName) {
     if (viewName === 'appointments') {
         setTimeout(() => {
             initializeAppointmentCalendar();
-            loadTomorrowAppointments();
         }, 100);
     }
 };

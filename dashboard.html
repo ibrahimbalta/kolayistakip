@@ -950,6 +950,30 @@ Seviyeler:
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-panorama" style="color: var(--primary);"></i> Banner
+                                    Görseli</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="file" id="websiteBannerFile" accept="image/*"
+                                        onchange="WebsiteManager.uploadBannerImage(this)" style="display: none;" />
+                                    <input type="text" id="websiteBanner" placeholder="Banner görseli yükleyin" readonly
+                                        style="flex: 1; background: #f8fafc;" />
+                                    <button type="button" onclick="document.getElementById('websiteBannerFile').click()"
+                                        class="btn"
+                                        style="background: var(--primary); color: white; white-space: nowrap;">
+                                        <i class="fa-solid fa-upload"></i> Yükle
+                                    </button>
+                                </div>
+                                <small style="color: var(--secondary); display: block; margin-top: 6px;">
+                                    <i class="fa-solid fa-info-circle"></i> Önerilen boyut: <strong>1920 x 500
+                                        piksel</strong> (otomatik boyutlandırılır)
+                                </small>
+                                <div id="bannerPreview" style="margin-top: 10px; display: none;">
+                                    <img id="bannerPreviewImg" src="" alt="Banner"
+                                        style="max-width: 100%; max-height: 120px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover;">
+                                </div>
+                            </div>
+
                             <div
                                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                                 <div class="form-group">

@@ -168,6 +168,15 @@ const WebsiteManager = {
                     heroPreview.style.display = 'block';
                 }
 
+                // Update Banner
+                document.getElementById('websiteBanner').value = data.banner_url || '';
+                const bannerPreview = document.getElementById('bannerPreview');
+                const bannerPreviewImg = document.getElementById('bannerPreviewImg');
+                if (data.banner_url && bannerPreview && bannerPreviewImg) {
+                    bannerPreviewImg.src = data.banner_url;
+                    bannerPreview.style.display = 'block';
+                }
+
                 document.getElementById('websiteEmail').value = data.contact_email || '';
                 document.getElementById('websitePhone').value = data.contact_phone || '';
                 document.getElementById('websiteWhatsapp').value = data.whatsapp_phone || '';
@@ -208,6 +217,7 @@ const WebsiteManager = {
                 description: document.getElementById('websiteDescription').value,
                 logo_url: logoUrl,
                 hero_image_url: heroImageUrl,
+                banner_url: document.getElementById('websiteBanner').value,
                 contact_email: document.getElementById('websiteEmail').value,
                 contact_phone: document.getElementById('websitePhone').value,
                 whatsapp_phone: document.getElementById('websiteWhatsapp').value,
@@ -1159,6 +1169,92 @@ const WebsiteManager = {
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
+    },
+
+    async uploadBannerImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const btn = input.parentElement.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yükleniyor...';
+        btn.disabled = true;
+
+        try {
+            // Resize banner to 1920x500
+            const resizedFile = await this.resizeImageToFit(file, 1920, 500);
+            const url = await this.uploadImage(resizedFile, 'website-assets');
+            document.getElementById('websiteBanner').value = url;
+
+            // Show preview
+            const preview = document.getElementById('bannerPreview');
+            const previewImg = document.getElementById('bannerPreviewImg');
+            previewImg.src = url;
+            preview.style.display = 'block';
+
+            alert('Banner görseli başarıyla yüklendi! (1920x500 piksel olarak boyutlandırıldı)');
+        } catch (error) {
+            console.error('Error uploading banner image:', error);
+            alert('Banner görseli yüklenirken hata oluştu: ' + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    },
+
+    async resizeImageToFit(file, targetWidth, targetHeight) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    const ctx = canvas.getContext('2d');
+
+                    // Fill with gradient background (in case image doesn't cover)
+                    const gradient = ctx.createLinearGradient(0, 0, targetWidth, targetHeight);
+                    gradient.addColorStop(0, '#667eea');
+                    gradient.addColorStop(1, '#764ba2');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+                    // Calculate aspect ratio and position to cover
+                    const imgAspect = img.width / img.height;
+                    const canvasAspect = targetWidth / targetHeight;
+                    let drawWidth, drawHeight, offsetX, offsetY;
+
+                    if (imgAspect > canvasAspect) {
+                        // Image is wider - fit by height
+                        drawHeight = targetHeight;
+                        drawWidth = img.width * (targetHeight / img.height);
+                        offsetX = (targetWidth - drawWidth) / 2;
+                        offsetY = 0;
+                    } else {
+                        // Image is taller - fit by width
+                        drawWidth = targetWidth;
+                        drawHeight = img.height * (targetWidth / img.width);
+                        offsetX = 0;
+                        offsetY = (targetHeight - drawHeight) / 2;
+                    }
+
+                    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+                    canvas.toBlob((blob) => {
+                        const resizedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        });
+                        resolve(resizedFile);
+                    }, 'image/jpeg', 0.9);
+                };
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
     },
 
     async uploadProductImage(input) {

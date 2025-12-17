@@ -16,8 +16,12 @@ async function initializeAppointmentCalendar() {
         const calendarEl = document.getElementById('appointmentCalendar');
         if (!calendarEl) return;
 
+        // Determine initial view based on screen size (mobile = day view)
+        const isMobile = window.innerWidth < 768;
+        const initialView = isMobile ? 'timeGridDay' : 'timeGridWeek';
+
         calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'timeGridWeek',
+            initialView: initialView,
             locale: 'tr',
             headerToolbar: {
                 left: 'prev,next today',
@@ -40,7 +44,14 @@ async function initializeAppointmentCalendar() {
                 day: 'Gün'
             },
             allDaySlot: false,
-            height: 'auto'
+            height: 'auto',
+            // Handle window resize to optimize view
+            windowResize: function (view) {
+                const newIsMobile = window.innerWidth < 768;
+                if (newIsMobile && calendar.view.type === 'timeGridWeek') {
+                    calendar.changeView('timeGridDay');
+                }
+            }
         });
 
         calendar.render();

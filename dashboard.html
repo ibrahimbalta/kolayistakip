@@ -447,7 +447,25 @@
                             </button>
                         </div>
                         <!-- Calendar Container -->
-                        <div id="appointmentCalendar"></div>
+                        <div id="appointmentCalendar">
+                            <div id="calendarLoading"
+                                style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                                <div
+                                    style="width: 48px; height: 48px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem;">
+                                </div>
+                                <p style="margin: 0; color: var(--secondary); font-weight: 500;">Takvim yükleniyor...
+                                </p>
+                                <p style="margin: 0.5rem 0 0; color: #94a3b8; font-size: 0.85rem;">Randevular
+                                    hazırlanıyor</p>
+                            </div>
+                            <style>
+                                @keyframes spin {
+                                    to {
+                                        transform: rotate(360deg);
+                                    }
+                                }
+                            </style>
+                        </div>
 
                         <div style="margin-top: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
                             <p style="margin: 0 0 10px 0; color: var(--secondary); font-size: 0.9rem;">

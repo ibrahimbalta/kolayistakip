@@ -523,16 +523,47 @@
         display: none !important;
     }
 
-    /* Scroll Container for Week View */
+    /* Scroll Container for Week View - Fix overlapping days */
     .fc-scroller {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
-    /* Day Columns - Minimum Width */
-    .fc-timegrid-col {
-        min-width: 60px !important;
+    /* Force Week View to be Scrollable with proper width */
+    .fc-view-harness {
+        min-height: 400px !important;
     }
+
+    .fc-timegrid-body {
+        min-width: 650px !important;
+        /* Ensure enough width for 7 days */
+    }
+
+    .fc-timegrid-cols {
+        min-width: 650px !important;
+    }
+
+    /* Day Columns - Wider minimum width to prevent overlap */
+    .fc-timegrid-col {
+        min-width: 85px !important;
+    }
+
+    .fc-col-header-cell {
+        min-width: 85px !important;
+    }
+
+    /* Week View Container - Add horizontal scroll indicator */
+    .fc-timegrid {
+        overflow-x: auto !important;
+    }
+
+    /* Note for Mobile: Prefer Day View */
+    .fc .fc-timeGridDay-button {
+        background: #667eea !important;
+        color: white !important;
+        border-color: #5568d3 !important;
+    }
+
 
     /* Reminder Panel - Mobile */
     #reminderPanel,
@@ -791,10 +822,35 @@
     }
 
     .fc-timegrid-col {
-        min-width: 50px !important;
+        min-width: 75px !important;
+    }
+
+    .fc-col-header-cell {
+        min-width: 75px !important;
+    }
+
+    .fc-timegrid-body {
+        min-width: 580px !important;
+    }
+
+    .fc-timegrid-cols {
+        min-width: 580px !important;
     }
 
     .fc-event {
         font-size: 0.65rem !important;
+    }
+
+    /* On small screens, hint user to scroll horizontally */
+    #appointmentCalendar::after {
+        content: '← Kaydırarak diğer günleri görün →';
+        display: block;
+        text-align: center;
+        padding: 8px;
+        font-size: 0.75rem;
+        color: #94a3b8;
+        background: #f1f5f9;
+        border-radius: 6px;
+        margin-top: 8px;
     }
 }

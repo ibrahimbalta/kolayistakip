@@ -881,6 +881,14 @@ function formatPhone(phone) {
 
 // Send approval WhatsApp notification
 function sendApprovalNotification(slot) {
+    console.log('📱 sendApprovalNotification called with slot:', slot);
+
+    if (!slot || !slot.customer_phone) {
+        console.error('❌ No phone number found in slot');
+        alert('❌ Müşteri telefon numarası bulunamadı!');
+        return;
+    }
+
     const companyName = window.currentUser?.company_name || 'İşletmemiz';
     const dateStr = new Date(slot.slot_date).toLocaleDateString('tr-TR', {
         weekday: 'long',
@@ -900,7 +908,18 @@ Görüşmek üzere!
 ${companyName}`;
 
     const phone = formatPhone(slot.customer_phone);
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+    console.log('📱 WhatsApp URL:', whatsappUrl);
+
+    // Try to open WhatsApp
+    const newWindow = window.open(whatsappUrl, '_blank');
+
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Popup was blocked, try with location.href as fallback
+        console.warn('⚠️ Popup blocked, trying redirect');
+        window.location.href = whatsappUrl;
+    }
 }
 
 // Send rejection WhatsApp notification

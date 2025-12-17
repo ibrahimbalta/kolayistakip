@@ -69,7 +69,8 @@ BEGIN
         customer_name = p_name,
         customer_phone = p_phone,
         customer_notes = p_notes,
-        reserved_at = NOW()
+        reserved_at = NOW(),
+        approval_status = 'pending'
     WHERE id = p_slot_id;
 END;
 $$ LANGUAGE plpgsql;

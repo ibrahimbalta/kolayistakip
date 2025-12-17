@@ -60,6 +60,9 @@ async function initializeAppointmentCalendar() {
     // Load slots
     await loadCalendarSlots();
 
+    // Setup realtime updates for automatic refresh
+    setupRealtimeSlots();
+
     // Setup form event listener
     setTimeout(() => {
         setupSlotFormListener();

@@ -24,5 +24,4 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     }
 })();
 
-// Also make it available as a global variable for backward compatibility
-var supabase = window.supabase;
+// supabase is available globally via window.supabase

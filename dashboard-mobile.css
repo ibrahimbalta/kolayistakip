@@ -437,16 +437,140 @@
         overflow-y: auto;
     }
 
-    /* Calendar Mobile Adjustments */
+    /* ============================================ */
+    /* FULLCALENDAR MOBILE RESPONSIVE */
+    /* ============================================ */
+
+    /* Calendar Container */
+    #appointmentCalendar {
+        font-size: 0.85rem !important;
+        max-width: 100% !important;
+        overflow-x: auto;
+    }
+
+    /* Calendar Header Toolbar */
     .fc-header-toolbar {
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        margin-bottom: 1rem !important;
     }
 
     .fc-toolbar-chunk {
-        display: flex;
-        justify-content: center;
-        width: 100%;
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* Calendar Buttons - Make Touch Friendly */
+    .fc .fc-button {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem !important;
+        min-height: 40px !important;
+    }
+
+    .fc .fc-button-group {
+        display: flex !important;
+        gap: 0.25rem !important;
+    }
+
+    /* Calendar Title */
+    .fc-toolbar-title {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+    }
+
+    /* Time Grid View - Make Scrollable */
+    .fc-timegrid {
+        font-size: 0.75rem !important;
+    }
+
+    .fc-timegrid-slot {
+        height: 2.5rem !important;
+    }
+
+    .fc-timegrid-slot-label {
+        font-size: 0.7rem !important;
+        padding: 0.25rem !important;
+    }
+
+    .fc-col-header-cell {
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.25rem !important;
+    }
+
+    /* Calendar Events - Make Clickable */
+    .fc-event {
+        font-size: 0.7rem !important;
+        padding: 2px 4px !important;
+        margin-bottom: 1px !important;
+        cursor: pointer !important;
+        border-radius: 3px !important;
+    }
+
+    .fc-event-title {
+        font-weight: 600 !important;
+    }
+
+    .fc-event-time {
+        font-size: 0.65rem !important;
+    }
+
+    /* Hide All-Day Row on Mobile */
+    .fc-timegrid-divider {
+        display: none !important;
+    }
+
+    /* Scroll Container for Week View */
+    .fc-scroller {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Day Columns - Minimum Width */
+    .fc-timegrid-col {
+        min-width: 60px !important;
+    }
+
+    /* Reminder Panel - Mobile */
+    #reminderPanel,
+    #pendingApprovalsPanel {
+        margin-bottom: 1rem !important;
+        padding: 1rem !important;
+    }
+
+    #reminderPanel h2,
+    #pendingApprovalsPanel h2 {
+        font-size: 1rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    #reminderList>div,
+    #pendingApprovalsList>div {
+        font-size: 0.85rem !important;
+        padding: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Reminder/Approval Item Buttons - Stack on Mobile */
+    #reminderList button,
+    #pendingApprovalsList button {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        min-width: auto !important;
+    }
+
+    /* Calendar Share Link - Mobile */
+    #view-appointments div[style*="display: flex; gap: 10px"] {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    #shareLink {
+        width: 100% !important;
+        font-size: 0.85rem !important;
     }
 
     /* Proposal Panel Mobile Adjustments */
@@ -659,5 +783,18 @@
     #view-tasks .form-group textarea {
         width: 100%;
         box-sizing: border-box;
+    }
+
+    /* FullCalendar - Extra Small Mobile */
+    .fc-toolbar-title {
+        font-size: 0.95rem !important;
+    }
+
+    .fc-timegrid-col {
+        min-width: 50px !important;
+    }
+
+    .fc-event {
+        font-size: 0.65rem !important;
     }
 }

@@ -176,8 +176,10 @@ async function loadCalendarSlots() {
         // Load tomorrow's appointments for reminder panel
         loadTomorrowAppointments();
 
-        // Load pending approvals
-        loadPendingApprovals();
+        // Load pending approvals (if function exists)
+        if (typeof loadPendingApprovals === 'function') {
+            loadPendingApprovals();
+        }
     } catch (error) {
         console.error('Error loading slots:', error);
     }

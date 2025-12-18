@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="tr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Kolay İş Takip ile işlerinizi organize edin, ekibinizi yönetin ve verimliliğinizi artırın." />
+  <meta name="description"
+    content="Kolay İş Takip ile işlerinizi organize edin, ekibinizi yönetin ve verimliliğinizi artırın." />
   <meta name="theme-color" content="#4f46e5" />
   <title>Kolay İş Takip — Modern SaaS Landing</title>
 
@@ -35,17 +37,157 @@
 
   <style>
     /* small custom styles for fine-tuning */
-    .hero-gradient { background: linear-gradient(135deg,#4b0082 0%,#6a1a8c 100%); }
-    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(8px); }
-    .card-glow { box-shadow: 0 10px 30px rgba(79,70,229,0.12); }
-    .btn-cta { background: linear-gradient(90deg,#06b6d4,#4f46e5); color: #000; }
+    .hero-gradient {
+      background: linear-gradient(135deg, #4b0082 0%, #6a1a8c 100%);
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+    }
+
+    .card-glow {
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-glow:hover {
+      box-shadow: 0 20px 50px -12px rgba(79, 70, 229, 0.2);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px);
+    }
+
+    .btn-cta {
+      background: linear-gradient(135deg, #06b6d4, #4f46e5);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .btn-cta:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+
+    /* Glow Blobs */
+    .blob {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      filter: blur(80px);
+      animation: float 20s infinite alternate;
+      pointer-events: none;
+    }
+
+    .blob-secondary {
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+      width: 600px;
+      height: 600px;
+      animation-delay: -5s;
+      animation-duration: 25s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(10%, 10%) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-5%, 15%) scale(0.9);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+    }
+
     /* simple fade-in on scroll */
-    .reveal { opacity: 0; transform: translateY(12px); transition: all 600ms cubic-bezier(.2,.9,.3,1); }
-    .reveal.visible { opacity: 1; transform: none; }
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 800ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .card-modern {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-modern:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(79, 70, 229, 0.2);
+    }
+
+    .shadow-huge {
+      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5), 0 30px 60px -30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .quote-bg {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.03);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .marquee-content {
+      display: inline-flex;
+      animation: marquee 30s linear infinite;
+      gap: 3rem;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
   </style>
 </head>
-<body class="font-inter antialiased bg-gradient-to-b from-purpleDeep to-purpleMid text-gray-50"> 
 
+<body class="font-inter antialiased bg-purpleDeep text-gray-50 overflow-x-hidden">
+
+  <!-- Glow Blobs Background -->
+  <div class="blob top-[-10%] left-[-10%]"></div>
+  <div class="blob blob-secondary bottom-[-10%] right-[-10%]"></div>
+
+  <!-- NAV -->
   <!-- NAV -->
   <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-sm border-b border-white/5">
     <div class="container mx-auto px-6 lg:px-12">
@@ -64,12 +206,16 @@
           <a href="about.html" class="hover:text-cyanAccent transition">Hakkımızda</a>
           <a href="career.html" class="hover:text-cyanAccent transition">Kariyer</a>
           <a href="blog.html" class="hover:text-cyanAccent transition">Blog</a>
-           <a href="contact.html" class="hover:text-cyanAccent transition">İletişim</a>
+          <a href="contact.html" class="hover:text-cyanAccent transition">İletişim</a>
         </nav>
 
         <div class="flex items-center gap-3">
-          <a href="login.html" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş Yap</a>
-          <a href="login.html" class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz Deneme</a>
+          <a href="login.html"
+            class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş
+            Yap</a>
+          <a href="login.html"
+            class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz
+            Deneme</a>
 
           <button id="mobileBtn" class="md:hidden ml-2 p-2 rounded-lg glass">
             <i class="fa-solid fa-bars"></i>
@@ -99,73 +245,111 @@
 
         <div class="lg:col-span-6">
           <div class="reveal" data-delay="100">
-            <h1 class="text-4xl lg:text-5xl leading-tight font-extrabold mb-4">
-              İş Akışınızı <span class="text-cyanAccent">WhatsApp Pratikliğiyle</span> Hızlandırın
+            <h1 class="reveal text-4xl lg:text-6xl leading-tight font-black mb-4 tracking-tighter" data-delay="100">
+              İş Akışınızı <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-cyanAccent to-primary">WhatsApp
+                Pratikliğiyle</span> Hızlandırın
             </h1>
-            <p class="text-gray-300 mb-6 max-w-xl">Görev oluşturun, tek tıkla WhatsApp'tan ekipinize gönderin, anlık geri bildirim alın ve
-              işlerinize odaklanın — karmaşayı azaltın, verimliliği artırın.</p>
+            <p class="reveal text-gray-400 mb-8 max-w-xl text-lg leading-relaxed" data-delay="200">Görev oluşturun, tek
+              tıkla WhatsApp'tan ekibinize gönderin, anlık
+              geri bildirim alın ve işlerinize odaklanın — karmaşayı azaltın, verimliliği artırın.</p>
 
-            <div class="flex flex-wrap gap-3">
-              <a href="login.html" class="btn-cta inline-flex items-center gap-3 px-5 py-3 rounded-2xl text-sm shadow-lg">Ücretsiz Deneme Başla <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="https://youtu.be/y1fSSwVPk8I" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-4 py-3 rounded-2xl glass">▶ Tanıtım Videosu</a>
+            <div class="reveal flex flex-wrap gap-4" data-delay="300">
+              <a href="login.html"
+                class="btn-cta inline-flex items-center gap-3 px-5 py-3 rounded-2xl text-sm shadow-lg">Ücretsiz Deneme
+                Başla <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="https://youtu.be/y1fSSwVPk8I" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-3 px-4 py-3 rounded-2xl glass">▶ Tanıtım Videosu</a>
             </div>
 
-            <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-gray-300">
-              <div class="flex flex-col"><span class="text-2xl font-semibold text-white">7k+</span><span class="opacity-70">İşlem/ay</span></div>
-              <div class="flex flex-col"><span class="text-2xl font-semibold text-white">1.2k</span><span class="opacity-70">Aktif İşletme</span></div>
-              <div class="flex flex-col"><span class="text-2xl font-semibold text-white">99%</span><span class="opacity-70">Teslim Oranı</span></div>
-              <div class="flex flex-col"><span class="text-2xl font-semibold text-white">24/7</span><span class="opacity-70">Destek</span></div>
+            <div class="reveal mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs text-gray-400" data-delay="400">
+              <div class="flex flex-col border-l border-white/10 pl-4"><span
+                  class="text-2xl font-bold text-white mb-1">7k+</span><span
+                  class="uppercase tracking-widest font-semibold opacity-50">İşlem/ay</span></div>
+              <div class="flex flex-col border-l border-white/10 pl-4"><span
+                  class="text-2xl font-bold text-white mb-1">1.2k</span><span
+                  class="uppercase tracking-widest font-semibold opacity-50">Aktif İşletme</span></div>
+              <div class="flex flex-col border-l border-white/10 pl-4"><span
+                  class="text-2xl font-bold text-white mb-1">99%</span><span
+                  class="uppercase tracking-widest font-semibold opacity-50">Teslim Oranı</span></div>
+              <div class="flex flex-col border-l border-white/10 pl-4"><span
+                  class="text-2xl font-bold text-white mb-1">24/7</span><span
+                  class="uppercase tracking-widest font-semibold opacity-50">Destek</span></div>
             </div>
           </div>
         </div>
 
         <div class="lg:col-span-6">
           <div class="reveal" data-delay="200">
-            <div class="relative">
-              <div class="bg-gradient-to-br from-white/6 to-white/3 p-6 rounded-2xl glass card-glow">
-                <div class="flex items-center justify-between mb-4">
-                  <div>
-                    <h4 class="font-semibold text-white">Günlük Görevler</h4>
-                    <p class="text-xs text-gray-300">Hızlı bakış</p>
-                  </div>
-                  <div class="text-right">
-                    <span class="text-sm text-gray-300">Tamamlanan</span>
-                    <div class="text-2xl font-bold text-white">86%</div>
-                  </div>
-                </div>
+            <div class="relative group">
+              <!-- Animated Glow Background -->
+              <div
+                class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-cyanAccent/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+              </div>
 
-                <!-- miniature dashboard mockup -->
-                <div class="grid grid-cols-2 gap-3">
-                  <div class="p-3 bg-white/5 rounded-lg">
-                    <div class="text-xs text-gray-300">Bekleyen</div>
-                    <div class="text-lg font-semibold">24</div>
+              <div
+                class="relative bg-white/[0.03] p-1 rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden">
+                <div class="bg-purpleDeep/80 rounded-[2rem] p-8 glass border border-white/5">
+                  <div class="flex items-center justify-between mb-8">
+                    <div>
+                      <h4 class="font-bold text-xl text-white tracking-tight">Günlük Görevler</h4>
+                      <p class="text-xs text-gray-500 uppercase tracking-widest font-bold mt-1">Sistem Durumu: Online
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-xs text-gray-500 font-bold uppercase block mb-1">Tamamlanan</span>
+                      <div class="text-3xl font-black text-white">86%</div>
+                    </div>
                   </div>
-                  <div class="p-3 bg-white/5 rounded-lg">
-                    <div class="text-xs text-gray-300">Atanan</div>
-                    <div class="text-lg font-semibold">12</div>
-                  </div>
-                  <div class="p-3 bg-white/5 rounded-lg col-span-2">
-                    <canvas id="miniChart" height="120"></canvas>
-                  </div>
-                </div>
 
-                <div class="mt-4 flex gap-3">
-                  <a href="login.html" class="px-3 py-2 rounded-lg bg-white/5 text-sm">Göstergeyi Aç</a>
-                  <a href="#pricing" class="px-3 py-2 rounded-lg btn-cta text-sm">Fiyatlara Bak</a>
+                  <!-- miniature dashboard mockup -->
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                      <div class="text-[10px] text-gray-500 font-bold uppercase mb-1">Bekleyen</div>
+                      <div class="text-2xl font-bold text-white">24</div>
+                    </div>
+                    <div class="p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                      <div class="text-[10px] text-gray-500 font-bold uppercase mb-1">Atanan</div>
+                      <div class="text-2xl font-bold text-white">12</div>
+                    </div>
+                    <div class="p-4 bg-white/5 rounded-2xl border border-white/5 col-span-2 min-h-[140px]">
+                      <canvas id="miniChart"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 flex gap-3">
+                    <a href="login.html"
+                      class="flex-1 text-center px-4 py-3 rounded-xl bg-white/5 text-xs font-bold hover:bg-white/10 transition-colors border border-white/5">Paneli
+                      Aç</a>
+                    <a href="#pricing"
+                      class="flex-1 text-center px-4 py-3 rounded-xl btn-cta text-xs font-bold">Fiyatlar</a>
+                  </div>
                 </div>
               </div>
 
-              <!-- floating card -->
-              <div class="absolute -bottom-6 right-6 w-44 p-3 rounded-xl glass border border-white/6">
-                <div class="flex items-center gap-3">
-                  <div class="p-2 rounded bg-primary text-white"><i class="fa-solid fa-phone"></i></div>
-                  <div>
-                    <div class="text-sm font-medium">WhatsApp İleti Gönder</div>
-                    <div class="text-xs text-gray-300">Tek tıkla ekip bilgilendirme</div>
-                  </div>
+              <!-- floating stats 1 -->
+              <div
+                class="hidden lg:flex absolute -right-10 top-10 w-48 p-4 rounded-2xl glass border border-white/10 shadow-2xl animate-bounce-slow items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500">
+                  <i class="fa-solid fa-check-double"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] text-gray-500 font-bold uppercase">Başarı</div>
+                  <div class="font-bold text-white">99.9%</div>
                 </div>
               </div>
 
+              <!-- floating stats 2 -->
+              <div
+                class="absolute -left-8 -bottom-4 w-44 p-3 rounded-xl glass border border-white/10 shadow-2xl animate-pulse flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary text-xs">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div>
+                  <div class="text-[9px] text-gray-500 font-bold uppercase">Anlık İleti</div>
+                  <div class="text-xs font-bold text-white">WhatsApp 2.0</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -173,55 +357,204 @@
       </div>
     </section>
 
-    <!-- FEATURES -->
-    <section id="features" class="mt-16 container mx-auto px-6 lg:px-12">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <article class="reveal glass p-6 rounded-2xl card-glow">
-          <div class="flex items-center gap-4 mb-3">
-            <div class="p-3 rounded-xl bg-primary/10 text-primary"><i class="fa-solid fa-chart-pie"></i></div>
-            <h3 class="font-semibold">Detaylı Analizler</h3>
-          </div>
-          <p class="text-sm text-gray-300">Personel performansı, tamamlanma süreleri ve özel raporlarla yönetin.</p>
-        </article>
-
-        <article class="reveal glass p-6 rounded-2xl card-glow">
-          <div class="flex items-center gap-4 mb-3">
-            <div class="p-3 rounded-xl bg-cyanAccent/10 text-cyanAccent"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-            <h3 class="font-semibold">Bulut Tabanlı Erişim</h3>
-          </div>
-          <p class="text-sm text-gray-300">Her cihazdan erişin, anında güncelleyin, kurulum gerektirmez.</p>
-        </article>
-
-        <article class="reveal glass p-6 rounded-2xl card-glow">
-          <div class="flex items-center gap-4 mb-3">
-            <div class="p-3 rounded-xl bg-primary/10 text-primary"><i class="fa-solid fa-lock"></i></div>
-            <h3 class="font-semibold">Güvenli Veri</h3>
-          </div>
-          <p class="text-sm text-gray-300">256‑bit şifreleme, KVKK uyumlu veri saklama ve güvenlik denetimleri.</p>
-        </article>
+    <section id="features" class="mt-24 container mx-auto px-6 lg:px-12 relative">
+      <div class="text-center mb-16 reveal" data-delay="100">
+        <h2 class="text-3xl lg:text-5xl font-black mb-6 tracking-tighter">İşletmeniz İçin <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-cyanAccent to-primary">Tam Kontrol</span></h2>
+        <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">Kolay İş Takip ile tüm süreçlerinizi tek bir
+          modern panelden yönetin. İşte size sunduğumuz ayrıcalıklar.</p>
       </div>
 
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="reveal p-6 bg-white/5 rounded-xl">
-          <h4 class="font-semibold">WhatsApp Entegrasyonu</h4>
-          <p class="text-sm text-gray-300">Görevleri tek tıkla paylaş, geri bildirimleri otomatik al.</p>
+      <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6 auto-rows-[280px]">
+        <!-- WhatsApp Bento (Large) -->
+        <div
+          class="reveal md:col-span-4 lg:col-span-8 row-span-2 glass rounded-[3rem] border border-white/5 p-10 lg:p-14 group overflow-hidden"
+          data-delay="200">
+          <div
+            class="absolute -right-20 -top-20 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] group-hover:bg-primary/10 transition-all duration-1000">
+          </div>
+
+          <div class="relative z-10 flex flex-col lg:flex-row h-full gap-12">
+            <!-- Left Side: Content -->
+            <div class="flex-1 flex flex-col justify-center">
+              <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyanAccent/10 border border-cyanAccent/20 text-cyanAccent text-[10px] font-bold uppercase tracking-[0.2em] mb-6 w-fit">
+                Hepsi Bir Arada Çözüm
+              </div>
+              <h3 class="text-4xl lg:text-5xl font-black text-white mb-6 leading-[1.1] tracking-tighter">
+                İşletmenizi <br /> <span
+                  class="text-transparent bg-clip-text bg-gradient-to-r from-cyanAccent to-primary">Kolayca</span>
+                Yönetin
+              </h3>
+              <p class="text-gray-400 text-lg leading-relaxed max-w-md mb-8">
+                Karmaşık sistemleri unutun. Tek bir panelden tüm iş akışınızı, randevularınızı ve tekliflerinizi
+                yönetin.
+              </p>
+
+              <div class="flex flex-wrap gap-3">
+                <div
+                  class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 text-sm font-medium text-gray-300 hover:bg-white/5 transition-colors cursor-default">
+                  <i class="fa-solid fa-calendar-check text-primary"></i> Randevu
+                </div>
+                <div
+                  class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 text-sm font-medium text-gray-300 hover:bg-white/5 transition-colors cursor-default">
+                  <i class="fa-solid fa-hotel text-cyanAccent"></i> Rezervasyon
+                </div>
+                <div
+                  class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 text-sm font-medium text-gray-300 hover:bg-white/5 transition-colors cursor-default">
+                  <i class="fa-solid fa-globe text-primary"></i> Web Sitesi
+                </div>
+                <div
+                  class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 text-sm font-medium text-gray-300 hover:bg-white/5 transition-colors cursor-default">
+                  <i class="fa-solid fa-file-invoice-dollar text-cyanAccent"></i> Teklif Modülü
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Mini UI Mockup -->
+            <div class="hidden lg:flex flex-1 items-center justify-center relative">
+              <div
+                class="w-full aspect-video bg-gradient-to-br from-white/[0.05] to-transparent rounded-2xl border border-white/10 shadow-huge p-4 relative group-hover:-translate-y-2 transition-transform duration-700">
+                <!-- Mini Header -->
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                  <div class="flex gap-1.5">
+                    <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                  </div>
+                  <div class="w-20 h-2 rounded-full bg-white/5"></div>
+                </div>
+                <!-- Mini Content -->
+                <div class="space-y-3">
+                  <div class="h-8 w-full bg-white/5 rounded-lg border border-white/5 animate-pulse"></div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div
+                      class="h-16 bg-primary/10 rounded-lg border border-primary/20 flex flex-col items-center justify-center">
+                      <div class="text-[8px] font-bold text-primary mb-1 uppercase tracking-tighter">Haftalık</div>
+                      <div class="text-xs font-black text-white">86%</div>
+                    </div>
+                    <div
+                      class="h-16 bg-cyanAccent/10 rounded-lg border border-cyanAccent/20 flex flex-col items-center justify-center">
+                      <div class="text-[8px] font-bold text-cyanAccent mb-1 uppercase tracking-tighter">Gelir</div>
+                      <div class="text-xs font-black text-white">+12%</div>
+                    </div>
+                    <div
+                      class="h-16 bg-white/5 rounded-lg border border-white/5 flex flex-col items-center justify-center">
+                      <div class="text-[8px] font-bold text-gray-500 mb-1 uppercase tracking-tighter">Aktif</div>
+                      <div class="text-xs font-black text-white">124</div>
+                    </div>
+                  </div>
+                  <div class="h-12 w-full bg-white/5 rounded-lg border border-white/5 flex items-center px-3 gap-3">
+                    <div class="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-cyanAccent"></div>
+                    <div class="flex-1 space-y-1">
+                      <div class="h-1.5 w-1/3 bg-white/10 rounded-full"></div>
+                      <div class="h-1 w-1/2 bg-white/5 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Floating Element 1 -->
+                <div
+                  class="absolute -right-4 -bottom-4 w-32 glass p-3 rounded-xl border border-white/10 shadow-2xl animate-bounce-slow">
+                  <div class="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-1">WhatsApp</div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-[10px] font-black text-white">Gönderildi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="reveal p-6 bg-white/5 rounded-xl">
-          <h4 class="font-semibold">Anlık Bildirimler</h4>
-          <p class="text-sm text-gray-300">Görev değişikliklerinde ekip anında haberdar olur.</p>
+
+        <!-- Analytics Bento (Portrait) -->
+        <div
+          class="reveal md:col-span-2 lg:col-span-4 row-span-2 glass rounded-[2.5rem] border border-white/5 p-8 group overflow-hidden bg-gradient-to-b from-white/[0.02] to-transparent"
+          data-delay="300">
+          <div
+            class="w-14 h-14 rounded-2xl bg-cyanAccent/10 flex items-center justify-center text-cyanAccent mb-8 border border-cyanAccent/20">
+            <i class="fa-solid fa-chart-line text-2xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-4">Detaylı Analiz</h3>
+          <p class="text-gray-400 leading-relaxed mb-10">Müşteri trafiği, personel performansı ve finansal gelişim anlık
+            olarak elinizin altında.</p>
+
+          <!-- Mockup Chart -->
+          <div class="mt-auto p-4 bg-black/20 rounded-2xl border border-white/5">
+            <div class="flex items-end gap-1.5 h-32">
+              <div class="w-full bg-cyanAccent/20 h-1/2 rounded-t-lg group-hover:h-3/4 transition-all duration-700">
+              </div>
+              <div class="w-full bg-primary/20 h-3/4 rounded-t-lg group-hover:h-full transition-all duration-700"></div>
+              <div class="w-full bg-cyanAccent/20 h-1/2 rounded-t-lg group-hover:h-2/3 transition-all duration-700">
+              </div>
+              <div class="w-full bg-primary/20 h-2/3 rounded-t-lg group-hover:h-5/6 transition-all duration-700"></div>
+            </div>
+          </div>
         </div>
-        <div class="reveal p-6 bg-white/5 rounded-xl">
-          <h4 class="font-semibold">Mobil Uyum</h4>
-          <p class="text-sm text-gray-300">Telefon ve tablet için optimize, uygulama benzeri deneyim.</p>
+
+        <!-- Security Bento -->
+        <div
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          data-delay="400">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20">
+              <i class="fa-solid fa-shield-halved text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Güvenli Veri</h3>
+          </div>
+          <p class="text-gray-400 text-sm">256-bit şifreleme ve KVKK uyumlu altyapı ile verileriniz koruma altında.</p>
+        </div>
+
+        <!-- Cloud Bento -->
+        <div
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          data-delay="500">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 border border-orange-500/20">
+              <i class="fa-solid fa-cloud text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Bulut Erişim</h3>
+          </div>
+          <p class="text-gray-400 text-sm">Ofiste veya yolda, tüm cihazlardan verilerinize anında erişin.</p>
+        </div>
+
+        <!-- Mobile Bento -->
+        <div
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          data-delay="600">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 border border-purple-500/20">
+              <i class="fa-solid fa-mobile-screen text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Mobil Uyum</h3>
+          </div>
+          <p class="text-gray-400 text-sm">Modern web arayüzü ile uygulama kalitesinde mobil deneyim.</p>
         </div>
       </div>
     </section>
 
     <!-- PRICING -->
     <section id="pricing" class="mt-16 container mx-auto px-6 lg:px-12 pb-20">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-extrabold">Size Uygun Paketler</h2>
-        <p class="text-gray-300 max-w-2xl mx-auto">Hızlı başlangıç için 7 günlük ücretsiz deneme veya avantajlı yıllık planlarımızdan seçin.</p>
+      <div class="text-center mb-16 reveal">
+        <h2 class="text-3xl lg:text-5xl font-extrabold mb-6 tracking-tight">Size Uygun <span
+            class="text-cyanAccent">Paketler</span></h2>
+
+        <!-- Toggle -->
+        <div class="flex items-center justify-center gap-4 mb-4">
+          <span id="label-monthly" class="text-sm font-bold text-white">AYLIK</span>
+          <button id="price-toggle"
+            class="w-16 h-8 rounded-full bg-white/10 border border-white/20 relative p-1 transition-all">
+            <div id="toggle-circle" class="w-6 h-6 rounded-full bg-primary shadow-lg transform transition-transform">
+            </div>
+          </button>
+          <span id="label-yearly" class="text-sm font-bold text-gray-500">YILLIK</span>
+          <span
+            class="px-3 py-1 bg-green-500/10 text-green-500 text-[10px] font-black rounded-full border border-green-500/20">2
+            AY BEDAVA</span>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -239,23 +572,30 @@
         </div>
 
         <!-- Monthly -->
-        <div class="reveal bg-white/5 p-6 rounded-2xl glass">
-          <h3 class="font-semibold">Aylık Paket</h3>
-          <div class="text-2xl font-bold my-3">299 TL <span class="text-sm font-medium">/ay</span></div>
-          <ul class="text-sm text-gray-300 space-y-2 mb-4">
-            <li>✔ Sınırsız İş Ekleme</li>
-            <li>✔ Sınırsız Çalışan</li>
-            <li>✔ WhatsApp Paylaşımı</li>
-            <li>✔ 7/24 Destek</li>
+        <div class="reveal bg-white/5 p-8 rounded-[2rem] glass border border-white/5 relative group" data-delay="100">
+          <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Aylık Paket</h3>
+          <div class="flex items-baseline gap-2 mb-6 text-white">
+            <span class="text-5xl font-black price-val" data-monthly="299" data-yearly="249">299</span>
+            <span class="text-lg font-bold opacity-50">₺/ay</span>
+          </div>
+          <ul class="text-sm text-gray-300 space-y-4 mb-10">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanAccent"></i> Sınırsız İş Ekleme
+            </li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanAccent"></i> Sınırsız Çalışan</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanAccent"></i> WhatsApp Paylaşımı
+            </li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanAccent"></i> 7/24 Destek</li>
           </ul>
-          <a href="payment.html?package=monthly&amount=299" class="w-full inline-block text-center py-3 rounded-xl btn-cta">Hemen Başla</a>
+          <a href="payment.html?package=monthly&amount=299" id="pro-cta"
+            class="w-full inline-block text-center py-4 rounded-2xl btn-cta font-bold">Hemen Başla</a>
         </div>
 
         <!-- Yearly -->
         <div class="reveal border-2 border-primary p-6 rounded-2xl">
           <div class="flex items-center justify-between mb-3">
             <div>
-              <div class="badge inline-block px-3 py-1 rounded-full text-xs font-semibold bg-primary text-black">En Çok Tercih Edilen</div>
+              <div class="badge inline-block px-3 py-1 rounded-full text-xs font-semibold bg-primary text-black">En Çok
+                Tercih Edilen</div>
             </div>
             <div class="text-right">
               <div class="text-2xl font-bold">2999 TL</div>
@@ -271,31 +611,167 @@
             <li>✔ WhatsApp Paylaşımı</li>
             <li>✔ Öncelikli Destek</li>
           </ul>
-          <a href="payment.html?package=yearly&amount=2999" class="w-full inline-block text-center py-3 rounded-xl btn-cta">Yıllık Seç, Tasarruf Et</a>
+          <a href="payment.html?package=yearly&amount=2999"
+            class="w-full inline-block text-center py-3 rounded-xl btn-cta">Yıllık Seç, Tasarruf Et</a>
         </div>
 
       </div>
     </section>
 
     <!-- SOCIAL PROOF / TESTIMONIALS -->
-    <section class="container mx-auto px-6 lg:px-12 mt-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        <div class="reveal glass p-6 rounded-2xl">
-          <h4 class="font-semibold">Kullanıcı Görüşleri</h4>
-          <p class="text-sm text-gray-300 mt-2">"Kolay İş Takip sayesinde iş akışımız %40 daha hızlı oldu." — Ayşe K., Mağaza Müdürü</p>
-          <div class="mt-6 flex gap-3">
-            <img src="https://via.placeholder.com/48" class="rounded-full" alt="user">
-            <img src="https://via.placeholder.com/48" class="rounded-full" alt="user">
-            <img src="https://via.placeholder.com/48" class="rounded-full" alt="user">
+    <section class="container mx-auto px-6 lg:px-12 mt-20 relative overflow-hidden">
+      <!-- Decorative background glow -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none">
+      </div>
+
+      <div class="text-center mb-16 relative">
+        <span
+          class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4 border border-primary/20">
+          Müşteri Deneyimleri
+        </span>
+        <h2 class="text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight">Kullanıcılarımız <span
+            class="text-cyanAccent">Neler Diyor?</span></h2>
+        <p class="text-gray-300 max-w-2xl mx-auto text-lg">Binlerce işletme Kolay İş Takip ile iş süreçlerini modernize
+          etti ve verimliliğini katladı.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+        <!-- Testimonial 1 -->
+        <div
+          class="reveal glass p-6 rounded-3xl border border-white/5 relative group hover:bg-white/[0.05] transition-all duration-300 shadow-xl overflow-hidden">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-cyanAccent flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                AK
+              </div>
+              <div>
+                <div class="font-bold text-white text-sm">Ayşe Kaya</div>
+                <div class="text-[10px] text-cyanAccent font-bold uppercase tracking-widest opacity-70">Sektörel Lider •
+                  Restoran Sahibi</div>
+              </div>
+            </div>
+            <div class="flex gap-0.5">
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+            </div>
           </div>
+          <p class="text-gray-300 text-sm leading-relaxed italic line-clamp-3">
+            "WhatsApp entegrasyonu sayesinde personelimle anında iletişim kuruyorum. Sipariş takibi çok kolaylaştı,
+            verimlilik %40 arttı!"
+          </p>
         </div>
 
-        <div class="reveal glass p-6 rounded-2xl lg:col-span-2">
-          <h4 class="font-semibold">Canlı Analiz Önizlemesi</h4>
-          <p class="text-sm text-gray-300 mt-2">Örnek rapor görseli — haftalık tamamlanma oranları ve atanan işler.</p>
-          <div class="mt-4 p-4 bg-white/5 rounded-lg">
-            <canvas id="mainChart" height="120"></canvas>
+        <!-- Testimonial 2 -->
+        <div
+          class="reveal glass p-6 rounded-3xl border border-white/5 relative group hover:bg-white/[0.05] transition-all duration-300 shadow-xl overflow-hidden"
+          data-delay="100">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyanAccent to-primary flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                MÖ
+              </div>
+              <div>
+                <div class="font-bold text-white text-sm">Mehmet Öztürk</div>
+                <div class="text-[10px] text-cyanAccent font-bold uppercase tracking-widest opacity-70">Premium Üye •
+                  Kuaför Salonu</div>
+              </div>
+            </div>
+            <div class="flex gap-0.5">
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+            </div>
           </div>
+          <p class="text-gray-300 text-sm leading-relaxed italic line-clamp-3">
+            "Randevu sistemi harika çalışıyor. Müşterilerim link ile kolayca randevu alabiliyor. No-show oranımız %60
+            azaldı!"
+          </p>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div
+          class="reveal glass p-6 rounded-3xl border border-white/5 relative group hover:bg-white/[0.05] transition-all duration-300 shadow-xl overflow-hidden"
+          data-delay="200">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                ZD
+              </div>
+              <div>
+                <div class="font-bold text-white text-sm">Zeynep Demir</div>
+                <div class="text-[10px] text-cyanAccent font-bold uppercase tracking-widest opacity-70">Aktif İşletme •
+                  Oto Yıkama</div>
+              </div>
+            </div>
+            <div class="flex gap-0.5">
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+              <i class="fa-solid fa-star text-yellow-500/80 text-[10px]"></i>
+            </div>
+          </div>
+          <p class="text-gray-300 text-sm leading-relaxed italic line-clamp-3">
+            "Müşteri takibi çok kolay. Geçmiş işlemleri görebiliyorum, rezervasyon sistemi mükemmel. Artık hiçbir şey
+            gözden kaçmıyor!"
+          </p>
+        </div>
+      </div>
+      </div>
+
+      <!-- Trusted By Marquee -->
+      <div class="mt-20 reveal overflow-hidden opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+        <div class="text-center text-xs font-semibold uppercase tracking-widest mb-8 text-gray-400">GÜVENEN
+          İŞLETMELERDEN BAZILARI</div>
+        <div class="marquee-container">
+          <div class="marquee-content items-center">
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-mug-hot"></i> Coffee
+              Co</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-scissors"></i> Style
+              Studio</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-car"></i> Auto Wash</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-utensils"></i> Tasty
+              Food</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-spa"></i> Zen Spa</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-store"></i> Local Shop</span>
+            <!-- duplicate for smooth loop -->
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-mug-hot"></i> Coffee
+              Co</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-scissors"></i> Style
+              Studio</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-car"></i> Auto Wash</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-utensils"></i> Tasty
+              Food</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-spa"></i> Zen Spa</span>
+            <span class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-store"></i> Local Shop</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Preview Below -->
+      <div class="reveal glass p-8 rounded-[2rem] card-glow mt-16 border border-white/5 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h4 class="font-bold text-2xl text-white">Performans Analizi</h4>
+            <p class="text-gray-400 mt-1">İşletmenizin haftalık tamamlanma grafiğini anlık takip edin.</p>
+          </div>
+          <div class="flex gap-2">
+            <span
+              class="px-3 py-1 bg-cyanAccent/10 text-cyanAccent text-xs font-bold rounded-lg border border-cyanAccent/20">Canlı
+              Veri</span>
+          </div>
+        </div>
+        <div class="p-6 bg-black/20 rounded-2xl border border-white/5">
+          <canvas id="mainChart" height="120"></canvas>
         </div>
       </div>
     </section>
@@ -308,7 +784,8 @@
           <p class="text-gray-300">7 günlük ücretsiz deneme ile hemen başlayın — kurulum gerekmez.</p>
         </div>
         <div class="flex gap-3">
-          <a href="login.html" class="btn-cta inline-flex items-center gap-3 px-6 py-3 rounded-2xl">Ücretsiz Deneme Başla</a>
+          <a href="login.html" class="btn-cta inline-flex items-center gap-3 px-6 py-3 rounded-2xl">Ücretsiz Deneme
+            Başla</a>
           <a href="contact.html" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass">Bize Ulaşın</a>
         </div>
       </div>
@@ -322,12 +799,15 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h5 class="text-white font-semibold">Kolay İş Takip</h5>
-          <p class="text-sm mt-2">Küçük işletmelerin dijital dönüşüm ortağı. İşlerinizi kolaylaştırın, verimliliğinizi artırın.</p>
+          <p class="text-sm mt-2">Küçük işletmelerin dijital dönüşüm ortağı. İşlerinizi kolaylaştırın, verimliliğinizi
+            artırın.</p>
           <div class="flex gap-3 mt-4">
             <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://x.com/Kolayistakip_" target="_blank" rel="noopener noreferrer" class="p-2 rounded bg-white/5"><i class="fa-brands fa-twitter"></i></a>
+            <a href="https://x.com/Kolayistakip_" target="_blank" rel="noopener noreferrer"
+              class="p-2 rounded bg-white/5"><i class="fa-brands fa-twitter"></i></a>
             <a href="#" class="p-2 rounded bg-white/5"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="https://www.youtube.com/@kolayistakip" target="_blank" rel="noopener noreferrer" class="p-2 rounded bg-white/5"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.youtube.com/@kolayistakip" target="_blank" rel="noopener noreferrer"
+              class="p-2 rounded bg-white/5"><i class="fa-brands fa-youtube"></i></a>
           </div>
         </div>
 
@@ -354,13 +834,15 @@
         <div>
           <h6 class="font-semibold">Bültenimize Abone Olun</h6>
           <form class="mt-3 flex gap-2" onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
-            <input type="email" placeholder="E-posta adresiniz" required class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm" />
+            <input type="email" placeholder="E-posta adresiniz" required
+              class="flex-1 px-3 py-2 rounded-lg bg-white/5 text-sm" />
             <button class="px-3 py-2 rounded-lg btn-cta">Gönder</button>
           </form>
         </div>
       </div>
 
-      <div class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
+      <div
+        class="mt-8 border-t border-white/5 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center">
         <div class="flex gap-4">
           <a href="kullanim-sartlari.html">Kullanım Şartları</a>
           <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
@@ -380,15 +862,41 @@
       mobileMenu.classList.toggle('hidden');
     });
 
+    // Pricing Toggle Restore
+    const priceToggle = document.getElementById('price-toggle');
+    const toggleCircle = document.getElementById('toggle-circle');
+    const labelMonthly = document.getElementById('label-monthly');
+    const labelYearly = document.getElementById('label-yearly');
+    const proPrice = document.querySelector('.price-val');
+    const proCta = document.getElementById('pro-cta');
+    let isYearly = false;
+
+    priceToggle && priceToggle.addEventListener('click', () => {
+      isYearly = !isYearly;
+      toggleCircle.style.transform = isYearly ? 'translateX(32px)' : 'translateX(0)';
+      labelYearly.classList.toggle('text-white', isYearly);
+      labelYearly.classList.toggle('text-gray-500', !isYearly);
+      labelMonthly.classList.toggle('text-white', !isYearly);
+      labelMonthly.classList.toggle('text-gray-500', isYearly);
+
+      if (proPrice) {
+        proPrice.textContent = isYearly ? proPrice.dataset.yearly : proPrice.dataset.monthly;
+        proCta.href = isYearly ? `payment.html?package=yearly&amount=${proPrice.dataset.yearly * 12}` : `payment.html?package=monthly&amount=${proPrice.dataset.monthly}`;
+      }
+    });
+
     // Reveal on scroll
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          const delay = entry.target.dataset.delay || 0;
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, delay);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
     revealEls.forEach(el => io.observe(el));
 
     // Mini chart
@@ -397,10 +905,10 @@
       new Chart(miniCtx, {
         type: 'line',
         data: {
-          labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'],
+          labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
           datasets: [{
             label: 'Tamamlanan İşler',
-            data: [12,19,8,15,22,18,24],
+            data: [12, 19, 8, 15, 22, 18, 24],
             fill: true,
             backgroundColor: 'rgba(79,70,229,0.12)',
             borderColor: '#4f46e5',
@@ -417,7 +925,7 @@
       new Chart(mainCtx, {
         type: 'bar',
         data: {
-          labels: ['Hafta 1','Hafta 2','Hafta 3','Hafta 4'],
+          labels: ['Hafta 1', 'Hafta 2', 'Hafta 3', 'Hafta 4'],
           datasets: [{ label: 'Tamamlanan', data: [65, 59, 80, 72], backgroundColor: '#06b6d4' }, { label: 'Bekleyen', data: [35, 41, 20, 28], backgroundColor: '#4f46e5' }]
         },
         options: { responsive: true, maintainAspectRatio: false }
@@ -425,4 +933,5 @@
     }
   </script>
 </body>
+
 </html>

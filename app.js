@@ -2344,6 +2344,7 @@ async function loadReservations() {
         reservations = data || [];
         console.log('Loaded reservations:', reservations);
         renderReservations();
+        updateReservationStats(); // Update statistics cards
 
         // Update dashboard card if it exists
         const dashTodayReservationCount = document.getElementById('dashTodayReservationCount');
@@ -2361,6 +2362,26 @@ async function loadReservations() {
     } catch (error) {
         console.error('Error loading reservations:', error);
     }
+}
+
+// Update reservation statistics cards
+function updateReservationStats() {
+    const totalAreas = document.getElementById('totalAreas');
+    const availableAreas = document.getElementById('availableAreas');
+    const reservedAreas = document.getElementById('reservedAreas');
+    const optionalAreas = document.getElementById('optionalAreas');
+
+    if (!totalAreas) return; // Stats cards not in DOM
+
+    const total = reservations.length;
+    const available = reservations.filter(r => r.durum === 'bos').length;
+    const reserved = reservations.filter(r => r.durum === 'rezerve').length;
+    const optional = reservations.filter(r => r.durum === 'opsiyonda').length;
+
+    totalAreas.textContent = total;
+    availableAreas.textContent = available;
+    reservedAreas.textContent = reserved;
+    optionalAreas.textContent = optional;
 }
 
 // Render reservations table

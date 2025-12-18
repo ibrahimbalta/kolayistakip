@@ -613,6 +613,26 @@
 
             <!-- VIEW: RESERVATIONS -->
             <section id="view-reservations" class="view-section" style="display:none;">
+                <!-- Reservation Stats -->
+                <div class="task-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalAreas">0</div>
+                        <div class="stat-label">Toplam Alan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="availableAreas" style="color:var(--success);">0</div>
+                        <div class="stat-label">Müsait Alan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="reservedAreas" style="color:var(--danger);">0</div>
+                        <div class="stat-label">Dolu Alan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="optionalAreas" style="color:var(--warning);">0</div>
+                        <div class="stat-label">Opsiyonlu Alan</div>
+                    </div>
+                </div>
+
                 <!-- Compact Horizontal Form -->
                 <div class="card" style="margin-bottom: 1.5rem;">
                     <h2 style="margin-bottom: 1.25rem;"><i class="fa-solid fa-plus-circle"

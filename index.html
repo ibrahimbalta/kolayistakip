@@ -80,6 +80,57 @@
       box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
     }
 
+    /* Premium Navigation Links */
+    .nav-link-premium {
+      position: relative;
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+
+    .nav-link-premium::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #06b6d4, #4f46e5);
+      transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .nav-link-premium:hover {
+      color: #fff;
+    }
+
+    .nav-link-premium:hover::after {
+      width: 100%;
+    }
+
+    /* Premium CTA Button */
+    .btn-cta-premium {
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      color: #fff;
+      transition: all 0.3s ease;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .btn-cta-premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(79, 70, 229, 0.5), 0 0 60px rgba(6, 182, 212, 0.3);
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(6, 182, 212, 0.4);
+      }
+    }
+
     /* Glow Blobs */
     .blob {
       position: fixed;
@@ -188,52 +239,69 @@
   <div class="blob blob-secondary bottom-[-10%] right-[-10%]"></div>
 
   <!-- NAV -->
-  <!-- NAV -->
-  <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-sm border-b border-white/5">
+  <header class="sticky top-0 z-50 transition-all duration-300" id="mainHeader">
     <div class="container mx-auto px-6 lg:px-12">
-      <div class="flex items-center justify-between py-4">
-        <a href="index.html" class="flex items-center gap-3 text-white no-underline">
-          <span class="p-2 rounded-lg glass card-glow">
-            <i class="fa-solid fa-check-double text-primary"></i>
+      <div
+        class="flex items-center justify-between py-5 backdrop-blur-2xl bg-gradient-to-r from-black/40 via-purpleDeep/30 to-black/40 rounded-2xl border border-white/10 shadow-2xl mt-4 px-6">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 text-white no-underline group">
+          <span
+            class="p-2.5 rounded-xl glass card-glow relative overflow-hidden group-hover:scale-110 transition-transform duration-300">
+            <i class="fa-solid fa-check-double text-primary text-lg relative z-10"></i>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-primary/20 to-cyanAccent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
           </span>
-          <span class="font-semibold text-lg">Kolay İş Takip</span>
+          <span class="font-bold text-xl tracking-tight">Kolay İş Takip</span>
         </a>
 
-        <nav class="hidden md:flex items-center gap-6 text-sm">
-          <a href="#features" class="hover:text-cyanAccent transition">Özellikler</a>
-          <a href="#pricing" class="hover:text-cyanAccent transition">Fiyatlar</a>
-          <a href="sektorler.html" class="hover:text-cyanAccent transition">Sektörler</a>
-          <a href="about.html" class="hover:text-cyanAccent transition">Hakkımızda</a>
-          <a href="career.html" class="hover:text-cyanAccent transition">Kariyer</a>
-          <a href="blog.html" class="hover:text-cyanAccent transition">Blog</a>
-          <a href="contact.html" class="hover:text-cyanAccent transition">İletişim</a>
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <a href="#features" class="nav-link-premium">Özellikler</a>
+          <a href="#pricing" class="nav-link-premium">Fiyatlar</a>
+          <a href="sektorler.html" class="nav-link-premium">Sektörler</a>
+          <a href="about.html" class="nav-link-premium">Hakkımızda</a>
+          <a href="career.html" class="nav-link-premium">Kariyer</a>
+          <a href="blog.html" class="nav-link-premium">Blog</a>
+          <a href="contact.html" class="nav-link-premium">İletişim</a>
         </nav>
 
+        <!-- CTA Buttons -->
         <div class="flex items-center gap-3">
           <a href="login.html"
-            class="hidden md:inline-block px-4 py-2 rounded-lg font-medium glass hover:scale-105 transition">Giriş
-            Yap</a>
+            class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium glass border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300">
+            <i class="fa-solid fa-arrow-right-to-bracket text-primary"></i>
+            Giriş Yap
+          </a>
           <a href="login.html"
-            class="btn-cta inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold shadow-lg">Ücretsiz
-            Deneme</a>
+            class="btn-cta-premium inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold shadow-2xl relative overflow-hidden group">
+            <span class="relative z-10">Ücretsiz Deneme</span>
+            <i class="fa-solid fa-sparkles relative z-10 group-hover:rotate-12 transition-transform duration-300"></i>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-cyanAccent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </a>
 
-          <button id="mobileBtn" class="md:hidden ml-2 p-2 rounded-lg glass">
-            <i class="fa-solid fa-bars"></i>
+          <!-- Mobile Menu Button -->
+          <button id="mobileBtn"
+            class="lg:hidden p-2.5 rounded-xl glass border border-white/10 hover:border-white/20 transition-all">
+            <i class="fa-solid fa-bars text-lg"></i>
           </button>
         </div>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="md:hidden px-6 pb-6 hidden">
-      <div class="flex flex-col gap-3">
-        <a href="#features" class="block py-2">Özellikler</a>
-        <a href="#pricing" class="block py-2">Fiyatlar</a>
-        <a href="sektorler.html" class="block py-2">Sektörler</a>
-        <a href="about.html" class="block py-2">Hakkımızda</a>
-        <a href="contact.html" class="block py-2">İletişim</a>
-        <a href="blog.html" class="block py-2">Blog</a>
-        <a href="login.html" class="block py-2 font-medium">Giriş Yap</a>
+    <div id="mobileMenu" class="lg:hidden px-6 pb-6 hidden">
+      <div class="backdrop-blur-2xl bg-black/40 rounded-2xl border border-white/10 mt-2 p-4 flex flex-col gap-2">
+        <a href="#features" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Özellikler</a>
+        <a href="#pricing" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Fiyatlar</a>
+        <a href="sektorler.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Sektörler</a>
+        <a href="about.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Hakkımızda</a>
+        <a href="contact.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">İletişim</a>
+        <a href="blog.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Blog</a>
+        <div class="h-px bg-white/10 my-2"></div>
+        <a href="login.html" class="block py-3 px-4 rounded-xl bg-white/5 font-medium text-center">Giriş Yap</a>
       </div>
     </div>
   </header>
@@ -357,8 +425,8 @@
       </div>
     </section>
 
-    <section id="features" class="mt-24 container mx-auto px-6 lg:px-12 relative">
-      <div class="text-center mb-16 reveal" data-delay="100">
+    <section id="features" class="mt-12 container mx-auto px-6 lg:px-12 relative">
+      <div class="text-center mb-10 reveal" data-delay="100">
         <h2 class="text-3xl lg:text-5xl font-black mb-6 tracking-tighter">İşletmeniz İçin <span
             class="text-transparent bg-clip-text bg-gradient-to-r from-cyanAccent to-primary">Tam Kontrol</span></h2>
         <p class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">Kolay İş Takip ile tüm süreçlerinizi tek bir
@@ -494,12 +562,12 @@
 
         <!-- Security Bento -->
         <div
-          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2rem] border border-white/5 p-6 flex flex-col justify-center"
           data-delay="400">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4 mb-3">
             <div
-              class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20">
-              <i class="fa-solid fa-shield-halved text-xl"></i>
+              class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20">
+              <i class="fa-solid fa-shield-halved text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white">Güvenli Veri</h3>
           </div>
@@ -508,12 +576,12 @@
 
         <!-- Cloud Bento -->
         <div
-          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2rem] border border-white/5 p-6 flex flex-col justify-center"
           data-delay="500">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4 mb-3">
             <div
-              class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 border border-orange-500/20">
-              <i class="fa-solid fa-cloud text-xl"></i>
+              class="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 border border-orange-500/20">
+              <i class="fa-solid fa-cloud text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white">Bulut Erişim</h3>
           </div>
@@ -522,12 +590,12 @@
 
         <!-- Mobile Bento -->
         <div
-          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2.5rem] border border-white/5 p-8 flex flex-col justify-center"
+          class="reveal md:col-span-2 lg:col-span-4 row-span-1 glass rounded-[2rem] border border-white/5 p-6 flex flex-col justify-center"
           data-delay="600">
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-center gap-4 mb-3">
             <div
-              class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 border border-purple-500/20">
-              <i class="fa-solid fa-mobile-screen text-xl"></i>
+              class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 border border-purple-500/20">
+              <i class="fa-solid fa-mobile-screen text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white">Mobil Uyum</h3>
           </div>

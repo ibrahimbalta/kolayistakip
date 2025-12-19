@@ -1,4 +1,5 @@
 :root {
+    /* Primary Colors */
     --primary: #6366f1;
     --primary-hover: #4f46e5;
     --secondary: #64748b;
@@ -9,12 +10,32 @@
     --light: #f8fafc;
     --white: #ffffff;
     --border: #e2e8f0;
+
+    /* Gradient Variables */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    --gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+    /* Glassmorphism Variables */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-bg-dark: rgba(30, 41, 59, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    /* Sidebar */
     --sidebar-bg: #1e293b;
     --sidebar-text: #94a3b8;
     --sidebar-active: #334155;
+
+    /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+    --shadow-glow-primary: 0 0 20px rgba(99, 102, 241, 0.4);
+
+    /* Other */
     --radius: 12px;
     --font-main: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -40,15 +61,19 @@ body {
     height: 100vh;
 }
 
-/* Sidebar */
+/* Sidebar - Glassmorphism Enhanced */
 .sidebar {
     width: 280px;
-    background-color: var(--sidebar-bg);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     color: var(--white);
     display: flex;
     flex-direction: column;
     transition: width 0.3s ease;
     flex-shrink: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-header {
@@ -125,24 +150,71 @@ body {
     text-decoration: none;
     border-radius: var(--radius);
     margin-bottom: 0.5rem;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
+    position: relative;
+    overflow: hidden;
 }
 
 .menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
     color: var(--white);
+    transform: translateX(4px);
+}
+
+.menu-item:hover i {
+    transform: scale(1.15);
+    text-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
 }
 
 .menu-item.active {
-    background-color: var(--primary);
+    background: var(--gradient-primary);
     color: var(--white);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4), 0 0 20px rgba(99, 102, 241, 0.2);
+    transform: translateX(4px);
+}
+
+.menu-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: white;
+    border-radius: 0 2px 2px 0;
 }
 
 .menu-item i {
     width: 20px;
     text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Menu Item Badge */
+.menu-badge {
+    margin-left: auto;
+    background: var(--danger);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 50px;
+    min-width: 20px;
+    text-align: center;
+    animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 .logout-btn {
@@ -1959,4 +2031,324 @@ input[type="color"] {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: float-gentle 3s ease-in-out infinite;
+}
+
+/* ========================================
+   GLASSMORPHISM COMPONENTS
+======================================== */
+
+.card-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: all 0.3s ease;
+}
+
+.card-glass:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   COUNT-UP ANIMATION
+======================================== */
+
+.count-up {
+    animation: count-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes count-pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Stat number animation on load */
+.stat-card-dash .stat-number,
+.stat-card .stat-number,
+#dashActiveTasks,
+#dashPendingValue,
+#dashNewCustomers,
+#dashTodayAppointments,
+#dashTodayReservationCount {
+    animation: number-slide-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes number-slide-in {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   BUTTON RIPPLE EFFECT
+======================================== */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* ========================================
+   ENHANCED MODAL ANIMATION
+======================================== */
+
+.modal-overlay {
+    animation: modal-fade-in 0.25s ease-out;
+}
+
+.modal-content {
+    animation: modal-scale-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+@keyframes modal-scale-in {
+    from {
+        transform: scale(0.9) translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   CONFETTI EFFECT (for task completion)
+======================================== */
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100%) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   EMPTY STATE FLOATING ANIMATION
+======================================== */
+
+@keyframes float-gentle {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.empty-state {
+    animation: empty-state-fade-in 0.6s ease-out;
+}
+
+@keyframes empty-state-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   STAT CARD HOVER ENHANCEMENTS
+======================================== */
+
+.stat-card-dash {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.stat-card-dash:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-dash:active {
+    transform: translateY(-2px) scale(1.01);
+}
+
+/* ========================================
+   BUTTON GLOW ON HOVER
+======================================== */
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4), 0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+/* Quick action buttons gradient hover */
+.card .btn[style*="gradient"]:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   TASK COMPLETION ANIMATION
+======================================== */
+
+.task-item.completing {
+    animation: task-complete 0.5s ease-out forwards;
+}
+
+@keyframes task-complete {
+    0% {
+        transform: scale(1);
+        background: white;
+    }
+
+    50% {
+        transform: scale(1.02);
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+    }
+
+    100% {
+        transform: scale(1);
+        background: white;
+    }
+}
+
+/* ========================================
+   LOADING SHIMMER EFFECT
+======================================== */
+
+.loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ========================================
+   PULSE ANIMATION FOR NOTIFICATIONS
+======================================== */
+
+.pulse-ring {
+    animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    80%,
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   ENHANCED LOGOUT BUTTON
+======================================== */
+
+.logout-btn {
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+}
+
+/* ========================================
+   CARD HOVER LIFT
+======================================== */
+
+.card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }

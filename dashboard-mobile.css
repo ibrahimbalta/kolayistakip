@@ -565,38 +565,86 @@
     }
 
 
-    /* Reminder Panel - Mobile */
+    /* Reminder Panel - Mobile Optimized */
     #reminderPanel,
     #pendingApprovalsPanel {
-        margin-bottom: 1rem !important;
+        margin-bottom: 1.5rem !important;
         padding: 1rem !important;
     }
 
     #reminderPanel h2,
     #pendingApprovalsPanel h2 {
         font-size: 1rem !important;
-        margin-bottom: 0.75rem !important;
+        margin-bottom: 1rem !important;
     }
 
     #reminderList>div,
     #pendingApprovalsList>div {
-        font-size: 0.85rem !important;
-        padding: 0.75rem !important;
+        padding: 10px !important;
+        margin-bottom: 0.75rem !important;
+        flex-direction: row !important;
+        /* Keep icon and text in same row if possible */
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    /* Adjust cards inside panels for very small screens */
+    @media (max-width: 480px) {
+
+        #reminderList>div,
+        #pendingApprovalsList>div {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+        }
+
+        #reminderList .btn,
+        #pendingApprovalsList .btn-primary,
+        #pendingApprovalsList .btn {
+            width: 100% !important;
+            justify-content: center;
+        }
+    }
+
+    /* Compact Share Area - Mobile Responsive Fix */
+    #view-appointments .premium-card h2 {
+        width: 100%;
         margin-bottom: 0.5rem !important;
     }
 
-    /* Reminder/Approval Item Buttons - Stack on Mobile */
-    #reminderList button,
-    #pendingApprovalsList button {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.8rem !important;
-        min-width: auto !important;
+    #view-appointments .premium-card div[style*="inline-flex"],
+    #view-appointments .premium-card div[style*="display: flex; align-items: center; gap: 8px"] {
+        width: 100% !important;
+        justify-content: space-between;
+        flex-direction: column !important;
+        align-items: stretch !important;
     }
 
-    /* Calendar Share Link - Mobile */
-    #view-appointments div[style*="display: flex; gap: 10px"] {
-        flex-direction: column !important;
-        gap: 0.5rem !important;
+    #view-appointments div[style*="background: #f8fafc"] {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    #view-appointments #shareLink {
+        width: 100% !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Employee Cards - Mobile */
+    .employee-cards-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .employee-card {
+        padding: 1.25rem !important;
+    }
+
+    .emp-score-badge {
+        top: 1rem !important;
+        right: 1rem !important;
+        padding: 2px 8px !important;
+        font-size: 0.65rem !important;
     }
 
     #shareLink {

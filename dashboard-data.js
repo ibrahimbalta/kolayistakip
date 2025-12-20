@@ -133,11 +133,11 @@ async function loadPriorityTasks() {
 
         const { data: tasksData, error } = await supabase
             .from('tasks')
-            .select('id, description, employee_name, created_at, customer_name')
+            .select('id, description, employee_name, created_at, customer_name, priority')
             .eq('user_id', window.currentUser.id)
             .eq('completed', false)
             .order('created_at', { ascending: false })
-            .limit(5);
+            .limit(20);
 
         if (error) throw error;
 
@@ -153,16 +153,34 @@ async function loadPriorityTasks() {
             return;
         }
 
-        container.innerHTML = tasksData.map(task => `
-            <div style="padding: 0.75rem; border-left: 3px solid var(--warning); background: #fff9f0; margin-bottom: 0.5rem; border-radius: 4px;">
-                <div style="font-weight: 600; color: var(--dark); margin-bottom: 0.25rem;">${task.description}</div>
-                <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: var(--secondary);">
-                    <span><i class="fa-solid fa-user"></i> ${task.employee_name}</span>
-                    ${task.customer_name ? `<span><i class="fa-solid fa-building"></i> ${task.customer_name}</span>` : ''}
-                    <span><i class="fa-solid fa-clock"></i> ${new Date(task.created_at).toLocaleDateString('tr-TR')}</span>
+        // Sort by priority (High > Medium > Low)
+        const priorityOrder = { 'high': 1, 'medium': 2, 'low': 3 };
+        const sortedTasks = [...tasksData].sort((a, b) => {
+            const pA = a.priority || 'medium';
+            const pB = b.priority || 'medium';
+            return priorityOrder[pA] - priorityOrder[pB];
+        });
+
+        container.innerHTML = sortedTasks.map(task => {
+            const priority = task.priority || 'medium';
+            const priorityLabel = priority === 'high' ? 'Yüksek' : priority === 'low' ? 'Düşük' : 'Orta';
+            const priorityColor = priority === 'high' ? '#ef4444' : priority === 'low' ? '#10b981' : '#f59e0b';
+            const priorityBg = priority === 'high' ? '#fef2f2' : priority === 'low' ? '#f0fdf4' : '#fff9f0';
+
+            return `
+                <div style="padding: 0.75rem; border-left: 3px solid ${priorityColor}; background: ${priorityBg}; margin-bottom: 0.6rem; border-radius: 8px; box-shadow: var(--shadow-sm); position: relative;">
+                    <div style="position: absolute; top: 0.75rem; right: 0.75rem; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: ${priorityColor}20; color: ${priorityColor}; text-transform: uppercase;">
+                        ${priorityLabel}
+                    </div>
+                    <div style="font-weight: 600; color: var(--dark); margin-bottom: 0.4rem; padding-right: 60px; font-size: 0.95rem;">${task.description}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; font-size: 0.8rem; color: var(--secondary);">
+                        <span><i class="fa-solid fa-user" style="color: #6366f1;"></i> ${task.employee_name}</span>
+                        ${task.customer_name ? `<span><i class="fa-solid fa-building" style="color: #64748b;"></i> ${task.customer_name}</span>` : ''}
+                        <span><i class="fa-solid fa-calendar-day" style="color: #94a3b8;"></i> ${new Date(task.created_at).toLocaleDateString('tr-TR')}</span>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
     } catch (error) {
         console.error('Error loading priority tasks:', error);
@@ -207,7 +225,7 @@ async function loadTodaySchedule() {
             .select('id, alan_no, reserved_by_company, durum')
             .eq('user_id', window.currentUser.id)
             .eq('durum', 'rezerve')
-            .limit(5);
+            .limit(20);
 
         if (reservationsError) {
             console.warn('Error loading reservations:', reservationsError);

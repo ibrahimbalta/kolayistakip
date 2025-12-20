@@ -29,7 +29,7 @@ async function initializeAppointmentCalendar() {
                 right: 'timeGridWeek,timeGridDay'
             },
             slotMinTime: '08:00:00',
-            slotMaxTime: '24:00:00',
+            slotMaxTime: '23:00:00',
             slotDuration: '00:30:00',
             selectable: true,
             selectMirror: true,
@@ -37,15 +37,25 @@ async function initializeAppointmentCalendar() {
             eventClick: handleEventClick,
             editable: false,
             dayMaxEvents: true,
+            nowIndicator: true,
             events: [],
+            slotLabelFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                omitZeroMinute: false,
+                meridiem: 'short'
+            },
             buttonText: {
                 today: 'Bugün',
                 week: 'Hafta',
                 day: 'Gün'
             },
             allDaySlot: false,
-            height: 'auto',
-            // Handle window resize to optimize view
+            height: '650px',
+            contentHeight: 'auto',
+            expandRows: true,
+            themeSystem: 'standard',
+            // Window resize optimization
             windowResize: function (view) {
                 const newIsMobile = window.innerWidth < 768;
                 if (newIsMobile && calendar.view.type === 'timeGridWeek') {
@@ -118,6 +128,8 @@ async function loadCalendarSlots() {
         if (error) throw error;
 
         allSlots = slots || [];
+        // Store appointments globally for export
+        window.appointments = allSlots;
 
         // Helper function to get slot colors based on status
         const getSlotColors = (slot) => {
@@ -519,9 +531,12 @@ function renderReminderList(appointments, dateStr) {
         month: 'long'
     });
 
-    let html = `<p style="font-size: 0.85rem; color: var(--secondary); margin-bottom: 1rem;">
-        <i class="fa-solid fa-calendar"></i> ${tomorrowFormatted} - ${appointments.length} randevu
-    </p>`;
+    let html = `
+        <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; opacity: 0.8;">
+            <i class="fa-solid fa-calendar-day"></i> 
+            <strong>${tomorrowFormatted}</strong> - ${appointments.length} randevu
+        </div>
+    `;
 
     appointments.forEach(apt => {
         const phone = apt.customer_phone || '';
@@ -529,34 +544,33 @@ function renderReminderList(appointments, dateStr) {
         const isReminded = apt.reminder_sent;
 
         html += `
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; margin-bottom: 8px; background: ${isReminded ? '#f0fdf4' : '#fefce8'}; border-radius: 10px; border-left: 4px solid ${isReminded ? '#22c55e' : '#f59e0b'};">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; background: ${isReminded ? '#f8fafc' : '#fff'}; border-radius: 12px; border: 1px solid ${isReminded ? '#e2e8f0' : '#dcfce7'}; transition: all 0.2s hover; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: ${isReminded ? '#dcfce7' : '#fef3c7'}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa-solid fa-user" style="color: ${isReminded ? '#22c55e' : '#f59e0b'};"></i>
+                    <div style="width: 36px; height: 36px; background: ${isReminded ? '#f1f5f9' : '#dcfce7'}; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa-solid fa-user-check" style="color: ${isReminded ? '#94a3b8' : '#22c55e'}; font-size: 0.9rem;"></i>
                     </div>
                     <div>
-                        <div style="font-weight: 600; color: #1f2937;">${Security.sanitize(apt.customer_name)}</div>
-                        <div style="font-size: 0.85rem; color: #6b7280;">
-                            <i class="fa-solid fa-clock"></i> ${apt.slot_time.substring(0, 5)} 
-                            ${phone ? `<span style="margin-left: 10px;"><i class="fa-solid fa-phone"></i> ${Security.sanitize(phone)}</span>` : ''}
+                        <div style="font-weight: 600; color: var(--dark); font-size: 0.85rem;">${Security.sanitize(apt.customer_name)}</div>
+                        <div style="font-size: 0.75rem; color: var(--secondary); margin-top: 2px;">
+                            <i class="fa-solid fa-clock" style="font-size: 0.7rem;"></i> ${apt.slot_time.substring(0, 5)} 
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 6px;">
                     ${cleanPhone ? `
                         <button onclick="sendWhatsAppReminder('${apt.id}', '${cleanPhone}', '${Security.sanitize(apt.customer_name).replace(/'/g, "\\'")}', '${apt.slot_time.substring(0, 5)}')" 
-                            class="btn" style="background: #25D366; color: white; padding: 8px 12px; font-size: 0.85rem;">
+                            class="btn" style="background: #25D366; color: white; padding: 6px 10px; font-size: 0.75rem; border-radius: 8px; width: auto;">
                             <i class="fa-brands fa-whatsapp"></i> Gönder
                         </button>
                     ` : `
-                        <span style="color: #9ca3af; font-size: 0.8rem; padding: 8px;">Telefon yok</span>
+                        <span style="color: #94a3b8; font-size: 0.7rem; padding: 6px;">No Tel</span>
                     `}
                     ${isReminded ? `
-                        <span style="background: #dcfce7; color: #16a34a; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
-                            <i class="fa-solid fa-check"></i> Gönderildi
-                        </span>
+                        <div style="background: #f1f5f9; color: #64748b; padding: 6px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
                     ` : `
-                        <button onclick="markAsReminded('${apt.id}')" class="btn" style="background: #f1f5f9; color: #64748b; padding: 8px 12px; font-size: 0.85rem;">
+                        <button title="Gönderildi Olarak İşaretle" onclick="markAsReminded('${apt.id}')" class="btn" style="background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; padding: 6px 10px; font-size: 0.75rem; border-radius: 8px; width: auto;">
                             <i class="fa-solid fa-check"></i>
                         </button>
                     `}
@@ -671,16 +685,20 @@ async function sendAllReminders() {
     }
 }
 
-// Initialize when view is shown
-const originalSwitchView = window.switchView;
-window.switchView = function (viewName) {
-    originalSwitchView(viewName);
-    if (viewName === 'appointments') {
-        setTimeout(() => {
-            initializeAppointmentCalendar();
-        }, 100);
-    }
-};
+// Initialize when view is shown - MUST run after app.js defines window.switchView
+document.addEventListener('DOMContentLoaded', () => {
+    const originalSwitchView = window.switchView;
+    window.switchView = function (viewName) {
+        if (typeof originalSwitchView === 'function') {
+            originalSwitchView(viewName);
+        }
+        if (viewName === 'appointments') {
+            setTimeout(() => {
+                initializeAppointmentCalendar();
+            }, 100);
+        }
+    };
+});
 
 // ============================================
 // Randevu Onay/Red Sistemi
@@ -739,28 +757,27 @@ function renderPendingApprovals(appointments) {
         const phone = apt.customer_phone || '';
 
         html += `
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; margin-bottom: 10px; background: #fffbeb; border-radius: 12px; border: 1px solid #fcd34d;">
-                <div style="display: flex; align-items: center; gap: 14px;">
-                    <div style="width: 48px; height: 48px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa-solid fa-user-clock" style="color: #f59e0b; font-size: 1.2rem;"></i>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 10px; background: #fff; border-radius: 12px; border: 1px solid #fed7aa; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; background: #fff7ed; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa-solid fa-user-clock" style="color: #f59e0b; font-size: 0.9rem;"></i>
                     </div>
                     <div>
-                        <div style="font-weight: 600; color: #1f2937; font-size: 1rem;">${Security.sanitize(apt.customer_name)}</div>
-                        <div style="font-size: 0.85rem; color: #6b7280; margin-top: 2px;">
+                        <div style="font-weight: 600; color: var(--dark); font-size: 0.85rem;">${Security.sanitize(apt.customer_name)}</div>
+                        <div style="font-size: 0.75rem; color: var(--secondary); margin-top: 2px;">
                             <i class="fa-solid fa-calendar"></i> ${dateStr} 
-                            <i class="fa-solid fa-clock" style="margin-left: 8px;"></i> ${apt.slot_time.substring(0, 5)}
-                            ${phone ? `<span style="margin-left: 8px;"><i class="fa-solid fa-phone"></i> ${Security.sanitize(phone)}</span>` : ''}
+                            <i class="fa-solid fa-clock" style="margin-left: 6px; font-size: 0.7rem;"></i> ${apt.slot_time.substring(0, 5)}
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="approveAppointment('${apt.id}')" class="btn" 
-                        style="background: #22c55e; color: white; padding: 10px 16px; font-size: 0.9rem; border-radius: 8px;">
-                        <i class="fa-solid fa-check"></i> Onayla
+                <div style="display: flex; gap: 6px;">
+                    <button onclick="approveAppointment('${apt.id}')" class="btn-primary" 
+                        style="background: #22c55e; padding: 6px 10px; font-size: 0.75rem; border-radius: 8px; width: auto;">
+                        <i class="fa-solid fa-check"></i>
                     </button>
                     <button onclick="openRejectModal('${apt.id}')" class="btn" 
-                        style="background: #ef4444; color: white; padding: 10px 16px; font-size: 0.9rem; border-radius: 8px;">
-                        <i class="fa-solid fa-times"></i> Reddet
+                        style="background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; padding: 6px 10px; font-size: 0.75rem; border-radius: 8px; width: auto;">
+                        <i class="fa-solid fa-times"></i>
                     </button>
                 </div>
             </div>

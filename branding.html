@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markalama Ayarları - Kolay İş Takip</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .branding-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .branding-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .branding-card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+        }
+
+        .logo-upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logo-upload-area:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        .logo-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 1rem auto;
+            display: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .color-input-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .color-input-group input[type="color"] {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+
+            .form-grid,
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+</head>
+
+<body style="background: #f8fafc;">
+    <div class="branding-container">
+        <div style="margin-bottom: 2rem;">
+            <a href="dashboard.html"
+                style="color: #64748b; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard'a Dön
+            </a>
+        </div>
+
+        <h1 style="font-size: 2rem; color: #1e293b; margin-bottom: 0.5rem;">
+            <i class="fa-solid fa-palette"></i> Markalama Ayarları
+        </h1>
+        <p style="color: #64748b; margin-bottom: 2rem;">PDF tekliflerinizde kullanılacak logo ve bilgilerinizi
+            düzenleyin</p>
+
+        <!-- Logo Upload Card -->
+        <div class="branding-card">
+            <h2><i class="fa-solid fa-image"></i> Firma Logosu</h2>
+            <div class="logo-upload-area" onclick="document.getElementById('logoUpload').click()">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                <h3 style="color: #64748b; margin: 0 0 0.5rem 0;">Logo Yükle</h3>
+                <p style="color: #94a3b8; font-size: 0.875rem; margin: 0;">PNG, JPG veya SVG (Maks. 2MB)</p>
+                <input type="file" id="logoUpload" accept="image/*" style="display: none;"
+                    onchange="handleLogoUpload(this)">
+            </div>
+            <img id="logoPreview" class="logo-preview" alt="Logo">
+            <div id="logoActions" style="display: none; text-align: center; margin-top: 1rem;">
+                <button onclick="deleteLogo()"
+                    style="background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">
+                    <i class="fa-solid fa-trash"></i> Logoyu Sil
+                </button>
+            </div>
+        </div>
+
+        <!-- Colors Card -->
+        <div class="branding-card">
+            <h2><i class="fa-solid fa-palette"></i> Renk Paleti</h2>
+            <div class="color-grid">
+                <div class="color-input-group">
+                    <input type="color" id="primaryColor" value="#6366f1" onchange="updateColorPreview()">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">Primary Color</div>
+                        <div style="font-size: 0.875rem; color: #64748b;" id="primaryColorHex">#6366f1</div>
+                    </div>
+                </div>
+                <div class="color-input-group">
+                    <input type="color" id="secondaryColor" value="#8b5cf6" onchange="updateColorPreview()">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: #1e293b; margin-bottom: 4px;">Secondary Color</div>
+                        <div style="font-size: 0.875rem; color: #64748b;" id="secondaryColorHex">#8b5cf6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Info Card -->
+        <div class="branding-card">
+            <h2><i class="fa-solid fa-building"></i> Firma Bilgileri</h2>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Firma Adı</label>
+                <input type="text" id="companyName" placeholder="Firma adınızı girin">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Adres</label>
+                <textarea id="companyAddress" rows="3" placeholder="Firma adresinizi girin"></textarea>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="tel" id="companyPhone" placeholder="0555 123 45 67">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="companyEmail" placeholder="info@firma.com">
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" id="companyWebsite" placeholder="www.firma.com">
+                </div>
+                <div class="form-group">
+                    <label>Vergi/TC No</label>
+                    <input type="text" id="taxNumber" placeholder="1234567890">
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div style="text-align: center;">
+            <button onclick="saveBranding()" class="save-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Kaydet
+            </button>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script>
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let currentUser = null;
+
+        // Initialize
+        async function init() {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            if (error || !user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = user;
+            await loadBranding();
+        }
+
+        // Load existing branding
+        async function loadBranding() {
+            try {
+                const { data, error } = await supabase
+                    .from('company_branding')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    console.error(error);
+                    return;
+                }
+
+                if (data) {
+                    document.getElementById('companyName').value = data.company_name || '';
+                    document.getElementById('companyAddress').value = data.address || '';
+                    document.getElementById('companyPhone').value = data.phone || '';
+                    document.getElementById('companyEmail').value = data.email || '';
+                    document.getElementById('companyWebsite').value = data.website || '';
+                    document.getElementById('taxNumber').value = data.tax_number || '';
+                    document.getElementById('primaryColor').value = data.primary_color || '#6366f1';
+                    document.getElementById('secondaryColor').value = data.secondary_color || '#8b5cf6';
+                    updateColorPreview();
+
+                    if (data.logo_url) {
+                        document.getElementById('logoPreview').src = data.logo_url;
+                        document.getElementById('logoPreview').style.display = 'block';
+                        document.getElementById('logoActions').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Load error:', error);
+            }
+        }
+
+        // Update color preview
+        function updateColorPreview() {
+            document.getElementById('primaryColorHex').textContent = document.getElementById('primaryColor').value;
+            document.getElementById('secondaryColorHex').textContent = document.getElementById('secondaryColor').value;
+        }
+
+        // Handle logo upload
+        async function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Sadece resim dosyaları yüklenebilir.');
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Dosya boyutu 2MB\'dan küçük olmalıdır.');
+                return;
+            }
+
+            try {
+                const fileName = `logo_${Date.now()}.${file.name.split('.').pop()}`;
+                const filePath = `${currentUser.id}/${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('logos')
+                    .upload(filePath, file);
+
+                if (uploadError) throw uploadError;
+
+                const { data: urlData } = supabase.storage
+                    .from('logos')
+                    .getPublicUrl(filePath);
+
+                // Update branding
+                await supabase.from('company_branding').upsert({
+                    user_id: currentUser.id,
+                    logo_url: urlData.publicUrl
+                });
+
+                // Show preview
+                document.getElementById('logoPreview').src = urlData.publicUrl;
+                document.getElementById('logoPreview').style.display = 'block';
+                document.getElementById('logoActions').style.display = 'block';
+
+                alert('Logo başarıyla yüklendi!');
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('Logo yüklenirken hata oluştu: ' + error.message);
+            }
+        }
+
+        // Delete logo
+        async function deleteLogo() {
+            if (!confirm('Logoyu silmek istediğinizden emin misiniz?')) return;
+
+            try {
+                // Get current logo URL
+                const { data } = await supabase
+                    .from('company_branding')
+                    .select('logo_url')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (data?.logo_url) {
+                    const url = new URL(data.logo_url);
+                    const pathParts = url.pathname.split('/logos/');
+                    if (pathParts.length > 1) {
+                        await supabase.storage.from('logos').remove([pathParts[1]]);
+                    }
+                }
+
+                // Update database
+                await supabase.from('company_branding').update({
+                    logo_url: null
+                }).eq('user_id', currentUser.id);
+
+                document.getElementById('logoPreview').style.display = 'none';
+                document.getElementById('logoActions').style.display = 'none';
+                alert('Logo silindi!');
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('Logo silinirken hata oluştu.');
+            }
+        }
+
+        // Save branding
+        async function saveBranding() {
+            try {
+                const branding = {
+                    user_id: currentUser.id,
+                    company_name: document.getElementById('companyName').value,
+                    address: document.getElementById('companyAddress').value,
+                    phone: document.getElementById('companyPhone').value,
+                    email: document.getElementById('companyEmail').value,
+                    website: document.getElementById('companyWebsite').value,
+                    tax_number: document.getElementById('taxNumber').value,
+                    primary_color: document.getElementById('primaryColor').value,
+                    secondary_color: document.getElementById('secondaryColor').value
+                };
+
+                const { error } = await supabase
+                    .from('company_branding')
+                    .upsert(branding);
+
+                if (error) throw error;
+
+                alert('✅ Ayarlar başarıyla kaydedildi!');
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Kaydetme hatası: ' + error.message);
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

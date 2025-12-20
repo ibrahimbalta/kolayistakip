@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,51 +24,205 @@
   </script>
 
   <!-- Fonts / Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
   <!-- AOS -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+  <style>
+    .glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+    }
+
+    .btn-cta {
+      background: linear-gradient(135deg, #06b6d4, #4f46e5);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .btn-cta:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+    }
+
+    /* Premium Navigation Links */
+    .nav-link-premium {
+      position: relative;
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+
+    .nav-link-premium::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #06b6d4, #4f46e5);
+      transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .nav-link-premium:hover {
+      color: #fff;
+    }
+
+    .nav-link-premium:hover::after {
+      width: 100%;
+    }
+
+    /* Premium CTA Button */
+    .btn-cta-premium {
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      color: #fff;
+      transition: all 0.3s ease;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .btn-cta-premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(79, 70, 229, 0.5), 0 0 60px rgba(6, 182, 212, 0.3);
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(6, 182, 212, 0.4);
+      }
+    }
+
+    .card-glow {
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-glow:hover {
+      box-shadow: 0 20px 50px -12px rgba(79, 70, 229, 0.2);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px);
+    }
+    /* Glow Blobs */
+    .blob {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(106, 26, 140, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      filter: blur(80px);
+      animation: float 20s infinite alternate;
+      pointer-events: none;
+    }
+
+    .blob-secondary {
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
+      width: 600px;
+      height: 600px;
+      animation-delay: -5s;
+      animation-duration: 25s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(10%, 10%) scale(1.1); }
+      66% { transform: translate(-5%, 15%) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+  </style>
+
 </head>
-<body class="font-inter bg-gradient-to-b from-purpleDeep to-purpleMid text-gray-50">
+
+<body class="font-inter bg-purpleDeep text-gray-50 overflow-x-hidden">
+
+  <!-- Glow Blobs Background -->
+  <div class="blob top-[-10%] left-[-10%]"></div>
+  <div class="blob blob-secondary bottom-[-10%] right-[-10%]"></div>
 
   <!-- NAVBAR -->
-  <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-sm border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 text-white">
-        <span class="p-2 rounded-lg bg-white/5"><i class="fa-solid fa-check-double text-primary"></i></span>
-        <span class="font-semibold text-lg">Kolay İş Takip</span>
-      </a>
+  <header class="sticky top-0 z-50 transition-all duration-300" id="mainHeader">
+    <div class="container mx-auto px-6 lg:px-12">
+      <div
+        class="flex items-center justify-between py-5 backdrop-blur-2xl bg-gradient-to-r from-black/40 via-purpleDeep/30 to-black/40 rounded-2xl border border-white/10 shadow-2xl mt-4 px-6">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 text-white no-underline group">
+          <span
+            class="p-2.5 rounded-xl glass card-glow relative overflow-hidden group-hover:scale-110 transition-transform duration-300">
+            <i class="fa-solid fa-check-double text-primary text-lg relative z-10"></i>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-primary/20 to-cyanAccent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </span>
+          <span class="font-bold text-xl tracking-tight">Kolay İş Takip</span>
+        </a>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm">
-        
-        <a href="index.html#features">Özellikler</a>
-        <a href="index.html#pricing">Fiyatlar</a>
-        <a href="sektorler.html">Sektörler</a>
-        <a href="about.html">Hakkımızda</a>
-         <a href="career.html">Kariyer</a>
-        <a href="blog.html" class="text-cyanAccent font-semibold">Blog</a>
-        <a href="contact.html">İletişim</a>
-      
-      </nav>
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <a href="index.html#features" class="nav-link-premium">Özellikler</a>
+          <a href="index.html#pricing" class="nav-link-premium">Fiyatlar</a>
+          <a href="sektorler.html" class="nav-link-premium">Sektörler</a>
+          <a href="about.html" class="nav-link-premium">Hakkımızda</a>
+          <a href="career.html" class="nav-link-premium">Kariyer</a>
+          <a href="blog.html" class="nav-link-premium">Blog</a>
+          <a href="contact.html" class="nav-link-premium">İletişim</a>
+        </nav>
 
-      <a href="login.html" class="px-4 py-2 rounded-lg bg-white/10 hidden md:block">Giriş Yap</a>
-      <button id="mobileBtn" class="md:hidden p-2 bg-white/10 rounded-lg"><i class="fa-solid fa-bars"></i></button>
+        <!-- CTA Buttons -->
+        <div class="flex items-center gap-3">
+          <a href="login.html"
+            class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium glass border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-300">
+            <i class="fa-solid fa-arrow-right-to-bracket text-primary"></i>
+            Giriş Yap
+          </a>
+          <a href="login.html"
+            class="btn-cta-premium inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold shadow-2xl relative overflow-hidden group">
+            <span class="relative z-10">Ücretsiz Deneme</span>
+            <i class="fa-solid fa-sparkles relative z-10 group-hover:rotate-12 transition-transform duration-300"></i>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-cyanAccent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+          </a>
+
+          <!-- Mobile Menu Button -->
+          <button id="mobileBtn"
+            class="lg:hidden p-2.5 rounded-xl glass border border-white/10 hover:border-white/20 transition-all">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div id="mobileMenu" class="hidden md:hidden px-6 pb-6">
-      <div class="flex flex-col gap-3">
-        <a href="index.html">Ana Sayfa</a>
-        <a href="index.html#features">Özellikler</a>
-        <a href="index.html#pricing">Fiyatlar</a>
-        <a href="sektorler.html">Sektörler</a>
-        <a href="about.html">Hakkımızda</a>
-        <a href="contact.html">İletişim</a>
-        <a href="blog.html" class="text-cyanAccent">Blog</a>
-        <a href="career.html">Kariyer</a>
-        <a href="login.html">Giriş Yap</a>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="lg:hidden px-6 pb-6 hidden">
+      <div class="backdrop-blur-2xl bg-black/40 rounded-2xl border border-white/10 mt-2 p-4 flex flex-col gap-2">
+        <a href="index.html#features" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Özellikler</a>
+        <a href="index.html#pricing" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Fiyatlar</a>
+        <a href="sektorler.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Sektörler</a>
+        <a href="about.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Hakkımızda</a>
+        <a href="contact.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">İletişim</a>
+        <a href="blog.html" class="block py-3 px-4 rounded-xl hover:bg-white/5 transition-all">Blog</a>
+        <div class="h-px bg-white/10 my-2"></div>
+        <a href="login.html" class="block py-3 px-4 rounded-xl bg-white/5 font-medium text-center">Giriş Yap</a>
       </div>
     </div>
   </header>
@@ -92,49 +247,140 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="bg-black/60 py-12 border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-4 gap-12 text-gray-300">
+  <!-- PREMIUM FOOTER -->
+  <footer class="relative mt-20 pb-12 overflow-hidden" id="footer">
+    <!-- Background Blobs -->
+    <div class="absolute -left-24 bottom-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute -right-24 top-0 w-96 h-96 bg-cyanAccent/10 rounded-full blur-[100px] pointer-events-none">
+    </div>
 
-      <div>
-        <h3 class="text-white font-semibold mb-2">Kolay İş Takip</h3>
-        <p class="text-sm">Küçük işletmelerin dijital dönüşüm ortağı.</p>
-        <div class="flex gap-3 mt-4">
-          <a href="#" class="p-2 rounded bg-white/10 hover:bg-white/20 transition"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://x.com/Kolayistakip_" target="_blank" class="p-2 rounded bg-white/10 hover:bg-white/20 transition"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#" class="p-2 rounded bg-white/10 hover:bg-white/20 transition"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="https://www.youtube.com/@kolayistakip" target="_blank" class="p-2 rounded bg-white/10 hover:bg-white/20 transition"><i class="fa-brands fa-youtube"></i></a>
+    <div class="container mx-auto px-6 lg:px-12 relative z-10">
+      <div class="glass p-12 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden group">
+        <!-- Noise Overlay -->
+        <div
+          class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]">
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+          <!-- Brand Column -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            <a href="index.html" class="flex items-center gap-3 text-white no-underline group/logo">
+              <span
+                class="p-2.5 rounded-xl glass card-glow relative overflow-hidden group-hover/logo:scale-105 transition-transform duration-300">
+                <i class="fa-solid fa-check-double text-primary text-xl relative z-10"></i>
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-primary/20 to-cyanAccent/20 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-300">
+                </div>
+              </span>
+              <span class="font-bold text-2xl tracking-tight">Kolay İş Takip</span>
+            </a>
+            <p class="text-gray-400 leading-relaxed text-lg">
+              Küçük işletmelerin dijital dönüşüm ortağı. İşlerinizi kolaylaştırın, verimliliğinizi anlık olarak artırın.
+            </p>
+            <!-- Social Links -->
+            <div class="flex gap-4 mt-2">
+              <a href="#"
+                class="w-12 h-12 rounded-xl glass border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group/social">
+                <i class="fa-brands fa-instagram text-xl group-hover/social:scale-110 transition-transform"></i>
+              </a>
+              <a href="https://x.com/Kolayistakip_" target="_blank" rel="noopener noreferrer"
+                class="w-12 h-12 rounded-xl glass border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-cyanAccent/50 hover:bg-cyanAccent/10 transition-all duration-300 group/social">
+                <i class="fa-brands fa-x-twitter text-xl group-hover/social:scale-110 transition-transform"></i>
+              </a>
+              <a href="#"
+                class="w-12 h-12 rounded-xl glass border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group/social">
+                <i class="fa-brands fa-linkedin-in text-xl group-hover/social:scale-110 transition-transform"></i>
+              </a>
+              <a href="https://www.youtube.com/@kolayistakip" target="_blank" rel="noopener noreferrer"
+                class="w-12 h-12 rounded-xl glass border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-red-500/50 hover:bg-red-500/10 transition-all duration-300 group/social">
+                <i class="fa-brands fa-youtube text-xl group-hover/social:scale-110 transition-transform"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="lg:col-span-2">
+            <h6 class="text-white font-bold text-lg mb-6">Hızlı Erişim</h6>
+            <ul class="space-y-4">
+              <li><a href="index.html#features"
+                  class="text-gray-400 hover:text-cyanAccent transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-cyanAccent opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Özellikler</a>
+              </li>
+              <li><a href="index.html#pricing"
+                  class="text-gray-400 hover:text-cyanAccent transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-cyanAccent opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Fiyatlar</a>
+              </li>
+              <li><a href="login.html"
+                  class="text-gray-400 hover:text-cyanAccent transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-cyanAccent opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Giriş
+                  Yap</a></li>
+              <li><a href="login.html"
+                  class="text-gray-400 hover:text-cyanAccent transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-cyanAccent opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Kayıt
+                  Ol</a></li>
+            </ul>
+          </div>
+
+          <!-- Corporate Links -->
+          <div class="lg:col-span-2">
+            <h6 class="text-white font-bold text-lg mb-6">Kurumsal</h6>
+            <ul class="space-y-4">
+              <li><a href="about.html"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Hakkımızda</a>
+              </li>
+              <li><a href="contact.html"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover/link:opacity-100 transition-opacity"></span>İletişim</a>
+              </li>
+              <li><a href="blog.html"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Blog</a>
+              </li>
+              <li><a href="career.html"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center gap-2 group/link"><span
+                    class="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover/link:opacity-100 transition-opacity"></span>Kariyer</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Newsletter Column -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            <h6 class="text-white font-bold text-lg mb-2">Bültenimize Abone Olun</h6>
+            <p class="text-gray-400 text-sm">Gelişmelerden ve özel fırsatlardan haberdar olun.</p>
+            <form class="flex flex-col gap-3" onsubmit="event.preventDefault(); alert('Teşekkürler! Abone oldunuz.');">
+              <div class="relative group/input">
+                <input type="email" placeholder="E-posta adresiniz" required
+                  class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all duration-300" />
+                <div
+                  class="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/20 to-cyanAccent/20 opacity-0 group-focus-within/input:opacity-100 blur transition-opacity pointer-events-none">
+                </div>
+              </div>
+              <button
+                class="btn-cta-premium w-full py-4 rounded-xl font-bold text-lg shadow-xl relative overflow-hidden group/btn">
+                <span class="relative z-10">Hemen Katıl</span>
+                <i
+                  class="fa-solid fa-paper-plane relative z-10 ml-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div
+          class="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+          <div class="flex flex-wrap justify-center gap-6 text-sm">
+            <a href="kullanim-sartlari.html" class="text-gray-500 hover:text-white transition-colors">Kullanım
+              Şartları</a>
+            <a href="gizlilik-politikasi.html" class="text-gray-500 hover:text-white transition-colors">Gizlilik
+              Politikası</a>
+            <a href="kvkk.html" class="text-gray-500 hover:text-white transition-colors">KVKK</a>
+          </div>
+          <div class="text-gray-500 text-sm font-medium">
+            &copy; 2024 <span class="text-white">Kolay İş Takip</span>. Tüm hakları saklıdır.
+          </div>
         </div>
       </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Hızlı Erişim</h4>
-        <ul class="text-sm space-y-1">
-          <li><a href="index.html">Ana Sayfa</a></li>
-          <li><a href="index.html#features">Özellikler</a></li>
-          <li><a href="index.html#pricing">Fiyatlar</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Kurumsal</h4>
-        <ul class="text-sm space-y-1">
-          <li><a href="about.html">Hakkımızda</a></li>
-          <li><a href="contact.html">İletişim</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="career.html">Kariyer</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-semibold mb-2">Bülten</h4>
-        <p class="text-sm mb-3">Yeniliklerden haberdar olun.</p>
-        <form onsubmit="event.preventDefault(); alert('Teşekkürler!');" class="flex gap-2">
-          <input class="flex-1 px-3 py-2 bg-white/10 rounded-lg" placeholder="E-posta" />
-          <button class="px-4 py-2 bg-primary rounded-lg">Gönder</button>
-        </form>
-      </div>
-
     </div>
   </footer>
 
@@ -181,4 +427,5 @@
   </script>
 
 </body>
+
 </html>

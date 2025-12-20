@@ -34,37 +34,43 @@ const SubscriptionWarning = {
     },
 
     showWarning: function (daysLeft, type) {
-        // Create warning banner if it doesn't exist
+        // Find sidebar header (where logo is)
+        const sidebarHeader = document.querySelector('.sidebar-header');
+        if (!sidebarHeader) return;
+
+        // Create warning element if it doesn't exist
         let banner = document.getElementById('subscriptionWarning');
         if (!banner) {
             banner = document.createElement('div');
             banner.id = 'subscriptionWarning';
             banner.className = 'subscription-warning';
-            document.body.insertBefore(banner, document.body.firstChild);
+            // Insert at the very top of sidebar header
+            sidebarHeader.insertBefore(banner, sidebarHeader.firstChild);
         }
 
-        // Set warning message
-        const message = type === 'trial'
-            ? `⚠️ Deneme süreniz ${daysLeft} gün içinde dolacak!`
-            : `⚠️ Aboneliğiniz ${daysLeft} gün içinde sona erecek!`;
+        // Set mini-warning message
+        const message = `${daysLeft} Gün Kaldı`;
 
         banner.innerHTML = `
-            <i class="fa-solid fa-exclamation-triangle"></i>
-            <span>${message}</span>
-            <button class="renew-btn" onclick="window.location.href='index.html#pricing'">
-                Hemen Yenile
-            </button>
+            <div class="warning-pill-mini">
+                <i class="fa-solid fa-clock"></i>
+                <span>${message}</span>
+                <button class="renew-btn-mini" onclick="window.location.href='index.html#pricing'" title="Hemen Yenile">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+            </div>
         `;
 
-        banner.classList.add('show');
-        document.body.classList.add('has-warning');
+        // Slight delay to ensure animation works if just created
+        setTimeout(() => {
+            banner.classList.add('show');
+        }, 100);
     },
 
     hideWarning: function () {
         const banner = document.getElementById('subscriptionWarning');
         if (banner) {
             banner.classList.remove('show');
-            document.body.classList.remove('has-warning');
         }
     }
 };

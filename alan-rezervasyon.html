@@ -222,7 +222,8 @@
         <span class='text-cyanAccent font-bold'>${area.alan_no}</span> |
         ${formatType(area.alan_tipi)} |
         ${area.alan_buyukluk || '-'} |
-        ${formatPrice(area.fiyat_miktar, area.para_birimi)} (${formatType(area.fiyat_tipi)})`;
+        ${formatPrice(area.fiyat_miktar, area.para_birimi)} (${formatType(area.fiyat_tipi)})
+        ${area.aciklama ? `<div class='text-xs text-white mt-2 italic flex items-center gap-1'><i class='fas fa-info-circle text-cyanAccent'></i> ${area.aciklama}</div>` : ''}`;
 
       if (area.kroki_url) {
         document.getElementById('krokiImage').src = area.kroki_url;

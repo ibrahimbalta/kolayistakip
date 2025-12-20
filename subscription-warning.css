@@ -1,105 +1,100 @@
-/* Subscription Warning Banner */
+/* Subscription Warning - Mini Sidebar Badge Style */
 .subscription-warning {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-    padding: 12px 20px;
-    text-align: center;
-    font-weight: 600;
-    z-index: 9999;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    display: none;
-    animation: slideDown 0.3s ease;
+    margin-bottom: 12px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%;
 }
 
 .subscription-warning.show {
-    display: block;
+    opacity: 1;
+    max-height: 50px;
+    margin-top: 5px;
 }
 
-.subscription-warning i {
-    margin-right: 8px;
-}
-
-.subscription-warning .renew-btn {
-    background: white;
-    color: #d97706;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 6px;
+.warning-pill-mini {
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
     font-weight: 700;
-    margin-left: 15px;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.warning-pill-mini i {
+    font-size: 0.8rem;
+    margin-right: 6px;
+    opacity: 0.9;
+}
+
+.warning-pill-mini span {
+    flex-grow: 1;
+    white-space: nowrap;
+}
+
+.renew-btn-mini {
+    background: white;
+    color: #ea580c;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: all 0.2s;
+    margin-left: 8px;
+    padding: 0;
 }
 
-.subscription-warning .renew-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.renew-btn-mini i {
+    font-size: 0.7rem;
+    margin: 0;
 }
 
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.renew-btn-mini:hover {
+    transform: scale(1.1);
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
-/* Adjust dashboard layout when warning is shown */
-body.has-warning .dashboard-layout {
-    margin-top: 48px;
-    height: calc(100vh - 48px);
-}
-
-/* Mobile responsive for subscription warning */
+/* Tablet and Mobile Sidebar Alignment */
 @media (max-width: 1024px) {
+    .sidebar-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+
     .subscription-warning {
-        padding: 6px 10px;
-        font-size: 0.75rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
+        order: -1;
+        /* Keep it above the logo on mobile sidebar */
+        margin-bottom: 5px;
+        width: auto;
     }
 
-    .subscription-warning i {
-        margin-right: 4px;
-        font-size: 0.8rem;
-    }
-
-    .subscription-warning .renew-btn {
+    .warning-pill-mini {
         padding: 4px 10px;
         font-size: 0.7rem;
-        margin-left: 0;
     }
 
-    body.has-warning .dashboard-layout {
-        margin-top: 36px;
-        height: calc(100vh - 36px);
+    .renew-btn-mini {
+        width: 20px;
+        height: 20px;
     }
 }
 
+/* Very Small Screens */
 @media (max-width: 480px) {
-    .subscription-warning {
-        padding: 5px 8px;
-        font-size: 0.7rem;
-    }
-
-    .subscription-warning .renew-btn {
-        padding: 3px 8px;
+    .warning-pill-mini span {
         font-size: 0.65rem;
-    }
-
-    body.has-warning .dashboard-layout {
-        margin-top: 32px;
-        height: calc(100vh - 32px);
     }
 }

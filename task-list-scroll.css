@@ -1,33 +1,29 @@
 /* Scrollable Task List Feature */
-.task-list {
-    max-height: 600px;
+.task-grid-premium {
+    max-height: calc(100vh - 420px);
     overflow-y: auto;
     padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
 }
 
 /* Custom scrollbar for task list */
-.task-list::-webkit-scrollbar {
-    width: 8px;
+.task-grid-premium::-webkit-scrollbar {
+    width: 6px;
 }
 
-.task-list::-webkit-scrollbar-track {
+.task-grid-premium::-webkit-scrollbar-track {
     background: #f1f5f9;
     border-radius: 10px;
 }
 
-.task-list::-webkit-scrollbar-thumb {
+.task-grid-premium::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
 
-.task-list::-webkit-scrollbar-thumb:hover {
+.task-grid-premium::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
-}
-
-/* For Firefox */
-.task-list {
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
 }
 
 /* Scrollable Employee List Feature */

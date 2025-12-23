@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görevlerim - Kolay İş Takip</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Floating Background Elements */
+        .bg-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-blob-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-blob-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Card */
+        .header-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .employee-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .employee-dept {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+
+        .stat-value.pending {
+            color: #fbbf24;
+        }
+
+        .stat-value.completed {
+            color: #34d399;
+        }
+
+        .stat-value.overdue {
+            color: #f87171;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* Performance Bar */
+        .performance-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .performance-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .performance-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #34d399, #22d3ee);
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Tasks Section */
+        .tasks-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .refresh-btn.spinning i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Task Card */
+        .task-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-left: 4px solid #6366f1;
+        }
+
+        .task-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-card.completed {
+            opacity: 0.7;
+            border-left-color: #10b981;
+        }
+
+        .task-card.completed .task-desc {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+
+        .task-card.overdue {
+            border-left-color: #ef4444;
+        }
+
+        .task-card.high-priority {
+            border-left-color: #ef4444;
+        }
+
+        .task-card.low-priority {
+            border-left-color: #22c55e;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.priority-high {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .badge.priority-medium {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        .badge.priority-low {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .badge.overdue {
+            background: #fef2f2;
+            color: #dc2626;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .task-desc {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1f2937;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .meta-item i {
+            font-size: 0.7rem;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .complete-btn {
+            flex: 1;
+            padding: 0.65rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .complete-btn.pending {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .complete-btn.completed {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .complete-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .complete-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        /* Loading & Error States */
+        .loading-state {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        .error-state {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .error-state i {
+            font-size: 2.5rem;
+            color: #f87171;
+            margin-bottom: 1rem;
+        }
+
+        /* Success Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .employee-name {
+                font-size: 1.25rem;
+            }
+
+            .avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Blobs -->
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+
+    <div class="container">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Görevleriniz yükleniyor...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h3>Hata</h3>
+            <p id="errorMessage">Bir hata oluştu.</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" style="display: none;">
+            <!-- Header Card -->
+            <div class="header-card">
+                <div id="avatar" class="avatar"></div>
+                <div id="employeeName" class="employee-name"></div>
+                <div id="employeeDept" class="employee-dept"></div>
+                <div id="companyBadge" class="company-badge">
+                    <i class="fa-solid fa-building"></i>
+                    <span id="companyName"></span>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div id="pendingCount" class="stat-value pending">0</div>
+                    <div class="stat-label">Bekleyen</div>
+                </div>
+                <div class="stat-card">
+                    <div id="completedCount" class="stat-value completed">0</div>
+                    <div class="stat-label">Tamamlanan</div>
+                </div>
+                <div class="stat-card">
+                    <div id="overdueCount" class="stat-value overdue">0</div>
+                    <div class="stat-label">Gecikmiş</div>
+                </div>
+            </div>
+
+            <!-- Performance Section -->
+            <div class="performance-section">
+                <div class="performance-header">
+                    <span class="performance-label">
+                        <i class="fa-solid fa-chart-line"></i> Performans Skoru
+                    </span>
+                    <span id="performanceValue" class="performance-value">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Pending Tasks -->
+            <div class="tasks-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="fa-solid fa-clock"></i>
+                        Bekleyen Görevler
+                        <span id="pendingTaskCount" class="task-count">0</span>
+                    </div>
+                    <button class="refresh-btn" onclick="refreshTasks()">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        Yenile
+                    </button>
+                </div>
+                <div id="pendingTasksList"></div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="tasks-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Tamamlanan Görevler
+                        <span id="completedTaskCount" class="task-count">0</span>
+                    </div>
+                </div>
+                <div id="completedTasksList"></div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>
+                    <i class="fa-solid fa-bolt"></i>
+                    <a href="https://kolayistakip.com" target="_blank">Kolay İş Takip</a> ile güçlendirildi
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastMessage">İşlem başarılı!</span>
+    </div>
+
+    <!-- Confetti Container -->
+    <canvas id="confetti" class="confetti"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        const supabaseClient = window.supabase;
+
+        let currentEmployee = null;
+        let tasks = [];
+        let employeeToken = null;
+
+        // Initialize
+        async function init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            employeeToken = urlParams.get('token');
+
+            if (!employeeToken) {
+                showError('Geçersiz paylaşım linki. Lütfen yöneticinizden yeni bir link isteyin.');
+                return;
+            }
+
+            try {
+                // Load employee by token
+                const { data: employee, error: empError } = await supabaseClient
+                    .from('employees')
+                    .select('*')
+                    .eq('share_token', employeeToken)
+                    .single();
+
+                if (empError || !employee) {
+                    showError('Çalışan bulunamadı. Link geçersiz olabilir.');
+                    return;
+                }
+
+                currentEmployee = employee;
+
+                // Load tasks for this employee
+                await loadTasks();
+
+                // Render UI
+                renderHeader();
+                renderStats();
+                renderTasks();
+
+                // Show content
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+
+            } catch (error) {
+                console.error('Init error:', error);
+                showError('Veriler yüklenirken bir hata oluştu.');
+            }
+        }
+
+        async function loadTasks() {
+            const { data, error } = await supabaseClient
+                .from('tasks')
+                .select('*')
+                .eq('employee_id', currentEmployee.id)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error loading tasks:', error);
+                return;
+            }
+
+            tasks = data || [];
+        }
+
+        function renderHeader() {
+            const initials = currentEmployee.name.split(' ')
+                .map(n => n[0])
+                .join('')
+                .substring(0, 2)
+                .toUpperCase();
+
+            document.getElementById('avatar').textContent = initials;
+            document.getElementById('employeeName').textContent = currentEmployee.name;
+            document.getElementById('employeeDept').textContent = 'Çalışan';
+
+            // Try to get company name from user (if available)
+            document.getElementById('companyName').textContent = 'Kolay İş Takip';
+        }
+
+        function renderStats() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const pending = tasks.filter(t => !t.completed);
+            const completed = tasks.filter(t => t.completed);
+            const overdue = pending.filter(t => {
+                if (!t.deadline) return false;
+                const deadline = new Date(t.deadline);
+                return deadline < today;
+            });
+
+            document.getElementById('pendingCount').textContent = pending.length;
+            document.getElementById('completedCount').textContent = completed.length;
+            document.getElementById('overdueCount').textContent = overdue.length;
+
+            // Performance
+            const total = tasks.length;
+            const score = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+
+            document.getElementById('performanceValue').textContent = score + '%';
+            document.getElementById('progressFill').style.width = score + '%';
+
+            // Update performance color based on score
+            const perfValue = document.getElementById('performanceValue');
+            if (score >= 80) {
+                perfValue.style.color = '#34d399';
+            } else if (score >= 50) {
+                perfValue.style.color = '#fbbf24';
+            } else {
+                perfValue.style.color = '#f87171';
+            }
+        }
+
+        function renderTasks() {
+            const pendingTasks = tasks.filter(t => !t.completed);
+            const completedTasks = tasks.filter(t => t.completed);
+
+            document.getElementById('pendingTaskCount').textContent = pendingTasks.length;
+            document.getElementById('completedTaskCount').textContent = completedTasks.length;
+
+            const pendingContainer = document.getElementById('pendingTasksList');
+            const completedContainer = document.getElementById('completedTasksList');
+
+            if (pendingTasks.length === 0) {
+                pendingContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-party-horn"></i>
+                        <p>Tüm görevlerin tamamlandı! 🎉</p>
+                    </div>
+                `;
+            } else {
+                pendingContainer.innerHTML = pendingTasks.map(task => createTaskCard(task)).join('');
+            }
+
+            if (completedTasks.length === 0) {
+                completedContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        <p>Henüz tamamlanan görev yok.</p>
+                    </div>
+                `;
+            } else {
+                completedContainer.innerHTML = completedTasks.slice(0, 5).map(task => createTaskCard(task)).join('');
+
+                if (completedTasks.length > 5) {
+                    completedContainer.innerHTML += `
+                        <div style="text-align: center; padding: 1rem; color: rgba(255,255,255,0.6); font-size: 0.85rem;">
+                            +${completedTasks.length - 5} tamamlanmış görev daha
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function createTaskCard(task) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const isOverdue = !task.completed && task.deadline && new Date(task.deadline) < today;
+            const priority = task.priority || 'medium';
+
+            let priorityBadge = '';
+            if (priority === 'high') {
+                priorityBadge = '<span class="badge priority-high">🔴 Yüksek</span>';
+            } else if (priority === 'low') {
+                priorityBadge = '<span class="badge priority-low">🟢 Düşük</span>';
+            }
+
+            const overdueBadge = isOverdue ? '<span class="badge overdue">⚠️ Gecikmiş</span>' : '';
+
+            let cardClass = 'task-card';
+            if (task.completed) cardClass += ' completed';
+            if (isOverdue) cardClass += ' overdue';
+            if (priority === 'high') cardClass += ' high-priority';
+            if (priority === 'low') cardClass += ' low-priority';
+
+            const deadlineText = task.deadline
+                ? new Date(task.deadline).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })
+                : '';
+
+            const customerText = task.customer_name || '';
+
+            return `
+                <div class="${cardClass}" data-task-id="${task.id}">
+                    <div class="task-header">
+                        <div class="task-badges">
+                            ${priorityBadge}
+                            ${overdueBadge}
+                        </div>
+                    </div>
+                    <div class="task-desc">${escapeHtml(task.description)}</div>
+                    <div class="task-meta">
+                        ${deadlineText ? `
+                            <div class="meta-item">
+                                <i class="fa-solid fa-calendar-day"></i>
+                                ${deadlineText}
+                            </div>
+                        ` : ''}
+                        ${customerText ? `
+                            <div class="meta-item">
+                                <i class="fa-solid fa-building"></i>
+                                ${escapeHtml(customerText)}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="task-actions">
+                        <button class="complete-btn ${task.completed ? 'completed' : 'pending'}" 
+                                onclick="toggleTask('${task.id}')"
+                                ${task.isUpdating ? 'disabled' : ''}>
+                            <i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}"></i>
+                            ${task.completed ? 'Geri Al' : 'Tamamla'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function toggleTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            // Disable button
+            const card = document.querySelector(`[data-task-id="${taskId}"]`);
+            const btn = card.querySelector('.complete-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+
+            try {
+                // Use the secure function
+                const { data, error } = await supabaseClient.rpc('complete_task_by_employee', {
+                    p_task_id: taskId,
+                    p_employee_token: employeeToken
+                });
+
+                if (error) throw error;
+
+                if (!data) {
+                    throw new Error('İşlem başarısız oldu.');
+                }
+
+                // Update local state
+                task.completed = !task.completed;
+                task.completed_at = task.completed ? new Date().toISOString() : null;
+
+                // Re-render
+                renderStats();
+                renderTasks();
+
+                // Show success
+                if (task.completed) {
+                    showToast('Görev tamamlandı! 🎉');
+                    triggerConfetti();
+                } else {
+                    showToast('Görev beklemeye alındı.');
+                }
+
+            } catch (error) {
+                console.error('Error toggling task:', error);
+                showToast('Bir hata oluştu. Lütfen tekrar deneyin.');
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}"></i> ${task.completed ? 'Geri Al' : 'Tamamla'}`;
+            }
+        }
+
+        async function refreshTasks() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('spinning');
+            btn.disabled = true;
+
+            await loadTasks();
+            renderStats();
+            renderTasks();
+
+            setTimeout(() => {
+                btn.classList.remove('spinning');
+                btn.disabled = false;
+                showToast('Görevler güncellendi.');
+            }, 500);
+        }
+
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Simple confetti effect
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#22d3ee'];
+
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: -10,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: Math.random() * 3 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            let frame = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.1;
+                    p.rotation += 5;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                frame++;
+                if (frame < 120) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            animate();
+        }
+
+        // Initialize the page
+        init();
+    </script>
+</body>
+
+</html>

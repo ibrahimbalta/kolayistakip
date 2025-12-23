@@ -329,7 +329,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: emp.id,
             name: emp.name,
             phone: emp.phone,
-            department_id: emp.department_id
+            department_id: emp.department_id,
+            share_token: emp.share_token
         }));
 
         console.log('Mapped employees:', employees);
@@ -960,6 +961,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // Share Employee Tasks Link
+    window.shareEmployeeTasksLink = async function (employee) {
+        try {
+            let shareToken = employee.share_token;
+
+            // Generate token if not exists
+            if (!shareToken) {
+                shareToken = crypto.randomUUID();
+
+                const { error } = await supabase
+                    .from('employees')
+                    .update({ share_token: shareToken })
+                    .eq('id', employee.id);
+
+                if (error) throw error;
+
+                // Update local employee object
+                employee.share_token = shareToken;
+            }
+
+            // Generate share URL
+            const baseUrl = window.location.origin;
+            const shareUrl = `${baseUrl}/employee-tasks.html?token=${shareToken}`;
+
+            // Copy to clipboard
+            await navigator.clipboard.writeText(shareUrl);
+
+            // Prompt for WhatsApp share
+            const message = `📋 Görevleriniz\n\nMerhaba ${employee.name},\n\nGörevlerinizi bu linkten takip edebilirsiniz:\n${shareUrl}\n\n✅ Görevleri tamamladıkça işaretleyebilirsiniz.\n\nKolay İş Takip`;
+
+            const sendWhatsApp = confirm(`Link kopyalandı! 📋\n\n${employee.name} için görev takip linki:\n${shareUrl}\n\nWhatsApp ile göndermek ister misiniz?`);
+
+            if (sendWhatsApp && employee.phone) {
+                const phone = employee.phone.startsWith('0')
+                    ? '90' + employee.phone.substring(1)
+                    : (employee.phone.startsWith('90') || employee.phone.startsWith('+90')
+                        ? employee.phone.replace('+', '')
+                        : '90' + employee.phone);
+                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+            }
+
+        } catch (error) {
+            console.error('Error sharing employee tasks link:', error);
+            alert('Link oluşturulurken bir hata oluştu.');
+        }
+    };
+
     function renderEmployees() {
         if (!employeeCardsGrid) return;
         employeeCardsGrid.innerHTML = '';
@@ -1068,6 +1116,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>
 
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <button class="btn-share-tasks" style="flex: 1; padding: 0.5rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(99,102,241,0.3);"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)';"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(99,102,241,0.3)';">
+                        <i class="fa-solid fa-share-nodes"></i> Görevler Linki
+                    </button>
+                </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn-edit-emp" style="flex: 1; padding: 0.5rem; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;"
                         onmouseover="this.style.background='#3b82f6'; this.style.color='white'; this.style.borderColor='#3b82f6';"
@@ -1087,6 +1142,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             `;
 
+            card.querySelector('.btn-share-tasks').addEventListener('click', (e) => {
+                e.stopPropagation();
+                shareEmployeeTasksLink(emp);
+            });
             card.querySelector('.btn-edit-emp').addEventListener('click', (e) => {
                 e.stopPropagation();
                 showEditEmployeeModal(emp);

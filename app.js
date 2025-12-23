@@ -832,6 +832,119 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('editEmployeeForm').reset();
     };
 
+    // --- Add Task From Employee Modal Functions ---
+    window.showAddTaskFromEmployeeModal = function (employee) {
+        const modal = document.getElementById('addTaskFromEmployeeModal');
+
+        // Store employee id
+        document.getElementById('addTaskFromEmployeeId').value = employee.id;
+
+        // Set employee info in banner
+        const initials = employee.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        document.getElementById('selectedEmployeeAvatar').textContent = initials;
+        document.getElementById('selectedEmployeeName').textContent = employee.name;
+
+        // Get department name
+        const department = employee.department_id ? departments.find(d => d.id === employee.department_id) : null;
+        const deptName = department ? department.name : 'Genel';
+        document.getElementById('selectedEmployeeDept').textContent = deptName;
+
+        // Update modal title
+        document.getElementById('addTaskFromEmployeeTitle').textContent = `${employee.name} - Yeni Görev`;
+
+        // Populate customer dropdown
+        const customerSelect = document.getElementById('addTaskFromEmployeeCustomer');
+        customerSelect.innerHTML = '<option value="">Müşteri Seçin...</option>';
+        customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.id;
+            option.textContent = `${customer.name} (${customer.email})`;
+            customerSelect.appendChild(option);
+        });
+
+        // Reset form fields
+        document.getElementById('addTaskFromEmployeeDesc').value = '';
+        document.getElementById('addTaskFromEmployeePriority').value = 'medium';
+        document.getElementById('addTaskFromEmployeeDeadline').value = '';
+
+        // Show modal
+        modal.style.display = 'flex';
+    };
+
+    window.closeAddTaskFromEmployeeModal = function () {
+        document.getElementById('addTaskFromEmployeeModal').style.display = 'none';
+        document.getElementById('addTaskFromEmployeeForm').reset();
+    };
+
+    // Form submit handler for Add Task From Employee Modal
+    document.getElementById('addTaskFromEmployeeForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const empId = document.getElementById('addTaskFromEmployeeId').value;
+        const desc = document.getElementById('addTaskFromEmployeeDesc').value;
+        const priority = document.getElementById('addTaskFromEmployeePriority').value;
+        const customerId = document.getElementById('addTaskFromEmployeeCustomer').value || null;
+        const deadline = document.getElementById('addTaskFromEmployeeDeadline').value || null;
+
+        if (!empId || !desc) {
+            alert('Lütfen görev açıklaması girin.');
+            return;
+        }
+
+        const employee = employees.find(e => e.id == empId);
+        if (!employee) {
+            alert('Çalışan bulunamadı.');
+            return;
+        }
+
+        const customer = customerId ? customers.find(c => c.id == customerId) : null;
+
+        try {
+            const taskData = {
+                user_id: currentUser.id,
+                description: Security.sanitize(desc),
+                employee_id: employee.id,
+                employee_name: employee.name,
+                employee_phone: employee.phone,
+                completed: false,
+                priority: priority,
+                deadline: deadline
+            };
+
+            // Add customer info if selected
+            if (customer) {
+                taskData.customer_id = customer.id;
+                taskData.customer_name = customer.name;
+                taskData.customer_email = customer.email;
+            }
+
+            const { error } = await supabase
+                .from('tasks')
+                .insert([taskData]);
+
+            if (error) throw error;
+
+            // Close modal
+            closeAddTaskFromEmployeeModal();
+
+            // Reload tasks
+            await loadTasks();
+
+            // Show success message with WhatsApp option
+            const sendWhatsApp = confirm(`Görev başarıyla ${employee.name} adlı çalışana eklendi!\n\nWhatsApp ile bildirim göndermek ister misiniz?`);
+
+            if (sendWhatsApp && employee.phone) {
+                const message = `📋 Yeni Görev Atandı!\n\n${desc}${deadline ? '\n📅 Termin: ' + deadline : ''}${customer ? '\n👤 Müşteri: ' + customer.name : ''}\n\n✅ Tamamladığınızda bildiriniz.`;
+                const phone = employee.phone.startsWith('0') ? '90' + employee.phone.substring(1) : (employee.phone.startsWith('90') || employee.phone.startsWith('+90') ? employee.phone.replace('+', '') : '90' + employee.phone);
+                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+            }
+
+        } catch (error) {
+            console.error('Error adding task from employee modal:', error);
+            alert('Görev eklenirken bir hata oluştu.');
+        }
+    });
+
     window.deleteEmployee = async function (id) {
         try {
             const { error } = await supabase
@@ -974,7 +1087,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             `;
 
-            // Add event listeners
             card.querySelector('.btn-edit-emp').addEventListener('click', (e) => {
                 e.stopPropagation();
                 showEditEmployeeModal(emp);
@@ -982,6 +1094,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.querySelector('.btn-delete-emp').addEventListener('click', (e) => {
                 e.stopPropagation();
                 deleteEmployee(emp.id);
+            });
+
+            // Click on card body to open add task modal
+            card.addEventListener('click', () => {
+                showAddTaskFromEmployeeModal(emp);
             });
 
             employeeCardsGrid.appendChild(card);

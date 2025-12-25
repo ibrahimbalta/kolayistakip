@@ -506,72 +506,87 @@
             </section>
             <!-- VIEW: APPOINTMENTS -->
             <section id="view-appointments" class="view-section" style="display:none;">
-                <!-- Stats -->
-                <!-- Stats Modern Grid -->
-                <div class="dashboard-stats-grid" style="margin-bottom: 2rem;">
-                    <div class="stat-card-dash" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div>
-                                <div style="font-size: 0.8rem; opacity: 0.9; color: white;">Toplam Slot</div>
-                                <div class="stat-number" id="totalSlots"
-                                    style="color: white; font-size: 1.8rem; margin: 5px 0;">0</div>
-                            </div>
-                            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 12px;">
-                                <i class="fa-solid fa-calendar-lines" style="color: white; font-size: 1.2rem;"></i>
-                            </div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> Randevu Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Randevu slotlarını ve
+                            onayları takip edin.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openSlotModal()"
+                        style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+                        <i class="fa-solid fa-plus-circle"></i> Yeni Slot Ekle
+                    </button>
+                </div>
+
+                <!-- Stats Cards - Unified Design -->
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #3b82f6;" id="totalSlots">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">TOPLAM
+                                SLOT</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-calendar-lines" style="font-size: 1.1rem; color: #3b82f6;"></i>
                         </div>
                     </div>
-
-                    <div class="stat-card-dash" style="background: white; border: 1px solid var(--border);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--secondary);">Müsait</div>
-                                <div class="stat-number" id="availableSlots"
-                                    style="color: var(--success); font-size: 1.8rem; margin: 5px 0;">0</div>
-                            </div>
-                            <div style="background: #ecfdf5; padding: 10px; border-radius: 12px;">
-                                <i class="fa-solid fa-clock" style="color: var(--success); font-size: 1.2rem;"></i>
-                            </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #10b981;"
+                                id="availableSlots">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">MÜSAİT</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdf4; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-clock" style="font-size: 1.1rem; color: #10b981;"></i>
                         </div>
                     </div>
-
-                    <div class="stat-card-dash" style="background: white; border: 1px solid var(--border);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--secondary);">Onaylı</div>
-                                <div class="stat-number" id="reservedSlots"
-                                    style="color: var(--primary); font-size: 1.8rem; margin: 5px 0;">0</div>
-                            </div>
-                            <div style="background: #eef2ff; padding: 10px; border-radius: 12px;">
-                                <i class="fa-solid fa-calendar-check"
-                                    style="color: var(--primary); font-size: 1.2rem;"></i>
-                            </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #6366f1;"
+                                id="reservedSlots">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">ONAYLI</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eef2ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-calendar-check" style="font-size: 1.1rem; color: #6366f1;"></i>
                         </div>
                     </div>
-
-                    <div class="stat-card-dash" style="background: white; border: 1px solid var(--border);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--secondary);">Bekleyen Onay</div>
-                                <div class="stat-number" id="pendingApprovals"
-                                    style="color: #f59e0b; font-size: 1.8rem; margin: 5px 0;">0</div>
-                            </div>
-                            <div style="background: #fffbeb; padding: 10px; border-radius: 12px;">
-                                <i class="fa-solid fa-hourglass-half" style="color: #f59e0b; font-size: 1.2rem;"></i>
-                            </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #f59e0b;"
+                                id="pendingApprovals">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">BEKLEYEN</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fffbeb; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-hourglass-half" style="font-size: 1.1rem; color: #f59e0b;"></i>
                         </div>
                     </div>
-
-                    <div class="stat-card-dash" style="background: white; border: 1px solid var(--border);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <div>
-                                <div style="font-size: 0.8rem; color: var(--secondary);">Hatırlatma</div>
-                                <div class="stat-number" id="pendingReminders"
-                                    style="color: #ef4444; font-size: 1.8rem; margin: 5px 0;">0</div>
-                            </div>
-                            <div style="background: #fef2f2; padding: 10px; border-radius: 12px;">
-                                <i class="fa-solid fa-bell" style="color: #ef4444; font-size: 1.2rem;"></i>
-                            </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #ef4444;"
+                                id="pendingReminders">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">HATIRLATMA</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fef2f2; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-bell" style="font-size: 1.1rem; color: #ef4444;"></i>
                         </div>
                     </div>
                 </div>
@@ -693,136 +708,239 @@
 
             <!-- VIEW: PROPOSALS -->
             <section id="view-proposals" class="view-section" style="display:none;">
-                <div class="task-stats">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalProposals">0</div>
-                        <div class="stat-label">Toplam Teklif</div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-file-invoice-dollar" style="color: var(--primary);"></i> Teklif
+                            Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Müşterilere gönderilen
+                            teklifleri takip edin.</p>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="approvedProposals" style="color:var(--success);">0</div>
-                        <div class="stat-label">Onaylanan</div>
+                    <button onclick="openProposalModal()" class="btn btn-primary"
+                        style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+                        <i class="fa-solid fa-plus-circle"></i> Yeni Teklif
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #1f2937;"
+                                id="totalProposals">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">TOPLAM
+                                TEKLİF</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-file-lines" style="font-size: 1.1rem; color: #3b82f6;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="pendingProposals" style="color:var(--warning);">0</div>
-                        <div class="stat-label">Bekleyen</div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #10b981;"
+                                id="approvedProposals">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">ONAYLANAN</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdf4; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-circle-check" style="font-size: 1.1rem; color: #10b981;"></i>
+                        </div>
+                    </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #f59e0b;"
+                                id="pendingProposals">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">BEKLEYEN</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fffbeb; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-clock" style="font-size: 1.1rem; color: #f59e0b;"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="content-grid">
-                    <div class="card">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-                            <h2><i class="fa-solid fa-file-invoice-dollar" style="color: var(--primary);"></i> Teklifler
-                            </h2>
-                            <button onclick="openProposalModal()" class="btn btn-primary">
-                                <i class="fa-solid fa-plus"></i> Yeni Teklif
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Müşteri</th>
-                                        <th>Başlık</th>
-                                        <th>Tutar</th>
-                                        <th>Durum</th>
-                                        <th>Tarih</th>
-                                        <th>İşlemler</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="proposalListBody">
-                                    <tr>
-                                        <td colspan="6" style="text-align:center; color:var(--secondary);">Henüz teklif
-                                            yok.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                <!-- Table Card -->
+                <div class="card"
+                    style="border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Müşteri</th>
+                                    <th>Başlık</th>
+                                    <th>Tutar</th>
+                                    <th>Durum</th>
+                                    <th>Tarih</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="proposalListBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center; color:var(--secondary);">Henüz teklif yok.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
 
             <!-- VIEW: CUSTOMERS -->
             <section id="view-customers" class="view-section" style="display:none;">
-                <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-                        <h2><i class="fa-solid fa-user-group" style="color: var(--primary);"></i> Müşteri Listesi</h2>
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button onclick="exportCustomersToExcel()" class="btn"
-                                style="background: #10b981; color: white;">
-                                <i class="fa-solid fa-file-excel"></i> Excel İndir
-                            </button>
-                            <button onclick="exportCustomersToPDF()" class="btn"
-                                style="background: #ef4444; color: white;">
-                                <i class="fa-solid fa-file-pdf"></i> PDF İndir
-                            </button>
-                            <button onclick="showAddCustomerModal()" class="btn btn-primary">
-                                <i class="fa-solid fa-plus"></i> Yeni Müşteri
-                            </button>
-                        </div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-user-group" style="color: var(--primary);"></i> Müşteri Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Tüm müşterilerinizi
+                            görüntüleyin ve yönetin.</p>
                     </div>
-                    <!-- Customer Search Bar -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <div style="position: relative;">
-                            <i class="fa-solid fa-search"
-                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--secondary); font-size: 0.9rem;"></i>
-                            <input type="text" id="customerSearchInput"
-                                placeholder="Müşteri ara (isim, email, telefon, sektör...)" oninput="filterCustomers()"
-                                style="width: 100%; padding: 10px 10px 10px 38px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95rem;" />
-                        </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button onclick="exportCustomersToExcel()" class="btn"
+                            style="background: #10b981; color: white; padding: 0.6rem 1rem; font-size: 0.85rem;">
+                            <i class="fa-solid fa-file-excel"></i> Excel
+                        </button>
+                        <button onclick="exportCustomersToPDF()" class="btn"
+                            style="background: #ef4444; color: white; padding: 0.6rem 1rem; font-size: 0.85rem;">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </button>
+                        <button onclick="showAddCustomerModal()" class="btn btn-primary"
+                            style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+                            <i class="fa-solid fa-plus-circle"></i> Yeni Müşteri
+                        </button>
                     </div>
-                    <div id="customerCardsGrid"
-                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
-                        <!-- Customer cards will be rendered here -->
-                        <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
-                            <i class="fa-solid fa-user-group"
-                                style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
-                            <p>Henüz müşteri eklenmemiş.</p>
-                        </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div
+                    style="display: flex; gap: 0.75rem; align-items: center; padding: 0.75rem 1rem; background: #f8fafc; border-radius: 10px; border: 1px solid #e5e7eb; margin-bottom: 1.25rem;">
+                    <div style="position: relative; flex: 1; max-width: 400px;">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
+                        <input type="text" id="customerSearchInput"
+                            placeholder="Müşteri ara (isim, email, telefon, sektör...)" oninput="filterCustomers()"
+                            style="width: 100%; padding: 0.6rem 0.75rem 0.6rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.9rem; background: white;">
+                    </div>
+                </div>
+
+                <!-- Customer Cards Grid -->
+                <div id="customerCardsGrid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
+                        <i class="fa-solid fa-user-group" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
+                        <p>Henüz müşteri eklenmemiş.</p>
                     </div>
                 </div>
             </section>
 
             <!-- VIEW: EMPLOYEES -->
             <section id="view-employees" class="view-section" style="display:none;">
-                <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-                        <h2><i class="fa-solid fa-users" style="color: var(--primary);"></i> Çalışan Listesi</h2>
-                        <button onclick="showAddEmployeeModal()" class="btn btn-primary">
-                            <i class="fa-solid fa-plus"></i> Yeni Çalışan
-                        </button>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-users" style="color: var(--primary);"></i> Çalışan Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Ekibinizi görüntüleyin ve
+                            görev atayın.</p>
                     </div>
-                    <div id="employeeCardsGrid" class="employee-cards-grid">
-                        <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
-                            <i class="fa-solid fa-users" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
-                            <p>Henüz çalışan eklenmemiş.</p>
-                        </div>
+                    <button onclick="showAddEmployeeModal()" class="btn btn-primary"
+                        style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+                        <i class="fa-solid fa-plus-circle"></i> Yeni Çalışan
+                    </button>
+                </div>
+
+                <!-- Employee Cards Grid -->
+                <div id="employeeCardsGrid" class="employee-cards-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    <div style="grid-column: 1 / -1; text-align:center; padding:3rem 0; color:var(--secondary);">
+                        <i class="fa-solid fa-users" style="font-size:3rem; margin-bottom:1rem; opacity:0.3;"></i>
+                        <p>Henüz çalışan eklenmemiş.</p>
                     </div>
                 </div>
             </section>
 
             <!-- VIEW: RESERVATIONS -->
             <section id="view-reservations" class="view-section" style="display:none;">
-                <!-- Reservation Stats - Compact Version -->
-                <div class="task-stats"
-                    style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
-                    <div class="stat-card" style="padding: 0.75rem 1rem;">
-                        <div class="stat-number" id="totalAreas" style="font-size: 1.5rem;">0</div>
-                        <div class="stat-label" style="font-size: 0.75rem;">Toplam Alan</div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> Rezervasyon
+                            Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Alan ve rezervasyon
+                            durumlarını takip edin.</p>
                     </div>
-                    <div class="stat-card" style="padding: 0.75rem 1rem;">
-                        <div class="stat-number" id="availableAreas" style="color:var(--success); font-size: 1.5rem;">0
+                </div>
+
+                <!-- Stats Cards -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #1f2937;" id="totalAreas">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">TOPLAM
+                                ALAN</span>
                         </div>
-                        <div class="stat-label" style="font-size: 0.75rem;">Müsait Alan</div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-table-cells-large" style="font-size: 1.1rem; color: #3b82f6;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card" style="padding: 0.75rem 1rem;">
-                        <div class="stat-number" id="reservedAreas" style="color:var(--danger); font-size: 1.5rem;">0
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #10b981;"
+                                id="availableAreas">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">MÜSAİT</span>
                         </div>
-                        <div class="stat-label" style="font-size: 0.75rem;">Dolu Alan</div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdf4; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-check-circle" style="font-size: 1.1rem; color: #10b981;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card" style="padding: 0.75rem 1rem;">
-                        <div class="stat-number" id="optionalAreas" style="color:var(--warning); font-size: 1.5rem;">0
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #ef4444;"
+                                id="reservedAreas">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">DOLU</span>
                         </div>
-                        <div class="stat-label" style="font-size: 0.75rem;">Opsiyonlu Alan</div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fef2f2; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-xmark-circle" style="font-size: 1.1rem; color: #ef4444;"></i>
+                        </div>
+                    </div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #f59e0b;"
+                                id="optionalAreas">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">OPSİYONLU</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fffbeb; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-hourglass-half" style="font-size: 1.1rem; color: #f59e0b;"></i>
+                        </div>
                     </div>
                 </div>
 

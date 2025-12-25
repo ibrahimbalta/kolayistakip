@@ -1707,31 +1707,77 @@ Seviyeler:
 
             <!-- VIEW: WEBSITE MANAGEMENT -->
             <section id="view-website" class="view-section" style="display:none;">
-                <!-- Copy Link Button - aligned to right -->
-                <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2
+                            style="margin: 0 0 0.25rem 0; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-globe" style="color: var(--primary);"></i> Website Yönetimi
+                        </h2>
+                        <p style="color: var(--secondary); margin: 0; font-size: 0.85rem;">Firmanızın web sitesini
+                            oluşturun ve yönetin.</p>
+                    </div>
                     <button id="copyWebsiteLinkBtn" onclick="copyWebsiteLink()" class="btn"
-                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-weight: 600; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                        <i class="fa-solid fa-link"></i>
-                        <span>Website Linkini Kopyala</span>
+                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; display: flex; align-items: center; gap: 8px; padding: 0.6rem 1.25rem; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                        <i class="fa-solid fa-link"></i> Website Linkini Kopyala
                     </button>
                 </div>
 
-                <div class="task-stats">
-                    <div class="stat-card">
-                        <div class="stat-number" id="websiteStatus">-</div>
-                        <div class="stat-label">Website Durumu</div>
+                <!-- Stats Cards - Unified Compact Design -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #6366f1;"
+                                id="websiteStatus">-</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">WEB
+                                DURUMU</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eef2ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-globe" style="font-size: 1.1rem; color: #6366f1;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="websiteProductCount" style="color:var(--primary);">0</div>
-                        <div class="stat-label">Ürünler</div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #3b82f6;"
+                                id="websiteProductCount">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">ÜRÜNLER</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-box" style="font-size: 1.1rem; color: #3b82f6;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="websiteServiceCount" style="color:var(--success);">0</div>
-                        <div class="stat-label">Hizmetler</div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #10b981;"
+                                id="websiteServiceCount">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">HİZMETLER</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #f0fdf4; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-briefcase" style="font-size: 1.1rem; color: #10b981;"></i>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="websiteTeamCount" style="color:var(--warning);">0</div>
-                        <div class="stat-label">Ekip Üyeleri</div>
+                    <div
+                        style="background: white; border-radius: 12px; padding: 1rem 1.25rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #f59e0b;"
+                                id="websiteTeamCount">0</span>
+                            <span
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-top: 2px;">EKİP
+                                ÜYELERİ</span>
+                        </div>
+                        <div
+                            style="width: 42px; height: 42px; border-radius: 10px; background: #fffbeb; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-users" style="font-size: 1.1rem; color: #f59e0b;"></i>
+                        </div>
                     </div>
                 </div>
 

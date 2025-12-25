@@ -293,107 +293,82 @@
 
             <!-- VIEW: TASKS -->
             <section id="view-tasks" class="view-section" style="display:none;">
-                <!-- Updated Task Dashboard Header -->
-                <div class="task-dashboard-header">
-                    <div class="task-title-group">
-                        <h2><i class="fa-solid fa-list-check"></i> İş Listesi</h2>
-                        <p style="color: var(--secondary); margin:0; font-size: 0.9rem;">Görevlerinizi ve ekip
-                            performansını takip edin.</p>
+                <!-- Compact Header Row -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> İş Listesi
+                        </h2>
+                        <!-- Inline Mini Stats -->
+                        <div style="display: flex; gap: 0.5rem;">
+                            <span
+                                style="background: #f1f5f9; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: #475569;">
+                                <span id="totalTasks">0</span> Görev
+                            </span>
+                            <span
+                                style="background: #fef3c7; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: #92400e;">
+                                <span id="pendingTasks">0</span> Bekleyen
+                            </span>
+                            <span
+                                style="background: #dcfce7; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: #166534;">
+                                <span id="completedTasks">0</span> Tamamlanan
+                            </span>
+                        </div>
                     </div>
-                    <div class="task-header-actions">
-                        <button class="btn btn-primary btn-compact" onclick="toggleAddTaskForm()">
-                            <i class="fa-solid fa-plus-circle"></i> <span>Yeni İş Oluştur</span>
-                        </button>
-                    </div>
+                    <button class="btn btn-primary" onclick="toggleAddTaskForm()"
+                        style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                        <i class="fa-solid fa-plus"></i> Yeni İş
+                    </button>
                 </div>
 
-                <!-- Card Style Stats (Matching Reference) -->
-                <div class="task-stats-row anim-fade-in">
-                    <div class="stat-premium-card">
-                        <div class="stat-main">
-                            <span class="stat-num" id="totalTasks">0</span>
-                            <span class="stat-label">TOPLAM GÖREV</span>
-                        </div>
-                        <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
-                    </div>
-                    <div class="stat-premium-card pending">
-                        <div class="stat-main">
-                            <span class="stat-num" id="pendingTasks">0</span>
-                            <span class="stat-label">BEKLEYEN</span>
-                        </div>
-                        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
-                    </div>
-                    <div class="stat-premium-card completed">
-                        <div class="stat-main">
-                            <span class="stat-num" id="completedTasks">0</span>
-                            <span class="stat-label">TAMAMLANAN</span>
-                        </div>
-                        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
-                    </div>
-                </div>
-
-                <!-- Horizontal Filters Bar -->
-                <div class="task-filters-bar"
-                    style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding: 1rem 1.25rem; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); border-radius: 14px; border: 1px solid var(--border); margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
+                <!-- Compact Single Line Filters -->
+                <div
+                    style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding: 0.5rem 0.75rem; background: #f8fafc; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 0.5rem;">
                     <!-- Search -->
-                    <div style="flex: 1; min-width: 200px; max-width: 300px;">
-                        <div class="search-box" style="position: relative;">
-                            <i class="fa-solid fa-magnifying-glass"
-                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
-                            <input type="text" id="taskSearchInput" placeholder="Görev, çalışan, müşteri ara..."
-                                oninput="filterTasks()"
-                                style="width: 100%; padding: 0.6rem 0.75rem 0.6rem 2.25rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; background: white;">
-                        </div>
+                    <div style="position: relative; min-width: 160px; max-width: 220px;">
+                        <i class="fa-solid fa-magnifying-glass"
+                            style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.7rem;"></i>
+                        <input type="text" id="taskSearchInput" placeholder="Ara..." oninput="filterTasks()"
+                            style="width: 100%; padding: 0.35rem 0.5rem 0.35rem 1.75rem; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.75rem; background: white;">
                     </div>
 
                     <!-- Status Filter -->
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span
-                            style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Durum:</span>
-                        <div class="custom-filter-group" style="display: flex; gap: 0.35rem;">
-                            <button class="filter-btn active" data-filter="all" onclick="setTaskFilter('all', this)"
-                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Tümü</button>
-                            <button class="filter-btn" data-filter="pending" onclick="setTaskFilter('pending', this)"
-                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Bekleyen</button>
-                            <button class="filter-btn" data-filter="completed"
-                                onclick="setTaskFilter('completed', this)"
-                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Bitmiş</button>
-                        </div>
+                    <div class="custom-filter-group" style="display: flex; gap: 2px;">
+                        <button class="filter-btn active" data-filter="all" onclick="setTaskFilter('all', this)"
+                            style="padding: 0.3rem 0.5rem; font-size: 0.7rem; border-radius: 5px;">Tümü</button>
+                        <button class="filter-btn" data-filter="pending" onclick="setTaskFilter('pending', this)"
+                            style="padding: 0.3rem 0.5rem; font-size: 0.7rem; border-radius: 5px;">Bekleyen</button>
+                        <button class="filter-btn" data-filter="completed" onclick="setTaskFilter('completed', this)"
+                            style="padding: 0.3rem 0.5rem; font-size: 0.7rem; border-radius: 5px;">Bitmiş</button>
                     </div>
 
-                    <!-- Priority Filter -->
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span
-                            style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Öncelik:</span>
-                        <div class="priority-pills" style="display: flex; gap: 0.35rem;">
-                            <button class="pill-btn high" onclick="filterByPriority('high')"
-                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Yüksek</button>
-                            <button class="pill-btn medium" onclick="filterByPriority('medium')"
-                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Orta</button>
-                            <button class="pill-btn low" onclick="filterByPriority('low')"
-                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Düşük</button>
-                            <button class="pill-btn all active" onclick="filterByPriority('all')"
-                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Hepsi</button>
-                        </div>
+                    <!-- Priority Pills -->
+                    <div class="priority-pills" style="display: flex; gap: 2px;">
+                        <button class="pill-btn high" onclick="filterByPriority('high')"
+                            style="padding: 0.25rem 0.4rem; font-size: 0.65rem;">Yüksek</button>
+                        <button class="pill-btn medium" onclick="filterByPriority('medium')"
+                            style="padding: 0.25rem 0.4rem; font-size: 0.65rem;">Orta</button>
+                        <button class="pill-btn low" onclick="filterByPriority('low')"
+                            style="padding: 0.25rem 0.4rem; font-size: 0.65rem;">Düşük</button>
+                        <button class="pill-btn all active" onclick="filterByPriority('all')"
+                            style="padding: 0.25rem 0.4rem; font-size: 0.65rem;">Hepsi</button>
                     </div>
 
-                    <!-- Department Filter -->
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <select id="departmentFilterSidebar" class="premium-select" onchange="filterTasks()"
-                            style="padding: 0.5rem 2rem 0.5rem 0.75rem; font-size: 0.8rem; min-width: 150px; height: auto;">
-                            <option value="">Tüm Departmanlar</option>
-                        </select>
-                    </div>
+                    <!-- Department -->
+                    <select id="departmentFilterSidebar" class="premium-select" onchange="filterTasks()"
+                        style="padding: 0.3rem 1.5rem 0.3rem 0.5rem; font-size: 0.7rem; min-width: 110px; height: auto; border-radius: 5px;">
+                        <option value="">Tüm Dept.</option>
+                    </select>
 
                     <!-- Sort -->
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
-                        <span style="font-size: 0.75rem; font-weight: 600; color: #64748b;">Sırala:</span>
+                    <div style="margin-left: auto; display: flex; align-items: center; gap: 0.3rem;">
+                        <span style="font-size: 0.65rem; color: #64748b; font-weight: 600;">Sırala:</span>
                         <select id="prioritySort" class="premium-select" onchange="renderTasks()"
-                            style="padding: 0.5rem 2rem 0.5rem 0.75rem; font-size: 0.8rem; min-width: 140px; height: auto;">
+                            style="padding: 0.3rem 1.5rem 0.3rem 0.5rem; font-size: 0.7rem; min-width: 100px; height: auto; border-radius: 5px;">
                             <option value="default">Varsayılan</option>
-                            <option value="high-first">🔴 Önce Yüksek</option>
-                            <option value="low-first">🟢 Önce Düşük</option>
-                            <option value="deadline">📅 Yakın Tarih</option>
+                            <option value="high-first">Önce Yüksek</option>
+                            <option value="low-first">Önce Düşük</option>
+                            <option value="deadline">Yakın Tarih</option>
                         </select>
                     </div>
                 </div>

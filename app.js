@@ -560,38 +560,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             taskCard.innerHTML = `
-                <div style="padding: 0.5rem 0.65rem; cursor: pointer;" class="task-body-area">
+                <div style="padding: 0.6rem 0.75rem; cursor: pointer;" class="task-body-area">
                     <!-- Title Row -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem;">
-                        <h3 style="font-size: 0.82rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.2; flex: 1; ${task.completed ? 'text-decoration: line-through; color: #6b7280;' : ''} overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(task.desc)}</h3>
-                        <span style="font-size: 0.65rem; color: ${isOverdue ? '#b91c1c' : '#6b7280'}; font-weight: 600; white-space: nowrap;">${task.deadline || task.createdAt}</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                        <h3 style="font-size: 0.88rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.25; flex: 1; ${task.completed ? 'text-decoration: line-through; color: #6b7280;' : ''} overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(task.desc)}</h3>
+                        <span style="font-size: 0.7rem; color: ${isOverdue ? '#b91c1c' : '#6b7280'}; font-weight: 600; white-space: nowrap;">${task.deadline || task.createdAt}</span>
                     </div>
                     <!-- Info Row -->
-                    <div style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;">
-                        <span style="padding: 2px 6px; background: ${task.completed ? '#dcfce7' : (isOverdue ? '#fef2f2' : '#dbeafe')}; color: ${task.completed ? '#166534' : (isOverdue ? '#b91c1c' : '#1d4ed8')}; border-radius: 6px; font-size: 0.6rem; font-weight: 700;">${statusLabel}</span>
-                        <span style="padding: 2px 6px; background: ${priorityBg}; color: ${task.priority === 'high' ? '#b91c1c' : (task.priority === 'low' ? '#166534' : '#92400e')}; border-radius: 6px; font-size: 0.6rem; font-weight: 700;">${priorityLabel}</span>
-                        <span style="font-size: 0.68rem; font-weight: 600; color: #374151; margin-left: auto; display: flex; align-items: center; gap: 4px;">
-                            <span style="width: 18px; height: 18px; border-radius: 4px; background: #6366f1; color: white; font-size: 0.55rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;">${initials}</span>
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                        <span style="padding: 2px 8px; background: ${task.completed ? '#dcfce7' : (isOverdue ? '#fef2f2' : '#dbeafe')}; color: ${task.completed ? '#166534' : (isOverdue ? '#b91c1c' : '#1d4ed8')}; border-radius: 6px; font-size: 0.65rem; font-weight: 700;">${statusLabel}</span>
+                        <span style="padding: 2px 8px; background: ${priorityBg}; color: ${task.priority === 'high' ? '#b91c1c' : (task.priority === 'low' ? '#166534' : '#92400e')}; border-radius: 6px; font-size: 0.65rem; font-weight: 700;">${priorityLabel}</span>
+                        <span style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-left: auto; display: flex; align-items: center; gap: 5px;">
+                            <span style="width: 20px; height: 20px; border-radius: 5px; background: #6366f1; color: white; font-size: 0.6rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;">${initials}</span>
                             ${Security.sanitize(task.name.split(' ')[0])}
                         </span>
                     </div>
                 </div>
                 <!-- Buttons -->
-                <div style="display: flex; gap: 4px; padding: 0.3rem 0.65rem; background: #f1f5f9; border-top: 1px solid #e2e8f0;">
+                <div style="display: flex; gap: 5px; padding: 0.35rem 0.75rem; background: #f1f5f9; border-top: 1px solid #e2e8f0;">
                     <button onclick="event.stopPropagation(); toggleTaskStatus('${task.id}')" 
-                        style="flex: 1; height: 26px; border-radius: 5px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; ${task.completed ? 'background: #fef3c7; color: #b45309;' : 'background: #bbf7d0; color: #166534;'}"
+                        style="flex: 1; height: 30px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; ${task.completed ? 'background: #fef3c7; color: #b45309;' : 'background: #bbf7d0; color: #166534;'}"
                         title="${task.completed ? 'Geri Al' : 'Tamamla'}">
-                        <i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}" style="font-size: 0.65rem;"></i>
+                        <i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}" style="font-size: 0.7rem;"></i>
                     </button>
                     <a href="${whatsappUrl}" target="_blank" onclick="event.stopPropagation();"
-                        style="flex: 1; height: 26px; border-radius: 5px; background: #bbf7d0; color: #166534; display: flex; align-items: center; justify-content: center; text-decoration: none;"
+                        style="flex: 1; height: 30px; border-radius: 6px; background: #bbf7d0; color: #166534; display: flex; align-items: center; justify-content: center; text-decoration: none;"
                         title="WhatsApp">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 0.75rem;"></i>
+                        <i class="fa-brands fa-whatsapp" style="font-size: 0.85rem;"></i>
                     </a>
                     <button onclick="event.stopPropagation(); deleteTask('${task.id}')" 
-                        style="flex: 1; height: 26px; border-radius: 5px; border: none; cursor: pointer; background: #fecaca; color: #b91c1c; display: flex; align-items: center; justify-content: center;"
+                        style="flex: 1; height: 30px; border-radius: 6px; border: none; cursor: pointer; background: #fecaca; color: #b91c1c; display: flex; align-items: center; justify-content: center;"
                         title="Sil">
-                        <i class="fa-solid fa-trash" style="font-size: 0.6rem;"></i>
+                        <i class="fa-solid fa-trash" style="font-size: 0.65rem;"></i>
                     </button>
                 </div>
             `;

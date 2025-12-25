@@ -117,6 +117,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        if (viewName === 'employees') {
+            // Reload employees and departments when switching to employees view
+            loadEmployees();
+            if (typeof window.initializeDepartments === 'function') {
+                window.initializeDepartments();
+            }
+        }
+
+        if (viewName === 'customers') {
+            // Reload customers when switching to customers view
+            if (typeof loadCustomers === 'function') {
+                loadCustomers();
+            }
+        }
+
         if (viewName === 'settings') {
             // Update export counts when settings view is opened
             setTimeout(() => {
@@ -325,13 +340,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         console.log('Raw employee data from DB:', data);
 
-        employees = data.map(emp => ({
+        window.employees = data.map(emp => ({
             id: emp.id,
             name: emp.name,
             phone: emp.phone,
             department_id: emp.department_id,
             share_token: emp.share_token
         }));
+
+        // Sync local reference with global
+        employees = window.employees;
 
         console.log('Mapped employees:', employees);
 

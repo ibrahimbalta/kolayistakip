@@ -1493,12 +1493,17 @@ cursor: pointer;
     };
 
     // Show customer tasks modal
+    let currentCustomerIdForTasks = null;
+
     window.showCustomerTasksModal = function (customerId) {
         const customer = customers.find(c => c.id === customerId);
         if (!customer) {
             console.error('Customer not found:', customerId);
             return;
         }
+
+        // Store current customer ID for adding tasks
+        currentCustomerIdForTasks = customerId;
 
         // Update modal title
         document.getElementById('customerTasksModalTitle').textContent = `${customer.name} - Görevler`;
@@ -1514,6 +1519,7 @@ cursor: pointer;
                 <div style="text-align: center; padding: 3rem 1rem; color: var(--secondary);">
                     <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
                     <p style="margin: 0;">Bu müşteriye atanmış görev bulunmuyor.</p>
+                    <p style="margin: 0.5rem 0 0; font-size: 0.85rem;">Yukarıdaki "Yeni Görev Ekle" butonuyla görev ekleyebilirsiniz.</p>
                 </div>
     `;
         } else {
@@ -1558,9 +1564,35 @@ cursor: pointer;
         document.getElementById('customerTasksModal').style.display = 'flex';
     };
 
+    // Add task from customer modal
+    window.addTaskFromCustomerModal = function () {
+        if (!currentCustomerIdForTasks) {
+            alert('Müşteri bilgisi bulunamadı.');
+            return;
+        }
+
+        // Close the customer tasks modal
+        closeCustomerTasksModal();
+
+        // Switch to tasks view
+        switchView('tasks');
+
+        // Show the add task drawer
+        setTimeout(() => {
+            toggleAddTaskForm();
+
+            // Pre-select the customer in the dropdown
+            const customerSelect = document.getElementById('customerSelect');
+            if (customerSelect) {
+                customerSelect.value = currentCustomerIdForTasks;
+            }
+        }, 100);
+    };
+
     // Close customer tasks modal
     window.closeCustomerTasksModal = function () {
         document.getElementById('customerTasksModal').style.display = 'none';
+        currentCustomerIdForTasks = null;
     };
 
     window.deleteCustomer = async function (id) {

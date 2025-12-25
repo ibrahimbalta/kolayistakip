@@ -2289,10 +2289,16 @@ Seviyeler:
                     <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
                     <span id="customerTasksModalTitle">Müşteri Görevleri</span>
                 </h2>
-                <button onclick="closeCustomerTasksModal()"
-                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button onclick="addTaskFromCustomerModal()" class="btn btn-primary"
+                        style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                        <i class="fa-solid fa-plus"></i> Yeni Görev Ekle
+                    </button>
+                    <button onclick="closeCustomerTasksModal()"
+                        style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
             </div>
 
             <div id="customerTasksListContainer">

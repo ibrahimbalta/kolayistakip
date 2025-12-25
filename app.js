@@ -560,60 +560,59 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             taskCard.innerHTML = `
-                <div style="padding: 0.6rem 0.75rem; cursor: pointer;" class="task-body-area">
+                <div style="padding: 0.4rem 0.6rem; cursor: pointer;" class="task-body-area">
                     <!-- Top Row: Title + Date -->
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.4rem;">
-                        <h3 style="font-size: 0.8rem; font-weight: 600; color: #1f2937; margin: 0; line-height: 1.3; flex: 1; ${task.completed ? 'text-decoration: line-through; opacity: 0.7;' : ''} overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${Security.sanitize(task.desc)}</h3>
-                        <div style="font-size: 0.65rem; color: ${isOverdue ? '#dc2626' : '#9ca3af'}; white-space: nowrap; display: flex; align-items: center; gap: 3px; flex-shrink: 0;">
-                            <i class="fa-solid fa-calendar" style="font-size: 0.55rem;"></i>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
+                        <h3 style="font-size: 0.72rem; font-weight: 600; color: #1f2937; margin: 0; line-height: 1.2; flex: 1; ${task.completed ? 'text-decoration: line-through; opacity: 0.7;' : ''} overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(task.desc)}</h3>
+                        <div style="font-size: 0.58rem; color: ${isOverdue ? '#dc2626' : '#9ca3af'}; white-space: nowrap; flex-shrink: 0;">
                             ${task.deadline || task.createdAt}
                         </div>
                     </div>
                     
-                    <!-- Middle Row: Status + Priority + Employee -->
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; margin-bottom: 0.4rem;">
-                        <span style="display: inline-flex; align-items: center; gap: 2px; padding: 2px 6px; background: ${statusBg}; color: ${statusColor}; border-radius: 10px; font-size: 0.6rem; font-weight: 600;">
-                            <i class="fa-solid ${statusIcon}" style="font-size: 0.5rem;"></i>
+                    <!-- Middle Row: Status + Priority -->
+                    <div style="display: flex; gap: 0.25rem; align-items: center; margin-bottom: 0.25rem;">
+                        <span style="display: inline-flex; align-items: center; gap: 2px; padding: 1px 5px; background: ${statusBg}; color: ${statusColor}; border-radius: 8px; font-size: 0.55rem; font-weight: 600;">
+                            <i class="fa-solid ${statusIcon}" style="font-size: 0.45rem;"></i>
                             ${statusLabel}
                         </span>
-                        <span style="display: inline-flex; align-items: center; gap: 2px; padding: 2px 6px; background: ${priorityBg}; color: ${priorityColor}; border-radius: 10px; font-size: 0.6rem; font-weight: 600;">
-                            <i class="fa-solid fa-flag" style="font-size: 0.5rem;"></i>
+                        <span style="display: inline-flex; align-items: center; gap: 2px; padding: 1px 5px; background: ${priorityBg}; color: ${priorityColor}; border-radius: 8px; font-size: 0.55rem; font-weight: 600;">
+                            <i class="fa-solid fa-flag" style="font-size: 0.4rem;"></i>
                             ${priorityLabel}
                         </span>
                     </div>
                     
                     <!-- Bottom Row: Employee Info -->
-                    <div style="display: flex; align-items: center; gap: 0.4rem;">
-                        <div style="width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.55rem; flex-shrink: 0;">
+                    <div style="display: flex; align-items: center; gap: 0.3rem;">
+                        <div style="width: 18px; height: 18px; border-radius: 4px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.5rem; flex-shrink: 0;">
                             ${initials}
                         </div>
-                        <span style="font-size: 0.7rem; font-weight: 500; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(task.name)}</span>
+                        <span style="font-size: 0.62rem; font-weight: 500; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${Security.sanitize(task.name)}</span>
                         ${customer ? `
-                            <span style="font-size: 0.6rem; color: #d97706; background: #fef3c7; padding: 1px 5px; border-radius: 8px; margin-left: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px;">
-                                <i class="fa-solid fa-building" style="font-size: 0.5rem;"></i> ${Security.sanitize(customer.name)}
+                            <span style="font-size: 0.55rem; color: #d97706; background: #fef3c7; padding: 1px 4px; border-radius: 6px; margin-left: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px;">
+                                ${Security.sanitize(customer.name)}
                             </span>
                         ` : ''}
                     </div>
                 </div>
                 
-                <!-- Action Buttons - Horizontal at Bottom -->
-                <div style="display: flex; gap: 0.35rem; padding: 0.4rem 0.75rem; background: #f8fafc; border-top: 1px solid #e5e7eb;">
+                <!-- Action Buttons - Ultra Compact -->
+                <div style="display: flex; gap: 0.25rem; padding: 0.25rem 0.6rem; background: #f8fafc; border-top: 1px solid #e5e7eb;">
                     <button onclick="event.stopPropagation(); toggleTaskStatus('${task.id}')" 
-                        style="flex: 1; height: 28px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.65rem; font-weight: 600; transition: all 0.2s; ${task.completed ? 'background: #fef3c7; color: #d97706;' : 'background: #d1fae5; color: #059669;'}"
+                        style="flex: 1; height: 22px; border-radius: 4px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; transition: all 0.2s; ${task.completed ? 'background: #fef3c7; color: #d97706;' : 'background: #d1fae5; color: #059669;'}"
                         title="${task.completed ? 'Geri Al' : 'Tamamla'}">
-                        <i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}" style="font-size: 0.6rem;"></i>
+                        <i class="fa-solid ${task.completed ? 'fa-rotate-left' : 'fa-check'}" style="font-size: 0.55rem;"></i>
                     </button>
                     
                     <a href="${whatsappUrl}" target="_blank" onclick="event.stopPropagation();"
-                        style="flex: 1; height: 28px; border-radius: 6px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.65rem; font-weight: 600; transition: all 0.2s;"
+                        style="flex: 1; height: 22px; border-radius: 4px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s;"
                         title="WhatsApp">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 0.75rem;"></i>
+                        <i class="fa-brands fa-whatsapp" style="font-size: 0.65rem;"></i>
                     </a>
                     
                     <button onclick="event.stopPropagation(); deleteTask('${task.id}')" 
-                        style="flex: 1; height: 28px; border-radius: 6px; border: none; cursor: pointer; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; transition: all 0.2s;"
+                        style="flex: 1; height: 22px; border-radius: 4px; border: none; cursor: pointer; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
                         title="Sil">
-                        <i class="fa-solid fa-trash" style="font-size: 0.6rem;"></i>
+                        <i class="fa-solid fa-trash" style="font-size: 0.5rem;"></i>
                     </button>
                 </div>
             `;

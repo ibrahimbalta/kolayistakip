@@ -382,6 +382,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (error) throw error;
 
             taskForm.reset();
+
+            // Close the add task drawer
+            const drawer = document.getElementById('addTaskDrawer');
+            if (drawer) drawer.style.display = 'none';
+
             await loadTasks(); // Refresh list immediately
             if (window.showToast) window.showToast('Başarılı', 'Görev başarıyla eklendi ve çalışana atandı!', 'success');
             else alert('Görev başarıyla eklendi ve çalışana atandı!');

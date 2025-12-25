@@ -564,26 +564,35 @@ body {
 /* Premium Card Style Stats */
 .task-stats-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .stat-premium-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 1.25rem;
+    border-radius: 14px;
     border: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .stat-premium-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.stat-premium-card.pending {
+    border-left: 4px solid #f59e0b;
+}
+
+.stat-premium-card.completed {
+    border-left: 4px solid #10b981;
 }
 
 .stat-main {
@@ -592,19 +601,19 @@ body {
 }
 
 .stat-num {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 800;
     line-height: 1;
     color: var(--dark);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
 }
 
 .stat-label {
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #94a3b8;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
 }
 
 .stat-icon {
@@ -905,23 +914,33 @@ body {
 /* Main Layout */
 .task-main-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
     align-items: start;
 }
 
 .task-filters-sidebar {
-    background: white;
-    padding: 1.5rem;
-    border-radius: var(--radius);
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    padding: 1.25rem;
+    border-radius: 16px;
     border: 1px solid var(--border);
     position: sticky;
-    top: 2rem;
+    top: 1rem;
     z-index: 10;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.task-list-container {
+    background: white;
+    border-radius: 16px;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    min-height: 500px;
 }
 
 .filter-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .filter-section:last-child {
@@ -931,13 +950,13 @@ body {
 .filter-section label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
+    gap: 0.4rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: #94a3b8;
+    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
 }
 
 .search-box {
@@ -1158,32 +1177,57 @@ body {
 
 .task-grid-premium {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.875rem;
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.task-grid-premium::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-grid-premium::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.task-grid-premium::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+}
+
+.task-grid-premium::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
 
 /* Premium Task Card */
 .task-card-premium {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    padding: 1.25rem;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 1rem 1.25rem;
     display: flex;
-    gap: 1.25rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 1rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .task-card-premium:hover {
-    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px -8px rgba(99, 102, 241, 0.25);
     border-color: var(--primary);
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.01);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
 }
 
 .task-card-premium.completed {
-    opacity: 0.7;
-    background: #f8fafc;
+    opacity: 0.75;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-color: #d1d5db;
 }
 
 .priority-v-bar {

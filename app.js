@@ -12,10 +12,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.tasks = [];
     window.employees = [];
     window.customers = [];
+    window.departments = [];
     window.currentUser = null;
     let tasks = window.tasks;
     let employees = window.employees;
     let customers = window.customers;
+    let departments = window.departments;
     let currentUser = window.currentUser;
     let currentFilter = 'all';
     let tasksSubscription = null;
@@ -319,7 +321,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderEmployees();
         renderTasks();
         renderStats();
-        renderReports();
+        // renderReports fonksiyonu dashboard-data.js içinde
+        if (typeof renderReports === 'function') renderReports();
         renderCustomers(); // Update customer cards with new task counts
     }
 
@@ -3050,7 +3053,6 @@ cursor: pointer;
     // =============================================
     // DEPARTMENT MANAGEMENT
     // =============================================
-    let departments = [];
 
     // Populate department filter dropdown (must be global for loadDepartments to access)
     function populateDepartmentFilter() {
@@ -3096,8 +3098,8 @@ cursor: pointer;
                 .eq('user_id', window.currentUser.id)
                 .order('name');
             if (error) throw error;
-            departments = data || [];
-            window.departments = departments;
+            window.departments = data || [];
+            departments = window.departments;
 
             // Update department dropdowns
             updateDepartmentDropdowns();

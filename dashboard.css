@@ -1179,28 +1179,6 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 0.875rem;
-    max-height: calc(100vh - 400px);
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
-}
-
-.task-grid-premium::-webkit-scrollbar {
-    width: 6px;
-}
-
-.task-grid-premium::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.task-grid-premium::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 6px;
-}
-
-.task-grid-premium::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
 }
 
 /* Premium Task Card */

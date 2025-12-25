@@ -193,11 +193,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.currentUser = user;
         currentUser = user;
 
-        // Initialize departments
-        if (typeof window.initializeDepartments === 'function') {
-            await window.initializeDepartments();
-        }
-
         // Initialize user-based notifications
         if (typeof Notifications !== 'undefined') {
             Notifications.init(user.id);
@@ -281,10 +276,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function loadInitialData() {
         try {
+            await loadDepartments();
             await loadEmployees();
             await loadCustomers();
             await loadTasks();
             renderEmployees(); // Update counts after tasks are loaded
+            renderManagerList(); // Update manager list
         } catch (error) {
             console.error('Error loading initial data:', error);
         }

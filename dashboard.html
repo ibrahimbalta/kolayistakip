@@ -304,6 +304,72 @@
                     </div>
                 </div>
 
+                <!-- Horizontal Filters Bar -->
+                <div class="task-filters-bar"
+                    style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding: 1rem 1.25rem; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); border-radius: 14px; border: 1px solid var(--border); margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
+                    <!-- Search -->
+                    <div style="flex: 1; min-width: 200px; max-width: 300px;">
+                        <div class="search-box" style="position: relative;">
+                            <i class="fa-solid fa-magnifying-glass"
+                                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
+                            <input type="text" id="taskSearchInput" placeholder="Görev, çalışan, müşteri ara..."
+                                oninput="filterTasks()"
+                                style="width: 100%; padding: 0.6rem 0.75rem 0.6rem 2.25rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; background: white;">
+                        </div>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span
+                            style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Durum:</span>
+                        <div class="custom-filter-group" style="display: flex; gap: 0.35rem;">
+                            <button class="filter-btn active" data-filter="all" onclick="setTaskFilter('all', this)"
+                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Tümü</button>
+                            <button class="filter-btn" data-filter="pending" onclick="setTaskFilter('pending', this)"
+                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Bekleyen</button>
+                            <button class="filter-btn" data-filter="completed"
+                                onclick="setTaskFilter('completed', this)"
+                                style="padding: 0.4rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">Bitmiş</button>
+                        </div>
+                    </div>
+
+                    <!-- Priority Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span
+                            style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Öncelik:</span>
+                        <div class="priority-pills" style="display: flex; gap: 0.35rem;">
+                            <button class="pill-btn high" onclick="filterByPriority('high')"
+                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Yüksek</button>
+                            <button class="pill-btn medium" onclick="filterByPriority('medium')"
+                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Orta</button>
+                            <button class="pill-btn low" onclick="filterByPriority('low')"
+                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Düşük</button>
+                            <button class="pill-btn all active" onclick="filterByPriority('all')"
+                                style="padding: 0.35rem 0.6rem; font-size: 0.75rem;">Hepsi</button>
+                        </div>
+                    </div>
+
+                    <!-- Department Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <select id="departmentFilterSidebar" class="premium-select" onchange="filterTasks()"
+                            style="padding: 0.5rem 2rem 0.5rem 0.75rem; font-size: 0.8rem; min-width: 150px; height: auto;">
+                            <option value="">Tüm Departmanlar</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
+                        <span style="font-size: 0.75rem; font-weight: 600; color: #64748b;">Sırala:</span>
+                        <select id="prioritySort" class="premium-select" onchange="renderTasks()"
+                            style="padding: 0.5rem 2rem 0.5rem 0.75rem; font-size: 0.8rem; min-width: 140px; height: auto;">
+                            <option value="default">Varsayılan</option>
+                            <option value="high-first">🔴 Önce Yüksek</option>
+                            <option value="low-first">🟢 Önce Düşük</option>
+                            <option value="deadline">📅 Yakın Tarih</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Add Task Drawer (Initially Hidden) -->
                 <div id="addTaskDrawer" class="add-task-drawer" style="display: none;">
                     <div class="card"
@@ -357,69 +423,18 @@
                     </div>
                 </div>
 
-                <div class="task-main-layout">
-                    <!-- Sidebar Filters -->
-                    <aside class="task-filters-sidebar">
-                        <div class="filter-section">
-                            <label><i class="fa-solid fa-magnifying-glass"></i> Arama</label>
-                            <div class="search-box">
-                                <input type="text" id="taskSearchInput" placeholder="Görev, çalışan, müşteri..."
-                                    oninput="filterTasks()">
-                            </div>
-                        </div>
+                <!-- Task Count Info -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div class="list-info" id="visibleTaskCount"
+                        style="font-size: 0.9rem; color: #64748b; font-weight: 500;">Yükleniyor...</div>
+                </div>
 
-                        <div class="filter-section">
-                            <label><i class="fa-solid fa-filter"></i> Durum</label>
-                            <div class="custom-filter-group">
-                                <button class="filter-btn active" data-filter="all"
-                                    onclick="setTaskFilter('all', this)">Tümü</button>
-                                <button class="filter-btn" data-filter="pending"
-                                    onclick="setTaskFilter('pending', this)">Bekleyen</button>
-                                <button class="filter-btn" data-filter="completed"
-                                    onclick="setTaskFilter('completed', this)">Bitmiş</button>
-                            </div>
-                        </div>
-
-                        <div class="filter-section">
-                            <label><i class="fa-solid fa-bolt"></i> Öncelik</label>
-                            <div class="priority-pills">
-                                <button class="pill-btn high" onclick="filterByPriority('high')">Yüksek</button>
-                                <button class="pill-btn medium" onclick="filterByPriority('medium')">Orta</button>
-                                <button class="pill-btn low" onclick="filterByPriority('low')">Düşük</button>
-                                <button class="pill-btn all active" onclick="filterByPriority('all')">Hepsi</button>
-                            </div>
-                        </div>
-
-                        <div class="filter-section">
-                            <label><i class="fa-solid fa-id-card"></i> Departman</label>
-                            <select id="departmentFilterSidebar" class="premium-select" onchange="filterTasks()">
-                                <option value="">Tüm Departmanlar</option>
-                            </select>
-                        </div>
-                    </aside>
-
-                    <!-- List Area -->
-                    <div class="task-list-container">
-                        <div class="list-toolbar">
-                            <div class="list-info" id="visibleTaskCount">Yükleniyor...</div>
-                            <div class="list-sort">
-                                <span>Sırala:</span>
-                                <select id="prioritySort" class="premium-select" onchange="renderTasks()">
-                                    <option value="default">Varsayılan</option>
-                                    <option value="high-first">🔴 Önce Yüksek</option>
-                                    <option value="low-first">🟢 Önce Düşük</option>
-                                    <option value="deadline">📅 Yakın Tarih</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="taskList" class="task-grid-premium">
-                            <!-- Tasks will be rendered here -->
-                            <div class="empty-state">
-                                <i class="fa-solid fa-clipboard-list"></i>
-                                <p>Görevler yükleniyor...</p>
-                            </div>
-                        </div>
+                <!-- Full Width Task Grid -->
+                <div id="taskList" class="task-grid-premium">
+                    <!-- Tasks will be rendered here -->
+                    <div class="empty-state">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        <p>Görevler yükleniyor...</p>
                     </div>
                 </div>
             </section>

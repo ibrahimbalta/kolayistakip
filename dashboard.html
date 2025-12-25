@@ -373,87 +373,82 @@
                     </div>
                 </div>
 
-                <!-- Add Task Drawer (Initially Hidden) - Modern Compact Design -->
-                <div id="addTaskDrawer" class="add-task-drawer" style="display: none; margin-bottom: 1.5rem;">
+                <!-- Add Task Drawer (Mobile Responsive) -->
+                <div id="addTaskDrawer" class="add-task-drawer" style="display: none; margin-bottom: 1rem;">
                     <div
-                        style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08); overflow: hidden;">
+                        style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08); overflow: hidden;">
                         <!-- Header -->
                         <div
-                            style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); padding: 0.875rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+                            style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); padding: 0.65rem 1rem; display: flex; justify-content: space-between; align-items: center;">
                             <h3
-                                style="margin: 0; color: white; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                                style="margin: 0; color: white; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
                                 <i class="fa-solid fa-plus-circle"></i> Yeni Görev Ekle
                             </h3>
                             <button onclick="toggleAddTaskForm()"
-                                style="background: rgba(255,255,255,0.2); border: none; color: white; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                                style="background: rgba(255,255,255,0.2); border: none; color: white; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                         </div>
-                        <!-- Form -->
-                        <form id="taskForm" style="padding: 1rem 1.25rem;">
+                        <!-- Form - Mobile First -->
+                        <form id="taskForm" style="padding: 0.75rem;">
+                            <!-- Row 1: Description (full width) -->
+                            <div style="margin-bottom: 0.5rem;">
+                                <label
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem; display: block;">İş
+                                    Açıklaması</label>
+                                <input type="text" id="taskDesc" placeholder="Yapılacak işi yazın..." required
+                                    style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; background: white; box-sizing: border-box;">
+                            </div>
+
+                            <!-- Row 2: Employee, Priority, Kaydet (responsive grid) -->
                             <div
-                                style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 0.875rem; align-items: end;">
-                                <!-- Task Description -->
-                                <div style="grid-column: span 2;">
-                                    <label
-                                        style="font-size: 0.7rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem; display: block;">İş
-                                        Açıklaması</label>
-                                    <input type="text" id="taskDesc" placeholder="Yapılacak işi yazın..." required
-                                        style="width: 100%; padding: 0.6rem 0.875rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; background: white;">
-                                </div>
-                                <!-- Employee -->
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; margin-bottom: 0.5rem;">
                                 <div>
                                     <label
-                                        style="font-size: 0.7rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem; display: block;">Çalışan</label>
+                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem; display: block;">Çalışan</label>
                                     <select id="employeeSelect" class="premium-select" required
-                                        style="width: 100%; padding: 0.55rem 2rem 0.55rem 0.75rem; font-size: 0.8rem; height: auto;">
+                                        style="width: 100%; padding: 0.45rem 1.8rem 0.45rem 0.5rem; font-size: 0.8rem; height: auto; border-radius: 8px; box-sizing: border-box;">
                                         <option value="">Seçin...</option>
                                     </select>
                                 </div>
-                                <!-- Priority -->
                                 <div>
                                     <label
-                                        style="font-size: 0.7rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem; display: block;">Öncelik</label>
+                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem; display: block;">Öncelik</label>
                                     <select id="taskPriority" class="premium-select"
-                                        style="width: 100%; padding: 0.55rem 2rem 0.55rem 0.75rem; font-size: 0.8rem; height: auto; border-left: 3px solid #f59e0b;">
+                                        style="width: 100%; padding: 0.45rem 1.8rem 0.45rem 0.5rem; font-size: 0.8rem; height: auto; border-radius: 8px; border-left: 3px solid #f59e0b; box-sizing: border-box;">
                                         <option value="medium" selected>🟡 Orta</option>
                                         <option value="high">🔴 Yüksek</option>
                                         <option value="low">🟢 Düşük</option>
                                     </select>
                                 </div>
-                                <!-- Submit Button -->
-                                <div>
+                                <div style="display: flex; align-items: end;">
                                     <button type="submit"
-                                        style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; transition: all 0.2s; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);">
+                                        style="width: 100%; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.35rem; white-space: nowrap;">
                                         <i class="fa-solid fa-paper-plane"></i> Kaydet
                                     </button>
                                 </div>
                             </div>
-                            <!-- Secondary Row -->
+
+                            <!-- Row 3: Customer, Deadline, Cancel (responsive grid) -->
                             <div
-                                style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.875rem; margin-top: 0.75rem;">
-                                <!-- Customer -->
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb;">
                                 <div>
                                     <label
-                                        style="font-size: 0.7rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem; display: block;">Müşteri
-                                        (Opsiyonel)</label>
+                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem; display: block;">Müşteri</label>
                                     <select id="customerSelect" class="premium-select"
-                                        style="width: 100%; padding: 0.55rem 2rem 0.55rem 0.75rem; font-size: 0.8rem; height: auto;">
-                                        <option value="">Müşteri Seçin...</option>
+                                        style="width: 100%; padding: 0.45rem 1.8rem 0.45rem 0.5rem; font-size: 0.8rem; height: auto; border-radius: 8px; box-sizing: border-box;">
+                                        <option value="">Opsiyonel</option>
                                     </select>
                                 </div>
-                                <!-- Deadline -->
                                 <div>
                                     <label
-                                        style="font-size: 0.7rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem; display: block;">Termin
-                                        Tarihi</label>
+                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem; display: block;">Termin</label>
                                     <input type="date" id="taskDeadline"
-                                        style="width: 100%; padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.8rem; background: white;">
+                                        style="width: 100%; padding: 0.45rem 0.5rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; background: white; box-sizing: border-box;">
                                 </div>
-                                <!-- Cancel Button -->
                                 <div style="display: flex; align-items: end;">
                                     <button type="button" onclick="toggleAddTaskForm()"
-                                        style="background: #f1f5f9; color: #64748b; border: none; padding: 0.55rem 1rem; border-radius: 10px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                                        style="width: 100%; background: #f1f5f9; color: #64748b; border: none; padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.8rem; font-weight: 500; cursor: pointer;">
                                         İptal
                                     </button>
                                 </div>
